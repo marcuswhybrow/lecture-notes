@@ -2,25 +2,31 @@
 Lecture Notes
 =============
 
-Semester 1:
+These are the lecture notes taken by Marcus Whybrow during **part 2** of the G400 Computer Science course.
+
+Part 2
+======
+
+Autumn - Semester 1:
 
 .. toctree::
     :maxdepth: 1
-    
     :glob:
     
-    modules/G52GUI/index.rst
-    modules/G53MLE/index.rst
-    modules/G53SRP/index.rst
-    modules/G54ACC/index.rst
+    modules/part2/semester1/*/index
 
-Semester 2:
+Spring - Semester 2:
 
 .. toctree::
-    :maxdepth: 2
-    
+    :maxdepth: 1
     :glob:
-    modules/G52CFJ/index.rst
-    modules/G53OPS/index.rst
-    modules/G53NMD/index.rst
-    modules/G54MDP/index.rst
+
+    modules/part2/semester2/*/index
+
+Full Year:
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+    
+    modules/part2/fullyear/*/index

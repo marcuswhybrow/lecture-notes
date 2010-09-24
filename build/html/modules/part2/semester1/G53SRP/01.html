@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>01 - Systems and Real-Time Programming &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="G53SRP Systems and Real-Time Programming" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="G53SRP Systems and Real-Time Programming"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="systems-and-real-time-programming">
+<span id="g53srp01"></span><h1>01 - Systems and Real-Time Programming<a class="headerlink" href="#systems-and-real-time-programming" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="aim">
+<h2>Aim<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
+<p>To look at the issues of programming relevant to real-time concurrent and <strong>embedded systems</strong>. Where timeliness, reliability (predictability) and interfacing with hardware are required.</p>
+<p>This module has a particular emphasis on Java, including the Real-time Specification for Java.</p>
+</div>
+<div class="section" id="topics">
+<h2>Topics<a class="headerlink" href="#topics" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Realtime embedded systems</li>
+<li>The Realtime Specification for Java (RTSJ)</li>
+<li>TIme and its use in programs</li>
+<li>Event-driven realtime programming</li>
+<li>Other realtime programming facilities</li>
+<li>Realtime scheduling and schedulability</li>
+<li>Reliability, failure and fault tolerance</li>
+<li>Hardware interfacing</li>
+</ul>
+</div>
+<div class="section" id="why">
+<h2>Why?<a class="headerlink" href="#why" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><em>Real</em> systems are like this.</li>
+<li>Being correct is not always enough</li>
+<li>Computers have increasingly critical riles to play in the real-world</li>
+</ul>
+</div>
+<div class="section" id="what-is-a-real-time-system">
+<h2>What is a real-time system?<a class="headerlink" href="#what-is-a-real-time-system" title="Permalink to this headline">¶</a></h2>
+<p>Any information processing system which must respond to external input within a finite and specified period, is called a <em>real-time system</em>.</p>
+<p>In these systems correctness depends not only on the logical result but also the time it was delivered. Failure to respond can be as bad a wrong answer.</p>
+<p>99% of all processors are created for embedded systems. Since this means the computer is part f a larger engineering system it must react in real-time.</p>
+</div>
+<div class="section" id="some-example">
+<h2>Some Example<a class="headerlink" href="#some-example" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Simple Fluid Control</dt>
+<dd>A pipe has a valve and a flow meter. Readings from the flow meter are input into the computer, the correct valve angle is calculated in order to maintain a certain flow, and the that value is output in real-time to the valve device.</dd>
+<dt>Production Control</dt>
+<dd>On a car production line, there is a conveyor belt of moving parts which must be fixed together to create a working automobile at the end.</dd>
+</dl>
+</div>
+<div class="section" id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Hard real-time</strong></dt>
+<dd>Systems where its imperative that responses occur within the required deadline.</dd>
+<dt><strong>Soft real-time</strong></dt>
+<dd>Deadlines are important but the system may still function if deadlines are occasionally missed.</dd>
+<dt><strong>Real real-time</strong></dt>
+<dd>The same as <em>hard real-time</em> systems, but in addition the timings are very short.</dd>
+<dt><strong>Firm real-time</strong></dt>
+<dd>Half way between <em>real real-time</em> and <em>hard real-time</em>.</dd>
+</dl>
+</div>
+<div class="section" id="typical-embedded-system">
+<h2>Typical Embedded System<a class="headerlink" href="#typical-embedded-system" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>algorithms for digital control</li>
+<li>data logging</li>
+<li>data retrieval and display</li>
+<li>operator interface</li>
+</ul>
+</div>
+<div class="section" id="characteristics-of-an-rts">
+<h2>Characteristics of an RTS<a class="headerlink" href="#characteristics-of-an-rts" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Large and complex</li>
+<li>Concurrent control of separate system components (since devices operate in parallel in the real world, it makes sense to model this.)</li>
+<li>Facilities to interact with special purpose hardware</li>
+<li>Extremely reliable and safe (typically controlling the environment in which they exist)</li>
+<li>Guaranteed response times (need to be able to predict the response times for systems). Efficiency is important but predictability is essential.</li>
+</ul>
+</div>
+<div class="section" id="the-realtime-specifications-for-java-rtsj">
+<h2>The Realtime Specifications for Java (RTSJ)<a class="headerlink" href="#the-realtime-specifications-for-java-rtsj" title="Permalink to this headline">¶</a></h2>
+<p>Programming realtime systems requires appropriate support from the programming language</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Language</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Java</td>
+<td>Platform independent, high-level, non-realtime. Java has no real-time guarantees.</td>
+</tr>
+<tr><td>Contra C</td>
+<td>Relatively low level, system programming language</td>
+</tr>
+</tbody>
+</table>
+<p>Enter RTSJ. RTJS has some guiding principles:</p>
+<ul class="simple">
+<li>Must be backward compatible with non real-time Java programs</li>
+<li>Support the principle of &#8220;write once, run anywhere&#8221; (but not at the expense of predictability)</li>
+<li>Address the current real-time system practice and allow future implementations to include advanced features</li>
+<li>Give priority to predictable executions in all design trade-offs</li>
+<li>Require no syntactic extensions to the Java language</li>
+<li>Allow implementers flexibility</li>
+</ul>
+</div>
+<div class="section" id="rtsj-enhancements">
+<h2>RTSJ Enhancements<a class="headerlink" href="#rtsj-enhancements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Memory management (Java garbage collection is not predicable)</li>
+<li>time values and clocks</li>
+<li>schedulable objects and scheduling</li>
+<li>real-time thread</li>
+<li>asynchronous event handling and timers</li>
+<li>asynchronous transfer of control (one part of a programme can create exceptions in another part)</li>
+<li>physical memory access</li>
+</ul>
+<p>NB Real Time Java functionality requires Real Time OS support.</p>
+</div>
+<div class="section" id="time-line">
+<h2>Time-Line<a class="headerlink" href="#time-line" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Version</th>
+<th class="head">Year</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>1.0</td>
+<td>1998-2002</td>
+</tr>
+<tr><td>1.0.1</td>
+<td>2005</td>
+</tr>
+<tr><td>1.0.2</td>
+<td>2006</td>
+</tr>
+<tr><td>1.1</td>
+<td>in progress <a class="footnote-reference" href="#f1" id="id1">[1]</a></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>mainly incremental fixes and enhancements (starting to include multi processor supports)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">01 - Systems and Real-Time Programming</a><ul>
+<li><a class="reference internal" href="#aim">Aim</a></li>
+<li><a class="reference internal" href="#topics">Topics</a></li>
+<li><a class="reference internal" href="#why">Why?</a></li>
+<li><a class="reference internal" href="#what-is-a-real-time-system">What is a real-time system?</a></li>
+<li><a class="reference internal" href="#some-example">Some Example</a></li>
+<li><a class="reference internal" href="#terminology">Terminology</a></li>
+<li><a class="reference internal" href="#typical-embedded-system">Typical Embedded System</a></li>
+<li><a class="reference internal" href="#characteristics-of-an-rts">Characteristics of an RTS</a></li>
+<li><a class="reference internal" href="#the-realtime-specifications-for-java-rtsj">The Realtime Specifications for Java (RTSJ)</a></li>
+<li><a class="reference internal" href="#rtsj-enhancements">RTSJ Enhancements</a></li>
+<li><a class="reference internal" href="#time-line">Time-Line</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">G53SRP Systems and Real-Time Programming</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/01.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="G53SRP Systems and Real-Time Programming"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
