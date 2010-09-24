@@ -52,6 +52,124 @@
             
   <div class="section" id="advanced-computer-communications">
 <span id="g54acc01"></span><h1>01 - Advanced Computer Communications<a class="headerlink" href="#advanced-computer-communications" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="internet-hourglass">
+<h2>Internet Hourglass<a class="headerlink" href="#internet-hourglass" title="Permalink to this headline">¶</a></h2>
+<p>Applications are powered by a multitude of underlying technologies.</p>
+<ul class="simple">
+<li>Applications</li>
+<li>Protocols</li>
+<li>IP</li>
+<li>Communication mediums</li>
+</ul>
+<p>Its hard to innovate at the IP level, since the internet as whole depends on standardisation there.</p>
+</div>
+<div class="section" id="ip-and-up">
+<h2>IP and Up<a class="headerlink" href="#ip-and-up" title="Permalink to this headline">¶</a></h2>
+<p>The IP protocol and how it interacts with the applications which user it.</p>
+</div>
+<div class="section" id="ip-and-down">
+<h2>IP and Down<a class="headerlink" href="#ip-and-down" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Network - IP</li>
+<li>Multiplexing</li>
+<li>Physical</li>
+<li>Ethernet</li>
+<li>ADSL</li>
+<li>Wireless (Mobile &amp; 802.11x)</li>
+<li>Switching</li>
+</ul>
+</div>
+<div class="section" id="ip-is-about-networking">
+<h2>IP is about networking<a class="headerlink" href="#ip-is-about-networking" title="Permalink to this headline">¶</a></h2>
+<p>Designed to connect heterogenous networks:</p>
+<ul class="simple">
+<li>Ethernet</li>
+<li>WiFi</li>
+<li>GPRS/3D</li>
+<li>ADSL</li>
+<li>Cable</li>
+<li>Fibre optic</li>
+</ul>
+</div>
+<div class="section" id="why-there-are-lots">
+<h2>Why There Are Lots<a class="headerlink" href="#why-there-are-lots" title="Permalink to this headline">¶</a></h2>
+<p>Telephone company&#8217;s and networking people had opposing ideas about how a network should operate.</p>
+<dl class="docutils">
+<dt>Protectionism</dt>
+<dd>There were also proprietary technologies, which individual companies favoured against other open standards.</dd>
+<dt>Monitoring</dt>
+<dd>Whether communications can be monitored can be a benefit or a nuisance to different organisations.</dd>
+</dl>
+</div>
+<div class="section" id="the-technical-reasons">
+<h2>The Technical Reasons<a class="headerlink" href="#the-technical-reasons" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Different media have different characteristics:</dt>
+<dd><ul class="first last simple">
+<li>Radio</li>
+<li>Optical</li>
+<li>Electrical</li>
+<li>Broadcast &amp; point-to-point</li>
+</ul>
+</dd>
+<dt>Different media have different ranges:</dt>
+<dd><ul class="first last simple">
+<li>Bluetooth vs NASA deep space network</li>
+</ul>
+</dd>
+<dt>Real world:</dt>
+<dd><ul class="first last simple">
+<li>Radio noise</li>
+<li>Installation concerns</li>
+<li>Cost of ownership and installation (cheap connectors mean poor quality communications)</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="common-problems">
+<h2>Common Problems<a class="headerlink" href="#common-problems" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>There is a need to map IP address to <em>subnetwork</em> addresses</li>
+<li>You also need to deal with different packet sizes (MTU - <em>Maximum Transmission unit</em>)</li>
+</ul>
+</div>
+<div class="section" id="ethernet-reminder">
+<h2>Ethernet Reminder<a class="headerlink" href="#ethernet-reminder" title="Permalink to this headline">¶</a></h2>
+<p>All hardware on a network has a 48 bit static address (MAC Address)</p>
+<p>Ethernet is 802.3 (whereas 802.11 is WiFi)</p>
+</div>
+<div class="section" id="arp-address-resolution-protocol">
+<h2>ARP Address Resolution Protocol<a class="headerlink" href="#arp-address-resolution-protocol" title="Permalink to this headline">¶</a></h2>
+<p>Uses broadcast address to send packets to all devices.</p>
+<p>Originally all ethernet networks (before switching) were by their nature broadcasting packets to all devices. Each device determines which packets are for them, however this behaviour would need to be maintained when packet switched networks became popular.</p>
+<p>The exact same broadcast packet is send directly back to the querying device from the target host.</p>
+</div>
+<div class="section" id="arp-cache">
+<h2>ARP Cache<a class="headerlink" href="#arp-cache" title="Permalink to this headline">¶</a></h2>
+<p>Chances are there are multiple packets which need to be sent to the same devices. An ARP cache remembers the resolved addresses.</p>
+<p>The ARP cache can potential become very large, as there would be a single entry for each device on the network to which packets have been sent.</p>
+<p>Since IP address may change, some sort of eviction policy is need to clear old potentially incorrect ARP cache entries. Unused enteries could be evicted after a certain time period.</p>
+</div>
+<div class="section" id="vc-virtual-circuit">
+<h2>VC Virtual Circuit<a class="headerlink" href="#vc-virtual-circuit" title="Permalink to this headline">¶</a></h2>
+<p>Some networks need a <em>virtual circuit</em> to be established before data may be sent. In these situations an IP is mapped to a virtual circuit and may require:</p>
+<ul class="simple">
+<li>connection setup</li>
+<li>table lookup (IP -&gt; VC identifier)</li>
+</ul>
+<p>This process is the same as with ARP cache.</p>
+</div>
+<div class="section" id="ip-as-a-subnetwork">
+<h2>IP as a subnetwork<a class="headerlink" href="#ip-as-a-subnetwork" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is useful to use the internet as a subnetwork. For example VPN <em>Virtual Private Network</em>:</p>
+<ul class="simple">
+<li>PPTP</li>
+<li>L2TP</li>
+<li>IPSEC</li>
+<li>SSTP</li>
+</ul>
+<p>In these cases we want to send packets as if we were on the network the VPN tunnel is connected too. Hence we are using the internet as a subnetwork to get the packets there.</p>
+</div>
 </div>
 
 
@@ -60,6 +178,25 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">01 - Advanced Computer Communications</a><ul>
+<li><a class="reference internal" href="#internet-hourglass">Internet Hourglass</a></li>
+<li><a class="reference internal" href="#ip-and-up">IP and Up</a></li>
+<li><a class="reference internal" href="#ip-and-down">IP and Down</a></li>
+<li><a class="reference internal" href="#ip-is-about-networking">IP is about networking</a></li>
+<li><a class="reference internal" href="#why-there-are-lots">Why There Are Lots</a></li>
+<li><a class="reference internal" href="#the-technical-reasons">The Technical Reasons</a></li>
+<li><a class="reference internal" href="#common-problems">Common Problems</a></li>
+<li><a class="reference internal" href="#ethernet-reminder">Ethernet Reminder</a></li>
+<li><a class="reference internal" href="#arp-address-resolution-protocol">ARP Address Resolution Protocol</a></li>
+<li><a class="reference internal" href="#arp-cache">ARP Cache</a></li>
+<li><a class="reference internal" href="#vc-virtual-circuit">VC Virtual Circuit</a></li>
+<li><a class="reference internal" href="#ip-as-a-subnetwork">IP as a subnetwork</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">G54ACC Advanced Computer Communications</a></p>

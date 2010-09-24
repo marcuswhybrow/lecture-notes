@@ -3,3 +3,124 @@
 =====================================
 01 - Advanced Computer Communications
 =====================================
+
+Internet Hourglass
+==================
+
+Applications are powered by a multitude of underlying technologies.
+
+* Applications
+* Protocols
+* IP
+* Communication mediums
+
+Its hard to innovate at the IP level, since the internet as whole depends on standardisation there.
+
+IP and Up
+=========
+
+The IP protocol and how it interacts with the applications which user it.
+
+IP and Down
+===========
+
+* Network - IP
+* Multiplexing
+* Physical
+* Ethernet
+* ADSL
+* Wireless (Mobile & 802.11x)
+* Switching
+
+IP is about networking
+======================
+
+Designed to connect heterogenous networks:
+
+* Ethernet
+* WiFi
+* GPRS/3D
+* ADSL
+* Cable
+* Fibre optic
+
+Why There Are Lots
+==================
+
+Telephone company's and networking people had opposing ideas about how a network should operate.
+
+Protectionism
+    There were also proprietary technologies, which individual companies favoured against other open standards.
+
+Monitoring
+    Whether communications can be monitored can be a benefit or a nuisance to different organisations.
+
+The Technical Reasons
+=====================
+
+Different media have different characteristics:
+    * Radio
+    * Optical
+    * Electrical
+    * Broadcast & point-to-point
+
+Different media have different ranges:
+    * Bluetooth vs NASA deep space network
+
+Real world:
+    * Radio noise
+    * Installation concerns
+    * Cost of ownership and installation (cheap connectors mean poor quality communications)
+
+Common Problems
+===============
+
+* There is a need to map IP address to *subnetwork* addresses
+* You also need to deal with different packet sizes (MTU - *Maximum Transmission unit*)
+
+Ethernet Reminder
+=================
+
+All hardware on a network has a 48 bit static address (MAC Address)
+
+Ethernet is 802.3 (whereas 802.11 is WiFi)
+
+ARP Address Resolution Protocol
+===============================
+
+Uses broadcast address to send packets to all devices.
+
+Originally all ethernet networks (before switching) were by their nature broadcasting packets to all devices. Each device determines which packets are for them, however this behaviour would need to be maintained when packet switched networks became popular.
+
+The exact same broadcast packet is send directly back to the querying device from the target host.
+
+ARP Cache
+=========
+
+Chances are there are multiple packets which need to be sent to the same devices. An ARP cache remembers the resolved addresses.
+
+The ARP cache can potential become very large, as there would be a single entry for each device on the network to which packets have been sent.
+
+Since IP address may change, some sort of eviction policy is need to clear old potentially incorrect ARP cache entries. Unused enteries could be evicted after a certain time period.
+
+VC Virtual Circuit
+==================
+
+Some networks need a *virtual circuit* to be established before data may be sent. In these situations an IP is mapped to a virtual circuit and may require:
+
+* connection setup
+* table lookup (IP -> VC identifier)
+
+This process is the same as with ARP cache.
+
+IP as a subnetwork
+==================
+
+Sometimes it is useful to use the internet as a subnetwork. For example VPN *Virtual Private Network*:
+
+* PPTP
+* L2TP
+* IPSEC
+* SSTP
+
+In these cases we want to send packets as if we were on the network the VPN tunnel is connected too. Hence we are using the internet as a subnetwork to get the packets there.
