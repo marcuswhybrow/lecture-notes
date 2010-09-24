@@ -4,9 +4,6 @@ Lecture Notes
 
 These are the lecture notes taken by Marcus Whybrow during **part 2** of the G400 Computer Science course.
 
-Part 2
-======
-
 Autumn - Semester 1:
 
 .. toctree::

@@ -4,16 +4,6 @@
 G52GUI Graphical User Interfaces
 ================================
 
-Convenor: **Tony Pridmore**
-
-* Tuesdays 10-11 LT2
-* Thursdays 11-12 LT1
-* Labs Fridays 9-11 A32 (begin week 3).
-
-Assessemnt
-
-* 100% coursework based
-
 Lectures:
 
 .. toctree::
@@ -22,7 +12,17 @@ Lectures:
     
     [0-9][0-9]
 
-Supporting Materical
+Convenor:
+    `Tony Pridmore <http://www.cs.nott.ac.uk/~tpp/>`_
 
-* http://java.sub.com/docs/books/tutorial/uiswing/
-* http://download.oracle.com/javase/tutorial/2d/
+
+Schedule:
+    Tuesdays 10-11 LT2, Thursdays 11-12 LT1
+    Labs Fridays 9-11 A32 (begin week 3)
+
+Assessemnt:
+    100% coursework based
+
+Supporting Materical:
+    * http://java.sun.com/docs/books/tutorial/uiswing/
+    * http://download.oracle.com/javase/tutorial/2d/ 
