@@ -99,7 +99,7 @@ ARP Cache
 
 Chances are there are multiple packets which need to be sent to the same devices. An ARP cache remembers the resolved addresses.
 
-The ARP cache can potential become very large, as there would be a single entry for each device on the network to which packets have been sent.
+The ARP cache can potentially become very large, as there would be a single entry for each device on the network to which packets have been sent.
 
 Since IP address may change, some sort of eviction policy is need to clear old potentially incorrect ARP cache entries. Unused enteries could be evicted after a certain time period.
 

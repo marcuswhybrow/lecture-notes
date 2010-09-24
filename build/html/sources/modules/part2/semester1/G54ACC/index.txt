@@ -12,5 +12,9 @@ Lectures:
     
     [0-9][0-9]
 
-Convenor:
-    `Derek McAuley <http://www.cs.nott.ac.uk/~drm/>`_
+Convenors:
+    * `Derek McAuley <http://www.cs.nott.ac.uk/~drm/>`_
+    * `Richard Mortier <http://www.cs.nott.ac.uk/~rmm/>`_
+
+Site Page:
+    http://www.cs.nott.ac.uk/~rmm/teaching/2010-g54acc/
