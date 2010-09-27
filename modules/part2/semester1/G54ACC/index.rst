@@ -18,3 +18,6 @@ Convenors:
 
 Site Page:
     http://www.cs.nott.ac.uk/~rmm/teaching/2010-g54acc/
+
+Assessment:
+    Written exam (3 out of 6 questions)

@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>02 - IP and Up &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="index.html" />
+    <link rel="next" title="G52CFJ C/C++ for Java Programmers" href="../../semester2/G52CFJ/index.html" />
+    <link rel="prev" title="01 - Advanced Computer Communications" href="01.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - Advanced Computer Communications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ip-and-up">
+<span id="g52acc02"></span><h1>02 - IP and Up<a class="headerlink" href="#ip-and-up" title="Permalink to this headline">¶</a></h1>
+<p><em>Check the module web page for extra reading material.</em></p>
+<p>IP is layer 3 of the OSI or Internet model.</p>
+<p>Ip packets are routed hop-by-hop using store and forward packets. These packets may be buffered at each routing device.</p>
+<ul class="simple">
+<li>Overview</li>
+<li>Addressing</li>
+<li>Routing vs For</li>
+<li></li>
+<li>Control</li>
+<li>Evolution</li>
+<li>Alternatives &amp; Summary</li>
+</ul>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Host have addresses.</p>
+<p>Packets are passed to the datalink layer for transmission (commonly ethernet).</p>
+<p>Data is encapsulated in packets.</p>
+<p>Routers receive packets, examine them and then forward them to another device.</p>
+<div class="section" id="encapsulation">
+<h3>Encapsulation<a class="headerlink" href="#encapsulation" title="Permalink to this headline">¶</a></h3>
+<p>Data comes down in chunks, these chunks may be too large or the datalink and thus packetisation is needed to put that data into suitable sized chunks.</p>
+<dl class="docutils">
+<dt>Take a look at:</dt>
+<dd><ul class="first last simple">
+<li>RFC 791 Internet Protocol</li>
+<li>IEN46 Addressing and Naming</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="addressing">
+<h2>Addressing<a class="headerlink" href="#addressing" title="Permalink to this headline">¶</a></h2>
+<p>Host addresses in IPv4 are 32 bits long and are intended to be unique. In reality interfaces are allocated addresses.</p>
+<p>However 32 bits is now going to be not enough addresses to give all interfaces unique addresses.</p>
+<p>An IP address is commonly depicted in 4 parts or octets.</p>
+<p>Dotted quad notation (msb first):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">d</span>
+</pre></div>
+</div>
+<div class="section" id="address-aggregation">
+<h3>Address Aggregation<a class="headerlink" href="#address-aggregation" title="Permalink to this headline">¶</a></h3>
+<p>There is a need to determine the <em>route</em> to the address a packet is targeted at.</p>
+<p>Since there are <img class="math" src="../../../../images/math/8fc5375dc6a87b8fe06115ee767ce16548a79b8d.png" alt="2^32"/> it would a lot of time to decide where the packet should go by searching through a list of all addresses.</p>
+<p>The sollution is to use hierarchical addressing.</p>
+<p>Originally the firs 8 bits where used to define the network (originally different Universities) and the remaining 4 would specify a device on that network.</p>
+</div>
+<div class="section" id="classless-inter-domain-routing">
+<h3>Classless Inter-Domain Routing<a class="headerlink" href="#classless-inter-domain-routing" title="Permalink to this headline">¶</a></h3>
+<p><strong>Subnetting</strong> uses a <em>netmask</em> to cluster addresses into more efficient (less wastfull) groups.</p>
+<p><em>CIDR, RFC 1338</em> introduces a <em>prefix</em> with explicit <em>prefix lengths</em></p>
+<p>For example:</p>
+<div class="highlight-python"><pre>172.16/12 == (172.16.0.0, 255.240.0.0)</pre>
+</div>
+</div>
+</div>
+<div class="section" id="routing-vs-forwarding">
+<h2>Routing vs Forwarding<a class="headerlink" href="#routing-vs-forwarding" title="Permalink to this headline">¶</a></h2>
+<p>A Router receives and IP packet, it makes a decision to drop or forward the packet. Making that decision is called <strong>forwarding</strong>.</p>
+<p>Then the router has to determine which interface to forward the packet through. The information gathering process (using routing protocols) to determine which interface is the correct one is called <strong>routing</strong>.</p>
+</div>
+<div class="section" id="forwarding">
+<h2>Forwarding<a class="headerlink" href="#forwarding" title="Permalink to this headline">¶</a></h2>
+<p>Need to map packet&#8217;s destination to a port</p>
+<p>The routing process generates a <em>forwarding table</em> consisting of the <em>prefix</em> and <em>port</em>.</p>
+<p>Addresses are matched to prefixes via the longest prefix match. This means the most specific entry is used.</p>
+<p>If no match is found the <strong>default route</strong> is used.</p>
+<p>The table needs to be structured such that lookup latency is minimised, and also be able to handle dynamic and frequent updates.</p>
+</div>
+<div class="section" id="other-forwarding-actions">
+<h2>Other Forwarding Actions<a class="headerlink" href="#other-forwarding-actions" title="Permalink to this headline">¶</a></h2>
+<p>As a packet is forwarded the <em>time-to-live</em> (TTL) field is decremented. If a router decrements a packets TTL to 0 it must drop the packet. This ensures that packets if stuck in an endless loop will eventually die and not just saturate the system.</p>
+<p>IP abstracts away from differing datalinks (i.e. connects of different speeds). For example if a large packet comes from one interfaces and must be sent down another interfaces which olny accepts smaller packet sizes. The packet must be <strong>fragmented</strong> in order to fit in onto the datalink. Fragmentation takes place if necessary as long as <em>Don&#8217;t Fragment</em> is not set. Thats a flag on the packet which says &#8220;I&#8217;d rather you drop me than split me up&#8221;.</p>
+</div>
+<div class="section" id="address-management-macro">
+<h2>Address Management: Macro<a class="headerlink" href="#address-management-macro" title="Permalink to this headline">¶</a></h2>
+<p><em>Internet Assigned Numbers Authority (IANA)</em> Co-ordinate number spaces</p>
+<p>They delegate <em>netblocks</em> or <em>Regional Internet Registries (RIRs)</em>.</p>
+<p>If you want a massive bunch of addresses you must approach your local registry and justify why you need them.</p>
+</div>
+<div class="section" id="address-management-micro">
+<h2>Address Management: Micro<a class="headerlink" href="#address-management-micro" title="Permalink to this headline">¶</a></h2>
+<p>Used to also be very manual.</p>
+<div class="section" id="dynamic-host-configuration-protocol-dhcp">
+<h3>Dynamic Host Configuration Protocol (DHCP)<a class="headerlink" href="#dynamic-host-configuration-protocol-dhcp" title="Permalink to this headline">¶</a></h3>
+<p>Host broadcasts &#8220;can I have an address?&#8221; and a DHCP server responds says &#8220;sure, here&#8217;s your IP address&#8221;</p>
+</div>
+</div>
+<div class="section" id="internet-control-message-protocol-icmp">
+<h2>Internet Control Message Protocol (ICMP)<a class="headerlink" href="#internet-control-message-protocol-icmp" title="Permalink to this headline">¶</a></h2>
+<p><em>ICMP: RFC 792</em> uses IP messages</p>
+<dl class="docutils">
+<dt>Most common operations:</dt>
+<dd><ul class="first last simple">
+<li>ECHO REQUEST/RESPONSE - ping</li>
+<li>UNREACHABLE - host, network, gateway</li>
+<li>TIME EXCEEDED - TTL was decremented to zero</li>
+</ul>
+</dd>
+</dl>
+<p>Used to implement <em>traceroute</em>. This uses multiple packets sent to the same host with increment levels of TTL values (from 1 to infinity).
+An ICMP packed with a TIME EXCEEDED would be sent back to the sending device. This ICMP packet contains information about the route which sent it and thus we can build a list of all the routers which returned ICMP packets.</p>
+</div>
+<div class="section" id="evolution">
+<h2>Evolution<a class="headerlink" href="#evolution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="multicast">
+<h3>Multicast<a class="headerlink" href="#multicast" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><em>unicast</em> (1:1)</li>
+<li><em>broadcast</em> (1:all)</li>
+</ul>
+<p>IP natively supports <em>multicast</em>. Its efficient (compared to older implementations) since the route itself replicates the packet.</p>
+<p>Although that makes everything more complex. Since now you need to manage <em>group membership</em> and routing between these groups.</p>
+<dl class="docutils">
+<dt>For example:</dt>
+<dd><ul class="first last simple">
+<li>IGMP controls local group memebership</li>
+<li>PIM, MOSPF handles routing between local groups</li>
+<li>MBGP</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="mobile">
+<h3>Mobile<a class="headerlink" href="#mobile" title="Permalink to this headline">¶</a></h3>
+<p><em>RFC 3344</em> supports mobility, meaning you can change your IP address but still receive packets correctly.</p>
+<p>Assigns a <strong>Care-of-Address</strong> in addition to a home address.</p>
+</div>
+<div class="section" id="ipv6">
+<h3>IPv6<a class="headerlink" href="#ipv6" title="Permalink to this headline">¶</a></h3>
+<p>In transition since 1998. Uses a larger address space of 128 bits (as apposed to 32 bits).</p>
+<p>There would be no need for NAT, since it was developed as a reaction to IPv4 addresses running out.</p>
+<dl class="docutils">
+<dt>Benefits:</dt>
+<dd><ul class="first last simple">
+<li>Integrated security, pack-ported as IPSec</li>
+<li>Various auto-configuration mechanisms</li>
+<li>Mobility support - avoids <em>triangular routing</em></li>
+<li>Jumbo ...</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="alternatives">
+<h2>Alternatives<a class="headerlink" href="#alternatives" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Packet systems:</dt>
+<dd>CLNP, CLNS - still used a little</dd>
+<dt>Circuit Switching:</dt>
+<dd>actually a real copper circuit (like old telephones)</dd>
+<dt>Statistical multiplexing with circuits:</dt>
+<dd>Virtual circuits (ATM)
+Flow switching (ipsilon)</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">02 - IP and Up</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#encapsulation">Encapsulation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#addressing">Addressing</a><ul>
+<li><a class="reference internal" href="#address-aggregation">Address Aggregation</a></li>
+<li><a class="reference internal" href="#classless-inter-domain-routing">Classless Inter-Domain Routing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#routing-vs-forwarding">Routing vs Forwarding</a></li>
+<li><a class="reference internal" href="#forwarding">Forwarding</a></li>
+<li><a class="reference internal" href="#other-forwarding-actions">Other Forwarding Actions</a></li>
+<li><a class="reference internal" href="#address-management-macro">Address Management: Macro</a></li>
+<li><a class="reference internal" href="#address-management-micro">Address Management: Micro</a><ul>
+<li><a class="reference internal" href="#dynamic-host-configuration-protocol-dhcp">Dynamic Host Configuration Protocol (DHCP)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#internet-control-message-protocol-icmp">Internet Control Message Protocol (ICMP)</a></li>
+<li><a class="reference internal" href="#evolution">Evolution</a><ul>
+<li><a class="reference internal" href="#multicast">Multicast</a></li>
+<li><a class="reference internal" href="#mobile">Mobile</a></li>
+<li><a class="reference internal" href="#ipv6">IPv6</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#alternatives">Alternatives</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="01.html"
+                        title="previous chapter">01 - Advanced Computer Communications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../semester2/G52CFJ/index.html"
+                        title="next chapter">G52CFJ C/C++ for Java Programmers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G54ACC/02.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - Advanced Computer Communications"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
