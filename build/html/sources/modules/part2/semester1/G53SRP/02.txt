@@ -1,0 +1,107 @@
+.. _G53SRP02:
+
+============
+02 - Threads
+============
+
+Non-Sequence Execution
+======================
+
+The executed instruction can change what happens next.
+
+By default the PC is moved onto the next instruction location.
+
+The program itself can set the PC.
+
+When a jump to a new location is made the CPU state must be saved on the stack.
+
+High-Level Programming Perspective
+==================================
+
+One instruction is executed at a time in order.
+
+Out of order execution is expressed using constructs such as:
+
+* Conditional expressions
+* Loops
+* Goto (break, continue)
+* Exception Handlers (essentially a jump)
+* Procedure or method calls (NOTE: context is saved and execution resumes when the procedure/method has finished)
+
+All these can be recognised at the lower level as a standard jump (sometime preserving the CPU state.)
+
+Operating Systems and Scheduling
+================================
+
+Most operating systems virtualise the physical CPU(s). The OS abstracts away the hardware and exposes it as a collective resource.
+
+High-Level Programming View of Scheduling
+=========================================
+
+An application or *heavy-weight* process is separate from all other proceses, with a separate heap and variables.
+
+A thread is still a process but exists within an application process (conceptually) and does **not** have its own heap.
+
+Light-Weight Process
+====================
+
+A light-weight processes or thread has its own program counter and stack, but has access to the same heap as the encapsulating program.
+
+Java Concurrency Model
+======================
+
+Java supports threads. THey execute within a single JVM (Java Virtual Machine).
+
+The JVM now days uses **native threads** which translates a single Java thread to an OS thread.
+
+**Green threads** were used before the native thread and would be invisible to the OS.
+
+On a multiprocessor system native threads are required to achieve true parallelism.
+
+java.lang.Thread
+================
+
+The concrete way in which Java implements threading. It provides a handle on an operating system threads. It is effectively an API for the OS thread.
+
+It has a ``run()`` method which is executed whenever ``start()`` is called. Calling ``start()`` creates a new OS thread.
+
+The thread terminates when ``run()`` returns.
+
+Subclassing ``Thread`` and overriding ``run()`` or by implementing ``java.lang.Runnable`` and passing the Class to a *vanilla* ``Thread`` class.
+
+The implementing ``java.lang.Runnable`` method is used when a class already extends from another class. Since Java does not support multiple inheritance a class may only extend from a single class. Thus *implementing* ``Runnable`` is the only option to create a thread.
+
+Other Java Thread Operations
+============================
+
+``Thread.sleep(int ms)``
+    Puts the thread to sleep for a certain amount of milliseconds
+    
+``t.join()`` or ``t.join(int ms)``
+    Waits for ``t`` to finish optionally timing out.
+
+``Thread.currentTHread()``
+    returns a reference to the thread executing that call
+
+``t.interrupt()``
+    Interrupts a blocking operation, essentially asking the thread to stop.
+
+``t.stop()``
+    Terminates the thread (deprecated since its unsafe to use)
+    
+Thread States and Lifecycle
+===========================
+
+Runnable
+    * yield -> Runnable
+    * wait -> Not Runnable
+    * return -> Dead
+    * sleep -> Not Runnable
+    * blocked on I/O -> Not Runnable
+    
+Not Runnable
+    * notify -> Runnable
+    * sleep timeout -> Runnable
+    * I/O completes -> Runnable
+    
+Dead

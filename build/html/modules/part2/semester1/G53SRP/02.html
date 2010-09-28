@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>02 - Threads &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="01 - Systems and Real-Time Programming" href="01.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - Systems and Real-Time Programming"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="threads">
+<span id="g53srp02"></span><h1>02 - Threads<a class="headerlink" href="#threads" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="non-sequence-execution">
+<h2>Non-Sequence Execution<a class="headerlink" href="#non-sequence-execution" title="Permalink to this headline">¶</a></h2>
+<p>The executed instruction can change what happens next.</p>
+<p>By default the PC is moved onto the next instruction location.</p>
+<p>The program itself can set the PC.</p>
+<p>When a jump to a new location is made the CPU state must be saved on the stack.</p>
+</div>
+<div class="section" id="high-level-programming-perspective">
+<h2>High-Level Programming Perspective<a class="headerlink" href="#high-level-programming-perspective" title="Permalink to this headline">¶</a></h2>
+<p>One instruction is executed at a time in order.</p>
+<p>Out of order execution is expressed using constructs such as:</p>
+<ul class="simple">
+<li>Conditional expressions</li>
+<li>Loops</li>
+<li>Goto (break, continue)</li>
+<li>Exception Handlers (essentially a jump)</li>
+<li>Procedure or method calls (NOTE: context is saved and execution resumes when the procedure/method has finished)</li>
+</ul>
+<p>All these can be recognised at the lower level as a standard jump (sometime preserving the CPU state.)</p>
+</div>
+<div class="section" id="operating-systems-and-scheduling">
+<h2>Operating Systems and Scheduling<a class="headerlink" href="#operating-systems-and-scheduling" title="Permalink to this headline">¶</a></h2>
+<p>Most operating systems virtualise the physical CPU(s). The OS abstracts away the hardware and exposes it as a collective resource.</p>
+</div>
+<div class="section" id="high-level-programming-view-of-scheduling">
+<h2>High-Level Programming View of Scheduling<a class="headerlink" href="#high-level-programming-view-of-scheduling" title="Permalink to this headline">¶</a></h2>
+<p>An application or <em>heavy-weight</em> process is separate from all other proceses, with a separate heap and variables.</p>
+<p>A thread is still a process but exists within an application process (conceptually) and does <strong>not</strong> have its own heap.</p>
+</div>
+<div class="section" id="light-weight-process">
+<h2>Light-Weight Process<a class="headerlink" href="#light-weight-process" title="Permalink to this headline">¶</a></h2>
+<p>A light-weight processes or thread has its own program counter and stack, but has access to the same heap as the encapsulating program.</p>
+</div>
+<div class="section" id="java-concurrency-model">
+<h2>Java Concurrency Model<a class="headerlink" href="#java-concurrency-model" title="Permalink to this headline">¶</a></h2>
+<p>Java supports threads. THey execute within a single JVM (Java Virtual Machine).</p>
+<p>The JVM now days uses <strong>native threads</strong> which translates a single Java thread to an OS thread.</p>
+<p><strong>Green threads</strong> were used before the native thread and would be invisible to the OS.</p>
+<p>On a multiprocessor system native threads are required to achieve true parallelism.</p>
+</div>
+<div class="section" id="java-lang-thread">
+<h2>java.lang.Thread<a class="headerlink" href="#java-lang-thread" title="Permalink to this headline">¶</a></h2>
+<p>The concrete way in which Java implements threading. It provides a handle on an operating system threads. It is effectively an API for the OS thread.</p>
+<p>It has a <tt class="docutils literal"><span class="pre">run()</span></tt> method which is executed whenever <tt class="docutils literal"><span class="pre">start()</span></tt> is called. Calling <tt class="docutils literal"><span class="pre">start()</span></tt> creates a new OS thread.</p>
+<p>The thread terminates when <tt class="docutils literal"><span class="pre">run()</span></tt> returns.</p>
+<p>Subclassing <tt class="docutils literal"><span class="pre">Thread</span></tt> and overriding <tt class="docutils literal"><span class="pre">run()</span></tt> or by implementing <tt class="docutils literal"><span class="pre">java.lang.Runnable</span></tt> and passing the Class to a <em>vanilla</em> <tt class="docutils literal"><span class="pre">Thread</span></tt> class.</p>
+<p>The implementing <tt class="docutils literal"><span class="pre">java.lang.Runnable</span></tt> method is used when a class already extends from another class. Since Java does not support multiple inheritance a class may only extend from a single class. Thus <em>implementing</em> <tt class="docutils literal"><span class="pre">Runnable</span></tt> is the only option to create a thread.</p>
+</div>
+<div class="section" id="other-java-thread-operations">
+<h2>Other Java Thread Operations<a class="headerlink" href="#other-java-thread-operations" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">Thread.sleep(int</span> <span class="pre">ms)</span></tt></dt>
+<dd>Puts the thread to sleep for a certain amount of milliseconds</dd>
+<dt><tt class="docutils literal"><span class="pre">t.join()</span></tt> or <tt class="docutils literal"><span class="pre">t.join(int</span> <span class="pre">ms)</span></tt></dt>
+<dd>Waits for <tt class="docutils literal"><span class="pre">t</span></tt> to finish optionally timing out.</dd>
+<dt><tt class="docutils literal"><span class="pre">Thread.currentTHread()</span></tt></dt>
+<dd>returns a reference to the thread executing that call</dd>
+<dt><tt class="docutils literal"><span class="pre">t.interrupt()</span></tt></dt>
+<dd>Interrupts a blocking operation, essentially asking the thread to stop.</dd>
+<dt><tt class="docutils literal"><span class="pre">t.stop()</span></tt></dt>
+<dd>Terminates the thread (deprecated since its unsafe to use)</dd>
+</dl>
+</div>
+<div class="section" id="thread-states-and-lifecycle">
+<h2>Thread States and Lifecycle<a class="headerlink" href="#thread-states-and-lifecycle" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Runnable</dt>
+<dd><ul class="first last simple">
+<li>yield -&gt; Runnable</li>
+<li>wait -&gt; Not Runnable</li>
+<li>return -&gt; Dead</li>
+<li>sleep -&gt; Not Runnable</li>
+<li>blocked on I/O -&gt; Not Runnable</li>
+</ul>
+</dd>
+<dt>Not Runnable</dt>
+<dd><ul class="first last simple">
+<li>notify -&gt; Runnable</li>
+<li>sleep timeout -&gt; Runnable</li>
+<li>I/O completes -&gt; Runnable</li>
+</ul>
+</dd>
+</dl>
+<p>Dead</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">02 - Threads</a><ul>
+<li><a class="reference internal" href="#non-sequence-execution">Non-Sequence Execution</a></li>
+<li><a class="reference internal" href="#high-level-programming-perspective">High-Level Programming Perspective</a></li>
+<li><a class="reference internal" href="#operating-systems-and-scheduling">Operating Systems and Scheduling</a></li>
+<li><a class="reference internal" href="#high-level-programming-view-of-scheduling">High-Level Programming View of Scheduling</a></li>
+<li><a class="reference internal" href="#light-weight-process">Light-Weight Process</a></li>
+<li><a class="reference internal" href="#java-concurrency-model">Java Concurrency Model</a></li>
+<li><a class="reference internal" href="#java-lang-thread">java.lang.Thread</a></li>
+<li><a class="reference internal" href="#other-java-thread-operations">Other Java Thread Operations</a></li>
+<li><a class="reference internal" href="#thread-states-and-lifecycle">Thread States and Lifecycle</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="01.html"
+                        title="previous chapter">01 - Systems and Real-Time Programming</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/02.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - Systems and Real-Time Programming"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
