@@ -1,0 +1,65 @@
+.. _G52GUI02:
+
+===========================
+02 - Some Simple Interfaces
+===========================
+
+Architecture of Interactive Systems
+===================================
+
+Dangers are *Gulf of Evaluation* and *Gulf of Execution*
+
+A Gulf of Evaluation is where the user cannot understand the data model, the fault being the *view*.
+
+A Gulf of Execution is the fault of the controller. The data model cannot implement the model the user has.
+
+Implementing the Interface
+==========================
+
+Two main elements need to be coded in order to build the interface
+
+* The **hierarchy** of components (made up of swing components)
+* The **behaviour for each of the elements making up the interface (Java code associated with each screen element)
+
+Windchill
+=========
+
+There is a formula to calculate the windchill a person may feel.
+
+In a console based program we would just ask for the input values of the formula one-by-one.
+
+In a graphical interface the user could enter values in any order, so things become a lot more complicated.
+
+It is important to explain to the user how the interface works, this explanation could be expressed visually of textually.
+
+GUI-based programming
+=====================
+
+The ``main`` function instantiates the GUI itself and does little else. The GUI creates itself (using other components) inside of the constructors.
+
+Most of the code is in the event-dispatching loop. Meaning events are fired when things happen (such as a button press), and an *event listener* reacts to this event.
+
+Java Support
+============
+
+JFrame
+    Represents a titled, bordered window.
+
+JLabel
+    Represents a display area suitable for one or both of a single-line text or image.
+    
+JTextField
+    Represents an editable single-line text entry component
+
+JButton
+    Represents a push button
+
+JTextArea
+    Represents an editable multiline text entry component
+
+Class Constants
+===============
+
+Each class (which represents an element in the GUI) has different constants such as hight, width etc.
+
+There are also more complicated ideas such as **layout styles**. Layouts such as *flow*, *grid*, *gridbag* etc.
