@@ -1,7 +1,7 @@
-.. _G52ACC02:
+.. _G52ACCu01:
 
 ==============
-02 - IP and Up
+01 - IP and Up
 ==============
 
 *Check the module web page for extra reading material.*

@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>02 - Routing &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="G52CFJ C/C++ for Java Programmers" href="../../../semester2/G52CFJ/index.html" />
+    <link rel="prev" title="01 - IP and Up" href="01.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - IP and Up"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="routing">
+<span id="g54acc04"></span><h1>02 - Routing<a class="headerlink" href="#routing" title="Permalink to this headline">¶</a></h1>
+<p>Routers <em>store n&#8217; forward</em> packets towards destinations. The decision regarding which interface to forward the packet out on is based upon the IP destination address and the contents of the <em>routing tables</em>.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-routing">
+<h3>What is Routing<a class="headerlink" href="#what-is-routing" title="Permalink to this headline">¶</a></h3>
+<p><em>The process of building up information to enable forwarding.</em></p>
+<p>Routing can encounter problems when networks become large and when links or hosts fail.</p>
+</div>
+<div class="section" id="ip-routing">
+<h3>IP Routing<a class="headerlink" href="#ip-routing" title="Permalink to this headline">¶</a></h3>
+<p>There are two basic techniques for <em>wireline</em> IP, <strong>link-stat</strong> and <strong>distance-vector</strong> routing.</p>
+<p>Both require some degree of coordination but make different tradeoffs.</p>
+<p>There are many other techniques, particularly in ad-hoc wireless and other networks.</p>
+<p>It really comes down to what information is reliably available. So for example Geographic and map-based routing is common.</p>
+</div>
+</div>
+<div class="section" id="link-state-routing">
+<h2>Link-State Routing<a class="headerlink" href="#link-state-routing" title="Permalink to this headline">¶</a></h2>
+<p>There are two common implementations:</p>
+<ul class="simple">
+<li>Open Shortest Path First (OSPF, RFC2328)</li>
+<li>Intermediate-System Intermediate-System (IS-IS, RFC1142, RFC1195)</li>
+</ul>
+<p>And it has three phases:</p>
+<ul class="simple">
+<li>Determine link states (HELLO)</li>
+<li>Broadcast link states (UPDATE)</li>
+<li>Compute and install shortest paths</li>
+</ul>
+<div class="section" id="determining-link-states">
+<h3>Determining Link States<a class="headerlink" href="#determining-link-states" title="Permalink to this headline">¶</a></h3>
+<p>Link states are determined using a <em>three-way handshake</em> across each link</p>
+<ul class="simple">
+<li>&#8220;Is anyone there?&#8221;</li>
+<li>&#8220;I can see you; can you see me?&#8221;</li>
+<li>&#8220;I can see you.&#8221;</li>
+</ul>
+<p>This handshake is ran periodically to ensure that the link is still alive.</p>
+<p>The result of all this is that each router known to whom it&#8217;s connected, which is all it need to know in order to function.</p>
+</div>
+<div class="section" id="broadcast-link-states">
+<h3>Broadcast Link States<a class="headerlink" href="#broadcast-link-states" title="Permalink to this headline">¶</a></h3>
+<p>Each router summarises and forwards, representing each prefix (IP network) as a link.</p>
+<p>Eventually each router knows to whom <em>others</em> are connected (approximately.)</p>
+</div>
+<div class="section" id="compute-install-shortest-paths">
+<h3>Compute &amp; Install Shortest Paths<a class="headerlink" href="#compute-install-shortest-paths" title="Permalink to this headline">¶</a></h3>
+<p>Each router now has a representation of the network&#8217;s current state and can compute short-path algorithms.</p>
+<p>Typically this is some form of Dijkstra&#8217;s algorithm (possibly optimised to minimise re-computation) which generates the best <em>next hop</em> for each prefix, this result is then mapped to a specific interface.</p>
+</div>
+</div>
+<div class="section" id="distance-vector-routing">
+<h2>Distance-Vector Routing<a class="headerlink" href="#distance-vector-routing" title="Permalink to this headline">¶</a></h2>
+<p>An alternative to Link-State routing is Distance-Vector routing. Using DV routers co-operate in the computation of the shortest path, which (if the network is stable) will converge on the correct path.</p>
+<p>The protocol of this co-ordination is as such:</p>
+<ol class="arabic simple">
+<li>Broadcast the lowest cost hop to all known destinations</li>
+<li>Forward packets using the interface via which the best advert was heard on.</li>
+</ol>
+<p>A common implementation of this is <em>Routing Information Protocol v2</em> (ROP, RFC1723)</p>
+<div class="section" id="comparison">
+<h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>There are implementation issues with timers and timeout management</li>
+<li>Centralised vs distributed computation</li>
+<li>State scales with the number of links vs the number of nodes</li>
+<li>Behaviour under link/router failure (Distance-Vector, count-to-infinity)</li>
+<li>Management, configuration overheads. It easier to see whats happening with Link-State routing, there is a need to explicitly configure link weights, for example it could be proportionally to bandwidth and latency.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="inter-network-routing">
+<h2>Inter-Network Routing<a class="headerlink" href="#inter-network-routing" title="Permalink to this headline">¶</a></h2>
+<p>There is an important distinction to be made between local and global networks. There are different protocols for the different environments:</p>
+<ul class="simple">
+<li><strong>IGP</strong> - <strong>Interior Gateway Protocol</strong></li>
+<li><strong>EGP</strong> - <strong>Exterior Gateway Protocol</strong></li>
+</ul>
+<p>There is a need to scope information propagation and provide protection (information hiding).</p>
+<div class="section" id="there-can-be-only-one">
+<h3>There Can be Only One<a class="headerlink" href="#there-can-be-only-one" title="Permalink to this headline">¶</a></h3>
+<p><strong>BGP</strong> - <strong>Border Gateway Protocol</strong> (v4):</p>
+<p>Is essentially Distance-Vector routing with some extra bells and whistles. It allows <strong>Autonomous Systems</strong> to designate network reachability (i.e. not relevant to the <em>data-plane</em>) and is a <em>path vector protocol</em>.</p>
+<p>It was designed to replace EGP to create a truly decentralised internet by facilitating the removal of the <a class="reference external" href="http://en.wikipedia.org/wiki/Internet_backbone">NSFNet Internet backbone</a>.</p>
+<p>Distance is defined as a <em>path vector</em> but there are many other attributes which are considered.</p>
+<p>The purpose of BGP is to enable <em>policy</em> and rules to determine routing paths.</p>
+</div>
+<div class="section" id="bgpv4">
+<h3>BGPv4<a class="headerlink" href="#bgpv4" title="Permalink to this headline">¶</a></h3>
+<p>A protocol for exchanging prefixes (IP networks) with attributes which is the only routing protocol which uses TCP as its transport protocol.</p>
+<dl class="docutils">
+<dt>OPEN</dt>
+<dd>Sets up <em>sessions</em> between peers performing a simple capability negotiation</dd>
+<dt>UPDATE</dt>
+<dd>Indicate withdrawn routes, shared attributes and advertised routes (Network Layer Reachability Information)</dd>
+</dl>
+</div>
+<div class="section" id="tables-tables-tables">
+<h3>Tables, Tables, Tables<a class="headerlink" href="#tables-tables-tables" title="Permalink to this headline">¶</a></h3>
+<p>A BGP speaker typically has many sessions.</p>
+<p>A given BGP router accepts and emits NLRI in UPDATEs from and to multiple BGP neighbours (or peers). BGP maintains its own <em>master</em> routing table called the <strong>Local Routing Information Base</strong> or <em>Loc-RIB</em> separate from the main routing table of the router.</p>
+<p>For each neighbour a BGP router maintains an <strong>Adjacent Routing Information Base</strong> for incoming and outgoing NLRI (advertisement) to do with that peer, respectively shortened to <em>Adj-RIB-In</em> and <em>Adj-RIB-Out</em>.</p>
+<p>An NLRI is selected to go into the <em>Loc-RIB</em> based upon the next hop being reachable and other attributes such as any local preference and the <em>path vector</em>.</p>
+</div>
+<div class="section" id="operations">
+<h3>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h3>
+<p>Scalability is a vital consideration</p>
+</div>
+<div class="section" id="network-interconnection">
+<h3>Network Interconnection<a class="headerlink" href="#network-interconnection" title="Permalink to this headline">¶</a></h3>
+<p>Networks are organsied in a hierarchical pattern (although this is changing). For example you have backbone, core and tier-1 networks and then the rest.</p>
+<p>Multi-homing (A configuration where multiple ISP connections are available to a network in order to provide fault tolerance) is often desirable.</p>
+<p>TO MUCH ABBREVIATION! MUST WAIT UNTIL LECTURE</p>
+</div>
+</div>
+<div class="section" id="alternatives">
+<h2>Alternatives<a class="headerlink" href="#alternatives" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Source routing</li>
+<li>Location-based routing (uses information embedded in environment)</li>
+<li>Map-based</li>
+<li>Using alternative or more complex metrics (QoS)</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">02 - Routing</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#what-is-routing">What is Routing</a></li>
+<li><a class="reference internal" href="#ip-routing">IP Routing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#link-state-routing">Link-State Routing</a><ul>
+<li><a class="reference internal" href="#determining-link-states">Determining Link States</a></li>
+<li><a class="reference internal" href="#broadcast-link-states">Broadcast Link States</a></li>
+<li><a class="reference internal" href="#compute-install-shortest-paths">Compute &amp; Install Shortest Paths</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distance-vector-routing">Distance-Vector Routing</a><ul>
+<li><a class="reference internal" href="#comparison">Comparison</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inter-network-routing">Inter-Network Routing</a><ul>
+<li><a class="reference internal" href="#there-can-be-only-one">There Can be Only One</a></li>
+<li><a class="reference internal" href="#bgpv4">BGPv4</a></li>
+<li><a class="reference internal" href="#tables-tables-tables">Tables, Tables, Tables</a></li>
+<li><a class="reference internal" href="#operations">Operations</a></li>
+<li><a class="reference internal" href="#network-interconnection">Network Interconnection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#alternatives">Alternatives</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="01.html"
+                        title="previous chapter">01 - IP and Up</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../../semester2/G52CFJ/index.html"
+                        title="next chapter">G52CFJ C/C++ for Java Programmers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/up/02.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - IP and Up"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

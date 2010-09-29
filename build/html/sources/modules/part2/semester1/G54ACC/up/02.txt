@@ -1,0 +1,157 @@
+.. _G54ACC04:
+
+============
+02 - Routing
+============
+
+Routers *store n' forward* packets towards destinations. The decision regarding which interface to forward the packet out on is based upon the IP destination address and the contents of the *routing tables*.
+
+Overview
+========
+
+What is Routing
+---------------
+
+*The process of building up information to enable forwarding.*
+
+Routing can encounter problems when networks become large and when links or hosts fail.
+
+IP Routing
+----------
+
+There are two basic techniques for *wireline* IP, **link-stat** and **distance-vector** routing.
+
+Both require some degree of coordination but make different tradeoffs.
+
+There are many other techniques, particularly in ad-hoc wireless and other networks.
+
+It really comes down to what information is reliably available. So for example Geographic and map-based routing is common.
+
+Link-State Routing
+==================
+
+There are two common implementations:
+
+* Open Shortest Path First (OSPF, RFC2328)
+* Intermediate-System Intermediate-System (IS-IS, RFC1142, RFC1195)
+
+And it has three phases:
+
+* Determine link states (HELLO)
+* Broadcast link states (UPDATE)
+* Compute and install shortest paths
+
+Determining Link States
+-----------------------
+
+Link states are determined using a *three-way handshake* across each link
+
+* "Is anyone there?"
+* "I can see you; can you see me?"
+* "I can see you."
+
+This handshake is ran periodically to ensure that the link is still alive.
+
+The result of all this is that each router known to whom it's connected, which is all it need to know in order to function.
+
+Broadcast Link States
+---------------------
+
+Each router summarises and forwards, representing each prefix (IP network) as a link.
+
+Eventually each router knows to whom *others* are connected (approximately.)
+
+Compute & Install Shortest Paths
+--------------------------------
+
+Each router now has a representation of the network's current state and can compute short-path algorithms.
+
+Typically this is some form of Dijkstra's algorithm (possibly optimised to minimise re-computation) which generates the best *next hop* for each prefix, this result is then mapped to a specific interface.
+
+Distance-Vector Routing
+=======================
+
+An alternative to Link-State routing is Distance-Vector routing. Using DV routers co-operate in the computation of the shortest path, which (if the network is stable) will converge on the correct path.
+
+The protocol of this co-ordination is as such:
+
+#. Broadcast the lowest cost hop to all known destinations
+#. Forward packets using the interface via which the best advert was heard on.
+
+A common implementation of this is *Routing Information Protocol v2* (ROP, RFC1723)
+
+Comparison
+----------
+
+* There are implementation issues with timers and timeout management
+* Centralised vs distributed computation
+* State scales with the number of links vs the number of nodes
+* Behaviour under link/router failure (Distance-Vector, count-to-infinity)
+* Management, configuration overheads. It easier to see whats happening with Link-State routing, there is a need to explicitly configure link weights, for example it could be proportionally to bandwidth and latency.
+
+Inter-Network Routing
+=====================
+
+There is an important distinction to be made between local and global networks. There are different protocols for the different environments:
+
+* **IGP** - **Interior Gateway Protocol**
+* **EGP** - **Exterior Gateway Protocol**
+
+There is a need to scope information propagation and provide protection (information hiding).
+
+There Can be Only One
+---------------------
+
+**BGP** - **Border Gateway Protocol** (v4):
+
+Is essentially Distance-Vector routing with some extra bells and whistles. It allows **Autonomous Systems** to designate network reachability (i.e. not relevant to the *data-plane*) and is a *path vector protocol*.
+
+It was designed to replace EGP to create a truly decentralised internet by facilitating the removal of the `NSFNet Internet backbone <http://en.wikipedia.org/wiki/Internet_backbone>`_.
+
+Distance is defined as a *path vector* but there are many other attributes which are considered.
+
+The purpose of BGP is to enable *policy* and rules to determine routing paths.
+
+BGPv4
+-----
+
+A protocol for exchanging prefixes (IP networks) with attributes which is the only routing protocol which uses TCP as its transport protocol.
+
+OPEN
+    Sets up *sessions* between peers performing a simple capability negotiation
+
+UPDATE
+    Indicate withdrawn routes, shared attributes and advertised routes (Network Layer Reachability Information)
+
+Tables, Tables, Tables
+----------------------
+
+A BGP speaker typically has many sessions.
+
+A given BGP router accepts and emits NLRI in UPDATEs from and to multiple BGP neighbours (or peers). BGP maintains its own *master* routing table called the **Local Routing Information Base** or *Loc-RIB* separate from the main routing table of the router.
+
+For each neighbour a BGP router maintains an **Adjacent Routing Information Base** for incoming and outgoing NLRI (advertisement) to do with that peer, respectively shortened to *Adj-RIB-In* and *Adj-RIB-Out*.
+
+An NLRI is selected to go into the *Loc-RIB* based upon the next hop being reachable and other attributes such as any local preference and the *path vector*.
+
+Operations
+----------
+
+Scalability is a vital consideration
+
+Network Interconnection
+-----------------------
+
+Networks are organsied in a hierarchical pattern (although this is changing). For example you have backbone, core and tier-1 networks and then the rest.
+
+Multi-homing (A configuration where multiple ISP connections are available to a network in order to provide fault tolerance) is often desirable.
+
+TO MUCH ABBREVIATION! MUST WAIT UNTIL LECTURE
+
+Alternatives
+============
+
+* Source routing
+* Location-based routing (uses information embedded in environment)
+* Map-based
+* Using alternative or more complex metrics (QoS)
