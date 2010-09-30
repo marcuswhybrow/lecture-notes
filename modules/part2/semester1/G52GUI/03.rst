@@ -1,0 +1,88 @@
+.. _G52GUI03:
+
+======================
+03 - Windows & Widgets
+======================
+
+*...*
+
+The Redraw Problem
+==================
+
+When a window is over another window in may mask some of the 2D surface which would normally be draw. When that foreground window is moved away revealing more of that background windows 2D surface the windowing system needs to tell that background window to ``redraw``.
+
+This is why every widget implements ``redraw(Graphics g)``.
+
+Graphic Context
+===============
+
+An object sometimes known as a *device interface*.
+
+All graphic contexts allows programmer to access a particular drawing device. This could be a printer or an image but is usually somewhere in the windowing system.
+
+Graphics contexts define a basic set of drawing methods.
+
+Clipping
+========
+
+Each drawing object has a clipping region, which is used to make drawing efficient and well behaved. For example if the co-ordinates of the object to be drawn are not on the visible canvas, there is no point in drawing it.
+
+Processing Input Events
+=======================
+
+The event must be dispatched to the correct application and window, which is the windowing systems job.
+
+The event must be bound to some code which will deal with said event.
+
+The widget *controller* used the views *essential geometry*
+
+Essential Geometry
+==================
+
+Maps lower level graphics to higher level semantics. For example is maps mouse position into some meaningful concept in the model.
+
+Making widgets trivial and simple with a simple essential geometry it makes the concept hard to implement. Take some time to make a usefully complex widget that can be used anywhere in a simple way.
+
+Dispatching Input Events
+========================
+
+The windowing systems must dispatch to the correct application, it does this using the window tree to map mouse events to a widget.
+
+There are three strategies:
+
+* Bottom up - start with the foremost widget under the mouse. If the widget does not want the event it passed it up to the parent widget.
+* Top Down - The root widget gets the first chance to process the event, which is passed to the children if not wanted.
+* Focus
+
+Focus
+=====
+
+Key Focus
+    Keeps a point to the window which has focus and directs keyboard events to this widget.
+
+Mouse Focus
+    A slider might ``getMouseFocus()`` in order to allow the mouse to move only left and right (and ignore up and down movement).
+    
+Event-Driven Programming
+========================
+
+Regardless of the dispatch method, **all** generated events.
+
+*...*
+
+Input Events
+============
+
+* Button Events
+* Mouse Movement Events
+* Keyboard Events
+* Window Events
+
+Many events have *payloads* which store details regarding the event.
+
+Event/Code Binding
+==================
+
+There are a number of different approaches used to map from the event to the code.
+
+Emphasis has shifted from efficiency to the ability to handle complexity of large applications.

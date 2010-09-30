@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>03 - Windows &amp; Widgets &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G52GUI Graphical User Interfaces" href="index.html" />
+    <link rel="next" title="G53MLE Machine Learning" href="../G53MLE/index.html" />
+    <link rel="prev" title="02 - Some Simple Interfaces" href="02.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G53MLE/index.html" title="G53MLE Machine Learning"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="02.html" title="02 - Some Simple Interfaces"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G52GUI Graphical User Interfaces</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="windows-widgets">
+<span id="g52gui03"></span><h1>03 - Windows &amp; Widgets<a class="headerlink" href="#windows-widgets" title="Permalink to this headline">¶</a></h1>
+<p><em>...</em></p>
+<div class="section" id="the-redraw-problem">
+<h2>The Redraw Problem<a class="headerlink" href="#the-redraw-problem" title="Permalink to this headline">¶</a></h2>
+<p>When a window is over another window in may mask some of the 2D surface which would normally be draw. When that foreground window is moved away revealing more of that background windows 2D surface the windowing system needs to tell that background window to <tt class="docutils literal"><span class="pre">redraw</span></tt>.</p>
+<p>This is why every widget implements <tt class="docutils literal"><span class="pre">redraw(Graphics</span> <span class="pre">g)</span></tt>.</p>
+</div>
+<div class="section" id="graphic-context">
+<h2>Graphic Context<a class="headerlink" href="#graphic-context" title="Permalink to this headline">¶</a></h2>
+<p>An object sometimes known as a <em>device interface</em>.</p>
+<p>All graphic contexts allows programmer to access a particular drawing device. This could be a printer or an image but is usually somewhere in the windowing system.</p>
+<p>Graphics contexts define a basic set of drawing methods.</p>
+</div>
+<div class="section" id="clipping">
+<h2>Clipping<a class="headerlink" href="#clipping" title="Permalink to this headline">¶</a></h2>
+<p>Each drawing object has a clipping region, which is used to make drawing efficient and well behaved. For example if the co-ordinates of the object to be drawn are not on the visible canvas, there is no point in drawing it.</p>
+</div>
+<div class="section" id="processing-input-events">
+<h2>Processing Input Events<a class="headerlink" href="#processing-input-events" title="Permalink to this headline">¶</a></h2>
+<p>The event must be dispatched to the correct application and window, which is the windowing systems job.</p>
+<p>The event must be bound to some code which will deal with said event.</p>
+<p>The widget <em>controller</em> used the views <em>essential geometry</em></p>
+</div>
+<div class="section" id="essential-geometry">
+<h2>Essential Geometry<a class="headerlink" href="#essential-geometry" title="Permalink to this headline">¶</a></h2>
+<p>Maps lower level graphics to higher level semantics. For example is maps mouse position into some meaningful concept in the model.</p>
+<p>Making widgets trivial and simple with a simple essential geometry it makes the concept hard to implement. Take some time to make a usefully complex widget that can be used anywhere in a simple way.</p>
+</div>
+<div class="section" id="dispatching-input-events">
+<h2>Dispatching Input Events<a class="headerlink" href="#dispatching-input-events" title="Permalink to this headline">¶</a></h2>
+<p>The windowing systems must dispatch to the correct application, it does this using the window tree to map mouse events to a widget.</p>
+<p>There are three strategies:</p>
+<ul class="simple">
+<li>Bottom up - start with the foremost widget under the mouse. If the widget does not want the event it passed it up to the parent widget.</li>
+<li>Top Down - The root widget gets the first chance to process the event, which is passed to the children if not wanted.</li>
+<li>Focus</li>
+</ul>
+</div>
+<div class="section" id="focus">
+<h2>Focus<a class="headerlink" href="#focus" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Key Focus</dt>
+<dd>Keeps a point to the window which has focus and directs keyboard events to this widget.</dd>
+<dt>Mouse Focus</dt>
+<dd>A slider might <tt class="docutils literal"><span class="pre">getMouseFocus()</span></tt> in order to allow the mouse to move only left and right (and ignore up and down movement).</dd>
+</dl>
+</div>
+<div class="section" id="event-driven-programming">
+<h2>Event-Driven Programming<a class="headerlink" href="#event-driven-programming" title="Permalink to this headline">¶</a></h2>
+<p>Regardless of the dispatch method, <strong>all</strong> generated events.</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="input-events">
+<h2>Input Events<a class="headerlink" href="#input-events" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Button Events</li>
+<li>Mouse Movement Events</li>
+<li>Keyboard Events</li>
+<li>Window Events</li>
+</ul>
+<p>Many events have <em>payloads</em> which store details regarding the event.</p>
+</div>
+<div class="section" id="event-code-binding">
+<h2>Event/Code Binding<a class="headerlink" href="#event-code-binding" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of different approaches used to map from the event to the code.</p>
+<p>Emphasis has shifted from efficiency to the ability to handle complexity of large applications.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">03 - Windows &amp; Widgets</a><ul>
+<li><a class="reference internal" href="#the-redraw-problem">The Redraw Problem</a></li>
+<li><a class="reference internal" href="#graphic-context">Graphic Context</a></li>
+<li><a class="reference internal" href="#clipping">Clipping</a></li>
+<li><a class="reference internal" href="#processing-input-events">Processing Input Events</a></li>
+<li><a class="reference internal" href="#essential-geometry">Essential Geometry</a></li>
+<li><a class="reference internal" href="#dispatching-input-events">Dispatching Input Events</a></li>
+<li><a class="reference internal" href="#focus">Focus</a></li>
+<li><a class="reference internal" href="#event-driven-programming">Event-Driven Programming</a></li>
+<li><a class="reference internal" href="#input-events">Input Events</a></li>
+<li><a class="reference internal" href="#event-code-binding">Event/Code Binding</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="02.html"
+                        title="previous chapter">02 - Some Simple Interfaces</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G53MLE/index.html"
+                        title="next chapter">G53MLE Machine Learning</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G52GUI/03.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G53MLE/index.html" title="G53MLE Machine Learning"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="02.html" title="02 - Some Simple Interfaces"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G52GUI Graphical User Interfaces</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

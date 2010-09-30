@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>02 - Machine Learning &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53MLE Machine Learning" href="index.html" />
+    <link rel="next" title="G53SRP Systems and Real-Time Programming" href="../G53SRP/index.html" />
+    <link rel="prev" title="01 - Machine Learning" href="01.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - Machine Learning"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="machine-learning">
+<span id="g53mle"></span><h1>02 - Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h1>
+<p><em>...</em></p>
+<div class="section" id="can-machines-learn-to-solve-these-problems">
+<h2>Can Machines Learn to Solve These Problems?<a class="headerlink" href="#can-machines-learn-to-solve-these-problems" title="Permalink to this headline">¶</a></h2>
+<p>More precisely can we program machines to learn to do these tasks?</p>
+</div>
+<div class="section" id="definition-of-learning">
+<h2>Definition of Learning<a class="headerlink" href="#definition-of-learning" title="Permalink to this headline">¶</a></h2>
+<p>A computer program is said to learn from experience <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> with respect to some class of tasks <img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> and performance measure <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>, if its performance at tasks in <img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>, as measured by <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>, improves with experience <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/>.</p>
+<p><strong>Handwriting Recognition Problem:</strong></p>
+<p>The task <img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is to recognise hand written characters. Thee measure of performance <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/> is the percent of characters correctly classified. The training experience <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> is a database of handwritten characters with given classifications.</p>
+</div>
+<div class="section" id="design-a-learning-system">
+<h2>Design a Learning System<a class="headerlink" href="#design-a-learning-system" title="Permalink to this headline">¶</a></h2>
+<p>Treating the learning system as a black box, the handwritten character is the input and the output is the digital representation of the perceived character.</p>
+<dl class="docutils">
+<dt><strong>Step 1</strong> Collect Training Examples (Experience)</dt>
+<dd>Without examples our system cannot learn.</dd>
+<dt><strong>Step 2</strong> Representing the Experience</dt>
+<dd><p class="first">We must choose a representation scheme for the experience we are encountering. In this case we could imagine an 8x8 grid over the particular handwritten character, recording a 1 for each box in the grid if the amount of ink in that area is covers a certain area.</p>
+<p>We call the digital representation of the input a <strong>feature vector</strong>.</p>
+<p>For any one encounter with some input (or experience) we combine the input data (<img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>) with what we know (as humans) the character to be (<img class="math" src="../../../../images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>) to represent the experience: <img class="math" src="../../../../images/math/f7efd53f07ee97469d6a9ec7558023ce8b1e17dd.png" alt="E = (X,D)"/> completely.</p>
+<p class="last">Since as a designer we can decide that the system will only recognise 10 digits (0 - 9) we can make the job a lot easier.</p>
+</dd>
+<dt><strong>Step 3</strong> Choose a Representation for the Black Box</dt>
+<dd><p class="first">We need to choose a function <img class="math" src="../../../../images/math/a055f405829e64a3b70253ab67cb45ed6ed5bb29.png" alt="F"/> to approximate the black box which is the learning system. So the input is <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/> and the output is <img class="math" src="../../../../images/math/c2c6022947796c29f3ecab5676e3c7274d578581.png" alt="F(X)"/>.</p>
+<p>The hard part of machine learning is discovering the algorithm.</p>
+<p class="last">The algorithm needs to be able to adapt to the environment (which is represented by the <em>experience</em>). This means is should not only accept the input data but also be <strong>adjustable</strong>.</p>
+</dd>
+<dt><strong>Step 4</strong> Learning/Adjusting the Weights</dt>
+<dd><p class="first">The learning algorithms should <em>adjust</em> the weights inputed into the algorithm such that the experience and prior knowledge may be <em>learned</em> into the system.</p>
+<p><img class="math" src="../../../../images/math/f7efd53f07ee97469d6a9ec7558023ce8b1e17dd.png" alt="E = (X,D)"/> the experience is represented by the input and output</p>
+<p><img class="math" src="../../../../images/math/f51715c010616cbf0cc793a5815fb66f03cedcaa.png" alt="F(W,X) = D"/> the output is derived from an algorithm which accepts weights and the input data.</p>
+<p>When the learning starts the weights we feed into the algorithm will be incorrect as we don&#8217;t know what they should be. We want to adjust the weights such that the probability of processing inputs incorrectly is reduced.</p>
+<p class="last">The iterative process of failing and learning is akin to the human learning process.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">02 - Machine Learning</a><ul>
+<li><a class="reference internal" href="#can-machines-learn-to-solve-these-problems">Can Machines Learn to Solve These Problems?</a></li>
+<li><a class="reference internal" href="#definition-of-learning">Definition of Learning</a></li>
+<li><a class="reference internal" href="#design-a-learning-system">Design a Learning System</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="01.html"
+                        title="previous chapter">01 - Machine Learning</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G53SRP/index.html"
+                        title="next chapter">G53SRP Systems and Real-Time Programming</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53MLE/02.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01.html" title="01 - Machine Learning"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
