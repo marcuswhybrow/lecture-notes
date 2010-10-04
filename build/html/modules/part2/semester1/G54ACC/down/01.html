@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>01 - Advanced Computer Communications &mdash; Lecture Notes v1.0 documentation</title>
+    <title>01 - Internetworking &mdash; Lecture Notes v1.0 documentation</title>
     <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -50,8 +50,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="advanced-computer-communications">
-<span id="g54accu01"></span><h1>01 - Advanced Computer Communications<a class="headerlink" href="#advanced-computer-communications" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="internetworking">
+<span id="g54accu01"></span><h1>01 - Internetworking<a class="headerlink" href="#internetworking" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="internet-hourglass">
 <h2>Internet Hourglass<a class="headerlink" href="#internet-hourglass" title="Permalink to this headline">¶</a></h2>
 <p>Applications are powered by a multitude of underlying technologies.</p>
@@ -169,18 +169,86 @@
 <li>SSTP</li>
 </ul>
 <p>In these cases we want to send packets as if we were on the network the VPN tunnel is connected too. Hence we are using the internet as a subnetwork to get the packets there.</p>
-<p><em>...</em></p>
+</div>
+<div class="section" id="fragmentation">
+<h2>Fragmentation<a class="headerlink" href="#fragmentation" title="Permalink to this headline">¶</a></h2>
+<p>IP allows datagram sizes of up to 64Kbytes, but the physical networks often only support smaller frame types (Maximum Transmission Unit, MTU), for example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Medium</th>
+<th class="head">MTU</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Ethernet</td>
+<td>1500bytes</td>
+</tr>
+<tr><td>Dialup PPP</td>
+<td>~256bytes</td>
+</tr>
+</tbody>
+</table>
+<p>Thus if the IP is asked to transfer data larger than the MTU that data must be divided into <strong>fragments</strong> for transmission. IP headers contain some information to help with this process:</p>
+<ul class="simple">
+<li>MF (More Fragment Bit)</li>
+<li>ID (Identity)</li>
+<li>FO (Fragment Offset)</li>
+</ul>
+<p><strong>Advanced Marcus:</strong> Fragmentation can occur when data is passed to the <em>network layer</em> from the <em>transport layer</em> above in an NSDU (Network Service Data Unit) or when a packet is passed to a node on the network layer in an NPDU (Network Protocol Data Unit) more commonly referred to as a packet.</p>
+</div>
+<div class="section" id="ip-fragmentation">
+<h2>IP Fragmentation<a class="headerlink" href="#ip-fragmentation" title="Permalink to this headline">¶</a></h2>
+<p>Each fragment is a new IP packet which has its own header with the original source and the same destination.</p>
+<p>The identity field for related fragments is the same, thus fragments of the same data can be identified.</p>
+<p>The fragment offset describes where in the original data this fragment belongs.</p>
+<p>The <em>more fragments</em> flag is set on all but the last fragment, and indicates that there are more fragments after it.</p>
+<img alt="../../../../../images/fragmentation.png" src="../../../../../images/fragmentation.png" />
+</div>
+<div class="section" id="fragmenting-packets">
+<h2>Fragmenting Packets<a class="headerlink" href="#fragmenting-packets" title="Permalink to this headline">¶</a></h2>
+<p>The task of fragmenting data into packets may be done by the <em>sending host</em> or an <em>intermediately router</em>.</p>
+<p>IP packet fragmentation can be prevented (at the cost of dropping the packet) by settings the <em>do not fragment</em> flag. This can be useful in order to dynamically discover the MTU of a path of links. By reducing the MTU size from a large number until the packet succeeds in reaching the destination without being dropped and sending back an ICMP packet explaining that a dropped packet has occurred.</p>
 </div>
 <div class="section" id="reassembling-fragments">
 <h2>Reassembling Fragments<a class="headerlink" href="#reassembling-fragments" title="Permalink to this headline">¶</a></h2>
 <p>Done <em>only</em> by the ultimate destination of the packet, after checking the header checksum, destination, and ID before any more processing</p>
 <p>Maintains a pool of fragments which are discarded after a time-out. If all fragments of a datagram are received the datagram is reassembled and handled as before.</p>
 <p>If you lose one segment you lose the entire message. This bad if segment loss is likely or the number of segments is large.</p>
-<p>For example NFSv2 used UDP, NFSv3 uses TCP. THis is because block sizes of 8K -&gt; 32K</p>
-<p><em>...</em></p>
+<p>For example NFSv2 used UDP, NFSv3 uses TCP. They made this move mainly because the block sizes when from 8K to 32K meaning far less segments and far less chance of loosing everything.</p>
 </div>
-<div class="section" id="mind-if-i-call-you-bruce">
-<h2>Mind if I call you Bruce(*)<a class="headerlink" href="#mind-if-i-call-you-bruce" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h2><a class="reference external" href="http://www.youtube.com/watch?v=_f_p0CgPeyA">Mind if I call you Bruce</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Bluetooth</dt>
+<dd><p class="first">v1.0 was IP/PPP/RFCOM/L2CAP</p>
+<p class="last">v2.0 changed to BNEP in order to make Bluetooth look like Ethernet</p>
+</dd>
+<dt>ATM</dt>
+<dd>Invented LANE (LAN Emulation) in order to make ATM look like ethernet</dd>
+</dl>
+<p>Technologies made themselves look like ethernet since many companies had built their protocols directly on Ethernet, and it keeps things simple.</p>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">IP is about interconnecting networks, which is the key to success as new technologies can be adopted</p>
+</li>
+<li><p class="first">The subnetworks can be heterogeneous, adapted for different circumstances</p>
+</li>
+<li><dl class="first docutils">
+<dt>Two primary issues arise at the interface</dt>
+<dd><ol class="first last arabic simple">
+<li>Mapping IP addresses to subnetwork addresses</li>
+<li>Dealing with MTUs</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 </div>
 
@@ -192,7 +260,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">01 - Advanced Computer Communications</a><ul>
+<li><a class="reference internal" href="#">01 - Internetworking</a><ul>
 <li><a class="reference internal" href="#internet-hourglass">Internet Hourglass</a></li>
 <li><a class="reference internal" href="#ip-and-up">IP and Up</a></li>
 <li><a class="reference internal" href="#ip-and-down">IP and Down</a></li>
@@ -205,8 +273,12 @@
 <li><a class="reference internal" href="#arp-cache">ARP Cache</a></li>
 <li><a class="reference internal" href="#vc-virtual-circuit">VC Virtual Circuit</a></li>
 <li><a class="reference internal" href="#ip-as-a-subnetwork">IP as a subnetwork</a></li>
+<li><a class="reference internal" href="#fragmentation">Fragmentation</a></li>
+<li><a class="reference internal" href="#ip-fragmentation">IP Fragmentation</a></li>
+<li><a class="reference internal" href="#fragmenting-packets">Fragmenting Packets</a></li>
 <li><a class="reference internal" href="#reassembling-fragments">Reassembling Fragments</a></li>
-<li><a class="reference internal" href="#mind-if-i-call-you-bruce">Mind if I call you Bruce(*)</a></li>
+<li><a class="reference internal" href="#id1">Mind if I call you Bruce</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
 </ul>
