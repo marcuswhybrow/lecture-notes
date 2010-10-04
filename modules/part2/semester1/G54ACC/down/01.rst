@@ -124,3 +124,21 @@ Sometimes it is useful to use the internet as a subnetwork. For example VPN *Vir
 * SSTP
 
 In these cases we want to send packets as if we were on the network the VPN tunnel is connected too. Hence we are using the internet as a subnetwork to get the packets there.
+
+*...*
+
+Reassembling Fragments
+======================
+
+Done *only* by the ultimate destination of the packet, after checking the header checksum, destination, and ID before any more processing
+
+Maintains a pool of fragments which are discarded after a time-out. If all fragments of a datagram are received the datagram is reassembled and handled as before.
+
+If you lose one segment you lose the entire message. This bad if segment loss is likely or the number of segments is large.
+
+For example NFSv2 used UDP, NFSv3 uses TCP. THis is because block sizes of 8K -> 32K
+
+*...*
+
+Mind if I call you Bruce(*)
+===========================

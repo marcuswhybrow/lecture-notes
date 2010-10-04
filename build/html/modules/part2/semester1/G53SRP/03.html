@@ -78,6 +78,14 @@
 <h3>wait()<a class="headerlink" href="#wait" title="Permalink to this headline">¶</a></h3>
 <p>A thread calling <tt class="docutils literal"><span class="pre">wait()</span></tt> is added to the wait queue (not necessarily the end). It releases the object lock while waiting and re-obtains the object lock before returning.</p>
 </div>
+<div class="section" id="notify-notifyall">
+<h3>notify()/notifyAll()<a class="headerlink" href="#notify-notifyall" title="Permalink to this headline">¶</a></h3>
+<p>A thread calling <tt class="docutils literal"><span class="pre">notify()</span></tt> wakes one thread in the wait queue. <tt class="docutils literal"><span class="pre">notifyAll()</span></tt> wakes all threads in the wait queue.</p>
+</div>
+<div class="section" id="wait-long-millis">
+<h3>wait(long millis)<a class="headerlink" href="#wait-long-millis" title="Permalink to this headline">¶</a></h3>
+<p>Whereas <tt class="docutils literal"><span class="pre">wait()</span></tt> will wait indefinitely unless interrupted <tt class="docutils literal"><span class="pre">wait(long</span> <span class="pre">millis)</span></tt> waits at most <tt class="docutils literal"><span class="pre">millis</span></tt> milliseconds before attempting to regain the lock and continue.</p>
+</div>
 </div>
 </div>
 
@@ -93,6 +101,8 @@
 <li><a class="reference internal" href="#synchronisation-overview">Synchronisation Overview</a></li>
 <li><a class="reference internal" href="#wait-notify-overview">Wait/Notify Overview</a><ul>
 <li><a class="reference internal" href="#wait">wait()</a></li>
+<li><a class="reference internal" href="#notify-notifyall">notify()/notifyAll()</a></li>
+<li><a class="reference internal" href="#wait-long-millis">wait(long millis)</a></li>
 </ul>
 </li>
 </ul>

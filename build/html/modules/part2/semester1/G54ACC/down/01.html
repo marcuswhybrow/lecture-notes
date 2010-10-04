@@ -169,6 +169,18 @@
 <li>SSTP</li>
 </ul>
 <p>In these cases we want to send packets as if we were on the network the VPN tunnel is connected too. Hence we are using the internet as a subnetwork to get the packets there.</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="reassembling-fragments">
+<h2>Reassembling Fragments<a class="headerlink" href="#reassembling-fragments" title="Permalink to this headline">¶</a></h2>
+<p>Done <em>only</em> by the ultimate destination of the packet, after checking the header checksum, destination, and ID before any more processing</p>
+<p>Maintains a pool of fragments which are discarded after a time-out. If all fragments of a datagram are received the datagram is reassembled and handled as before.</p>
+<p>If you lose one segment you lose the entire message. This bad if segment loss is likely or the number of segments is large.</p>
+<p>For example NFSv2 used UDP, NFSv3 uses TCP. THis is because block sizes of 8K -&gt; 32K</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="mind-if-i-call-you-bruce">
+<h2>Mind if I call you Bruce(*)<a class="headerlink" href="#mind-if-i-call-you-bruce" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -193,6 +205,8 @@
 <li><a class="reference internal" href="#arp-cache">ARP Cache</a></li>
 <li><a class="reference internal" href="#vc-virtual-circuit">VC Virtual Circuit</a></li>
 <li><a class="reference internal" href="#ip-as-a-subnetwork">IP as a subnetwork</a></li>
+<li><a class="reference internal" href="#reassembling-fragments">Reassembling Fragments</a></li>
+<li><a class="reference internal" href="#mind-if-i-call-you-bruce">Mind if I call you Bruce(*)</a></li>
 </ul>
 </li>
 </ul>

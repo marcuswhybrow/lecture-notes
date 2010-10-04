@@ -52,7 +52,35 @@
             
   <div class="section" id="windows-widgets">
 <span id="g52gui03"></span><h1>03 - Windows &amp; Widgets<a class="headerlink" href="#windows-widgets" title="Permalink to this headline">¶</a></h1>
-<p><em>...</em></p>
+<div class="section" id="interaction-principles">
+<h2>Interaction Principles<a class="headerlink" href="#interaction-principles" title="Permalink to this headline">¶</a></h2>
+<img alt="../../../../images/windowing-system1.png" src="../../../../images/windowing-system1.png" />
+<p>GUIs reflect the MVC architecture but are implemented as a set of widgets and must be integrated with a windowing system.</p>
+</div>
+<div class="section" id="windowing-systems">
+<h2>Windowing Systems<a class="headerlink" href="#windowing-systems" title="Permalink to this headline">¶</a></h2>
+<p>A windowing system provides an interface to the MVC, it represents the view using graphics and provides input to the controller.</p>
+<p>There is a need to consider <strong>essential geometry</strong> in order to draw the graphics of a view and provide input to the controller.</p>
+</div>
+<div class="section" id="graphical-presentation">
+<h2>Graphical Presentation<a class="headerlink" href="#graphical-presentation" title="Permalink to this headline">¶</a></h2>
+<p>The windowing systems provides the view with rectangular areas in which to draw on and insulates it from other applications and windows.</p>
+</div>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>A window is a rectangular area on the screen which may overlap with other windows in which case the foremost window is drawn last on top of the rest.</p>
+<p>Some windows belong to other windows and are said to be in a hierarchical structure and each window has a hierarchy of widgets which it contains.</p>
+</div>
+<div class="section" id="window-hierarchy">
+<h2>Window Hierarchy<a class="headerlink" href="#window-hierarchy" title="Permalink to this headline">¶</a></h2>
+<p>THe window hierarchy is important as it records the window composition and depth relations, allowing the windowing system to redraw appropriately.</p>
+<p>For example the foremost window can assume that it has a full rectangle to draw onto and not a partially covered one.</p>
+</div>
+<div class="section" id="windows-and-widgets">
+<h2>Windows and Widgets<a class="headerlink" href="#windows-and-widgets" title="Permalink to this headline">¶</a></h2>
+<p>Each window has an associated widget responsible for interaction with some area of the rectangle which is the windows surface.</p>
+<p>The widget is what invokes the view, but it is not in control of redrawing itself, that is the windowing systems job. This is because overlapping windows give need to understand where other windows are - something any one window knows nothing about - thus the windowing system can decide which windows and in turn which widgets in those windows gets rendered based on wether they are entirely covered by a overlapping window.</p>
+</div>
 <div class="section" id="the-redraw-problem">
 <h2>The Redraw Problem<a class="headerlink" href="#the-redraw-problem" title="Permalink to this headline">¶</a></h2>
 <p>When a window is over another window in may mask some of the 2D surface which would normally be draw. When that foreground window is moved away revealing more of that background windows 2D surface the windowing system needs to tell that background window to <tt class="docutils literal"><span class="pre">redraw</span></tt>.</p>
@@ -100,8 +128,9 @@
 </div>
 <div class="section" id="event-driven-programming">
 <h2>Event-Driven Programming<a class="headerlink" href="#event-driven-programming" title="Permalink to this headline">¶</a></h2>
-<p>Regardless of the dispatch method, <strong>all</strong> generated events.</p>
-<p><em>...</em></p>
+<p>Regardless of the dispatch method, <strong>all</strong> generated events end up on a <em>single event queue</em> which is maintained by the operating system. This ensures that events are handled in the order in which they occurred, additionally hiding specifics regarding the input itself from the individual applications.</p>
+<img alt="../../../../images/event-queue.png" src="../../../../images/event-queue.png" />
+<p>Events are removed and <em>dispatched</em> by the operating system, but GUI designers just care about the input types which may be dispatched from this queue.</p>
 </div>
 <div class="section" id="input-events">
 <h2>Input Events<a class="headerlink" href="#input-events" title="Permalink to this headline">¶</a></h2>
@@ -129,6 +158,12 @@
   <h3><a href="../../../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">03 - Windows &amp; Widgets</a><ul>
+<li><a class="reference internal" href="#interaction-principles">Interaction Principles</a></li>
+<li><a class="reference internal" href="#windowing-systems">Windowing Systems</a></li>
+<li><a class="reference internal" href="#graphical-presentation">Graphical Presentation</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#window-hierarchy">Window Hierarchy</a></li>
+<li><a class="reference internal" href="#windows-and-widgets">Windows and Widgets</a></li>
 <li><a class="reference internal" href="#the-redraw-problem">The Redraw Problem</a></li>
 <li><a class="reference internal" href="#graphic-context">Graphic Context</a></li>
 <li><a class="reference internal" href="#clipping">Clipping</a></li>

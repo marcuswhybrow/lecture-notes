@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>02 - Multiplexing &mdash; Lecture Notes v1.0 documentation</title>
+    <title>03 - Multiplexing &mdash; Lecture Notes v1.0 documentation</title>
     <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -25,7 +25,7 @@
     <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
     <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
     <link rel="next" title="01 - IP and Up" href="../up/01.html" />
-    <link rel="prev" title="01 - Advanced Computer Communications" href="01.html" /> 
+    <link rel="prev" title="02 - Continuation" href="02.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,7 +38,7 @@
           <a href="../up/01.html" title="01 - IP and Up"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="01.html" title="01 - Advanced Computer Communications"
+          <a href="02.html" title="02 - Continuation"
              accesskey="P">previous</a> |</li>
         <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
@@ -51,7 +51,7 @@
           <div class="body">
             
   <div class="section" id="multiplexing">
-<span id="g54accu03"></span><h1>02 - Multiplexing<a class="headerlink" href="#multiplexing" title="Permalink to this headline">¶</a></h1>
+<span id="g54accu03"></span><h1>03 - Multiplexing<a class="headerlink" href="#multiplexing" title="Permalink to this headline">¶</a></h1>
 <dl class="docutils">
 <dt>Space Division Multiplexing</dt>
 <dd>Reuse of channel in different places, an example being terrestrial TV</dd>
@@ -71,7 +71,6 @@
 <li>Idle users still consume bandwidth</li>
 <li>Links are shared with a fixed cyclical schedule, which means bandwidth cannot be adjusted.</li>
 </ul>
-<p>The hardware to do this is very very simple, and thus high speed.</p>
 </div>
 <div class="section" id="multiplexing-ptm">
 <h2>Multiplexing (PTM)<a class="headerlink" href="#multiplexing-ptm" title="Permalink to this headline">¶</a></h2>
@@ -79,18 +78,15 @@
 <p>The destination of data on the network is defined as a <strong>label in the header</strong> (front) of the packet.</p>
 <p>A label may be <em>global</em> (which is connectionless, IP uses this) or <em>context sensitive</em> (virtual circuit or connection oriented, e.g. MPLS)</p>
 <p><strong>Packets may be of arbitrary size</strong>.</p>
-<p>The hardware to do this can be complicated due to the label lookup process</p>
 </div>
 <div class="section" id="multiplexing-atm">
 <h2>Multiplexing (ATM)<a class="headerlink" href="#multiplexing-atm" title="Permalink to this headline">¶</a></h2>
 <p><em>Asynchronous transfer mode</em> or ATM is like PTM in that the destination of data is determined by labels in the header of the packet. However <strong>all packets are the same size</strong>.</p>
-<p>In ATM labels are smaller and only references a relative table rather than a globally absolute IP address.</p>
-<p>Things get a lot more complicated when packets are of variable size, since ATM was designed for speed the decision was made to expect that all packets are the same size. The constant size makes the hardware trivial to build.</p>
 </div>
 <div class="section" id="statistical-multiplexing">
 <h2>Statistical Multiplexing<a class="headerlink" href="#statistical-multiplexing" title="Permalink to this headline">¶</a></h2>
 <p>The benefits of PTM and ATM:</p>
-<p>Consider an application which uses 1Mbps 10% of the time (idle the other 90%) on a 10Mbps link. How many of these applications can you support using STM as apposed to PTM/ATM?</p>
+<p>Consider an application which uses 1Mbps 10% of the time on a 10Mbps link. How many of these applications can you support using STM as apposed to PTM/ATM?</p>
 <p>With <strong>STM</strong> you can have 10 of said application, as you must allocate 1Mbps of bandwidth to each instance separately.</p>
 <p>With <strong>PTM/ATM</strong> you can have 10 to 100 instances of the application running depending on luck and how much delay and loss you can tolerate.</p>
 </div>
@@ -175,7 +171,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">02 - Multiplexing</a><ul>
+<li><a class="reference internal" href="#">03 - Multiplexing</a><ul>
 <li><a class="reference internal" href="#multiplexing-stm">Multiplexing (STM)</a></li>
 <li><a class="reference internal" href="#multiplexing-ptm">Multiplexing (PTM)</a></li>
 <li><a class="reference internal" href="#multiplexing-atm">Multiplexing (ATM)</a></li>
@@ -193,14 +189,14 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="01.html"
-                        title="previous chapter">01 - Advanced Computer Communications</a></p>
+  <p class="topless"><a href="02.html"
+                        title="previous chapter">02 - Continuation</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../up/01.html"
                         title="next chapter">01 - IP and Up</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/down/02.txt"
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/down/03.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -230,7 +226,7 @@
           <a href="../up/01.html" title="01 - IP and Up"
              >next</a> |</li>
         <li class="right" >
-          <a href="01.html" title="01 - Advanced Computer Communications"
+          <a href="02.html" title="02 - Continuation"
              >previous</a> |</li>
         <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 

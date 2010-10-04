@@ -1,4 +1,4 @@
-.. _G54ACCu02:
+.. _G54ACCu03:
 
 =================
 02 - Multiplexing
@@ -28,6 +28,8 @@ There are some problems with STM:
 * Idle users still consume bandwidth
 * Links are shared with a fixed cyclical schedule, which means bandwidth cannot be adjusted.
 
+The hardware to do this is very very simple, and thus high speed.
+
 Multiplexing (PTM)
 ==================
 
@@ -39,17 +41,23 @@ A label may be *global* (which is connectionless, IP uses this) or *context sens
 
 **Packets may be of arbitrary size**.
 
+The hardware to do this can be complicated due to the label lookup process
+
 Multiplexing (ATM)
 ==================
 
 *Asynchronous transfer mode* or ATM is like PTM in that the destination of data is determined by labels in the header of the packet. However **all packets are the same size**.
+
+In ATM labels are smaller and only references a relative table rather than a globally absolute IP address.
+
+Things get a lot more complicated when packets are of variable size, since ATM was designed for speed the decision was made to expect that all packets are the same size. The constant size makes the hardware trivial to build.
 
 Statistical Multiplexing
 ========================
 
 The benefits of PTM and ATM:
 
-Consider an application which uses 1Mbps 10% of the time on a 10Mbps link. How many of these applications can you support using STM as apposed to PTM/ATM?
+Consider an application which uses 1Mbps 10% of the time (idle the other 90%) on a 10Mbps link. How many of these applications can you support using STM as apposed to PTM/ATM?
 
 With **STM** you can have 10 of said application, as you must allocate 1Mbps of bandwidth to each instance separately.
 
