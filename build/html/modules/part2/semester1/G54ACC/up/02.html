@@ -58,14 +58,16 @@
 <div class="section" id="what-is-routing">
 <h3>What is Routing<a class="headerlink" href="#what-is-routing" title="Permalink to this headline">¶</a></h3>
 <p><em>The process of building up information to enable forwarding.</em></p>
+<p>Higher policies may control routing decisions rather than just pure technical reasons.</p>
 <p>Routing can encounter problems when networks become large and when links or hosts fail.</p>
 </div>
 <div class="section" id="ip-routing">
 <h3>IP Routing<a class="headerlink" href="#ip-routing" title="Permalink to this headline">¶</a></h3>
-<p>There are two basic techniques for <em>wireline</em> IP, <strong>link-stat</strong> and <strong>distance-vector</strong> routing.</p>
+<p>There are two basic techniques for <em>wireline</em> IP, <strong>link-state</strong> and <strong>distance-vector</strong> routing.</p>
 <p>Both require some degree of coordination but make different tradeoffs.</p>
 <p>There are many other techniques, particularly in ad-hoc wireless and other networks.</p>
 <p>It really comes down to what information is reliably available. So for example Geographic and map-based routing is common.</p>
+<p><strong>There is also just plain old static routing dictated by a configuration file.</strong></p>
 </div>
 </div>
 <div class="section" id="link-state-routing">
@@ -77,8 +79,8 @@
 </ul>
 <p>And it has three phases:</p>
 <ul class="simple">
-<li>Determine link states (HELLO)</li>
-<li>Broadcast link states (UPDATE)</li>
+<li>Determine link states (HELLO, which interfaces are up)</li>
+<li>Broadcast link states (UPDATE, tell other routers about whats up)</li>
 <li>Compute and install shortest paths</li>
 </ul>
 <div class="section" id="determining-link-states">
@@ -89,13 +91,20 @@
 <li>&#8220;I can see you; can you see me?&#8221;</li>
 <li>&#8220;I can see you.&#8221;</li>
 </ul>
-<p>This handshake is ran periodically to ensure that the link is still alive.</p>
+<p>This handshake is ran periodically to ensure that the link is still alive (usually every 10 seconds), but commands may inform the router that the link is down rather than the router just discovering it.</p>
 <p>The result of all this is that each router known to whom it&#8217;s connected, which is all it need to know in order to function.</p>
 </div>
 <div class="section" id="broadcast-link-states">
 <h3>Broadcast Link States<a class="headerlink" href="#broadcast-link-states" title="Permalink to this headline">¶</a></h3>
 <p>Each router summarises and forwards, representing each prefix (IP network) as a link.</p>
 <p>Eventually each router knows to whom <em>others</em> are connected (approximately.)</p>
+<p>Less simply:</p>
+<ul class="simple">
+<li>update versioning is necessary in order to track wether the information transmitted is the correct batch.</li>
+<li>Each router sends out summaries such that a router which originated the information may correct it if necessary.</li>
+<li>Loop detection</li>
+<li>Detecting intermittent links in order to decide that it is bad.</li>
+</ul>
 </div>
 <div class="section" id="compute-install-shortest-paths">
 <h3>Compute &amp; Install Shortest Paths<a class="headerlink" href="#compute-install-shortest-paths" title="Permalink to this headline">¶</a></h3>
@@ -111,7 +120,7 @@
 <li>Broadcast the lowest cost hop to all known destinations</li>
 <li>Forward packets using the interface via which the best advert was heard on.</li>
 </ol>
-<p>A common implementation of this is <em>Routing Information Protocol v2</em> (ROP, RFC1723)</p>
+<p>A common implementation of this is <em>Routing Information Protocol v2</em> (RIP, RFC1723)</p>
 <div class="section" id="comparison">
 <h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -136,7 +145,7 @@
 <p><strong>BGP</strong> - <strong>Border Gateway Protocol</strong> (v4):</p>
 <p>Is essentially Distance-Vector routing with some extra bells and whistles. It allows <strong>Autonomous Systems</strong> to designate network reachability (i.e. not relevant to the <em>data-plane</em>) and is a <em>path vector protocol</em>.</p>
 <p>It was designed to replace EGP to create a truly decentralised internet by facilitating the removal of the <a class="reference external" href="http://en.wikipedia.org/wiki/Internet_backbone">NSFNet Internet backbone</a>.</p>
-<p>Distance is defined as a <em>path vector</em> but there are many other attributes which are considered.</p>
+<p>Distance is defined as a <em>path vector</em> and is a list of routers known as the <em>Autonomous Systems Path</em> or ASPATH, but there are many other attributes which are considered.</p>
 <p>The purpose of BGP is to enable <em>policy</em> and rules to determine routing paths.</p>
 </div>
 <div class="section" id="bgpv4">
@@ -144,7 +153,9 @@
 <p>A protocol for exchanging prefixes (IP networks) with attributes which is the only routing protocol which uses TCP as its transport protocol.</p>
 <dl class="docutils">
 <dt>OPEN</dt>
-<dd>Sets up <em>sessions</em> between peers performing a simple capability negotiation</dd>
+<dd><p class="first">Sets up <em>sessions</em> between peers performing a simple capability negotiation</p>
+<p class="last">Its possible to open an <em>internal</em> or <em>external</em> session named iBGP and eBGP respectively.</p>
+</dd>
 <dt>UPDATE</dt>
 <dd>Indicate withdrawn routes, shared attributes and advertised routes (Network Layer Reachability Information)</dd>
 </dl>
@@ -158,7 +169,9 @@
 </div>
 <div class="section" id="operations">
 <h3>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h3>
-<p>Scalability is a vital consideration</p>
+<p>Scalability is a vital consideration.</p>
+<p>Binding to local virtual interfaces instead of hardware interfaces is so that you do not have to obey the hardware and drop all data received on that interface if it goes down.</p>
+<p>To limit the amount of update TCP connections (of which there may be hundreds) a full mesh connection policy is avoided by using some predefined shared paths.</p>
 </div>
 <div class="section" id="network-interconnection">
 <h3>Network Interconnection<a class="headerlink" href="#network-interconnection" title="Permalink to this headline">¶</a></h3>

@@ -14,18 +14,22 @@ What is Routing
 
 *The process of building up information to enable forwarding.*
 
+Higher policies may control routing decisions rather than just pure technical reasons.
+
 Routing can encounter problems when networks become large and when links or hosts fail.
 
 IP Routing
 ----------
 
-There are two basic techniques for *wireline* IP, **link-stat** and **distance-vector** routing.
+There are two basic techniques for *wireline* IP, **link-state** and **distance-vector** routing.
 
 Both require some degree of coordination but make different tradeoffs.
 
 There are many other techniques, particularly in ad-hoc wireless and other networks.
 
 It really comes down to what information is reliably available. So for example Geographic and map-based routing is common.
+
+**There is also just plain old static routing dictated by a configuration file.**
 
 Link-State Routing
 ==================
@@ -37,8 +41,8 @@ There are two common implementations:
 
 And it has three phases:
 
-* Determine link states (HELLO)
-* Broadcast link states (UPDATE)
+* Determine link states (HELLO, which interfaces are up)
+* Broadcast link states (UPDATE, tell other routers about whats up)
 * Compute and install shortest paths
 
 Determining Link States
@@ -50,7 +54,7 @@ Link states are determined using a *three-way handshake* across each link
 * "I can see you; can you see me?"
 * "I can see you."
 
-This handshake is ran periodically to ensure that the link is still alive.
+This handshake is ran periodically to ensure that the link is still alive (usually every 10 seconds), but commands may inform the router that the link is down rather than the router just discovering it.
 
 The result of all this is that each router known to whom it's connected, which is all it need to know in order to function.
 
@@ -60,6 +64,13 @@ Broadcast Link States
 Each router summarises and forwards, representing each prefix (IP network) as a link.
 
 Eventually each router knows to whom *others* are connected (approximately.)
+
+Less simply:
+
+* update versioning is necessary in order to track wether the information transmitted is the correct batch.
+* Each router sends out summaries such that a router which originated the information may correct it if necessary.
+* Loop detection
+* Detecting intermittent links in order to decide that it is bad.
 
 Compute & Install Shortest Paths
 --------------------------------
@@ -78,7 +89,7 @@ The protocol of this co-ordination is as such:
 #. Broadcast the lowest cost hop to all known destinations
 #. Forward packets using the interface via which the best advert was heard on.
 
-A common implementation of this is *Routing Information Protocol v2* (ROP, RFC1723)
+A common implementation of this is *Routing Information Protocol v2* (RIP, RFC1723)
 
 Comparison
 ----------
@@ -108,7 +119,7 @@ Is essentially Distance-Vector routing with some extra bells and whistles. It al
 
 It was designed to replace EGP to create a truly decentralised internet by facilitating the removal of the `NSFNet Internet backbone <http://en.wikipedia.org/wiki/Internet_backbone>`_.
 
-Distance is defined as a *path vector* but there are many other attributes which are considered.
+Distance is defined as a *path vector* and is a list of routers known as the *Autonomous Systems Path* or ASPATH, but there are many other attributes which are considered.
 
 The purpose of BGP is to enable *policy* and rules to determine routing paths.
 
@@ -119,6 +130,8 @@ A protocol for exchanging prefixes (IP networks) with attributes which is the on
 
 OPEN
     Sets up *sessions* between peers performing a simple capability negotiation
+    
+    Its possible to open an *internal* or *external* session named iBGP and eBGP respectively.
 
 UPDATE
     Indicate withdrawn routes, shared attributes and advertised routes (Network Layer Reachability Information)
@@ -137,7 +150,11 @@ An NLRI is selected to go into the *Loc-RIB* based upon the next hop being reach
 Operations
 ----------
 
-Scalability is a vital consideration
+Scalability is a vital consideration.
+
+Binding to local virtual interfaces instead of hardware interfaces is so that you do not have to obey the hardware and drop all data received on that interface if it goes down.
+
+To limit the amount of update TCP connections (of which there may be hundreds) a full mesh connection policy is avoided by using some predefined shared paths.
 
 Network Interconnection
 -----------------------
