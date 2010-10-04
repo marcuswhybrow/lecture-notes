@@ -1,10 +1,15 @@
-.. _G53MLE:
+.. _G53MLE01:
 
-=====================
-02 - Machine Learning
+=================
+01 - Introduction
 =====================
 
-*...*
+Motivating Problems
+===================
+
+* Handwritten character recognition.
+* Fingerprint recognition (e.g. at border control.)
+* Face Recognition (e.g. security access to building)
 
 Can Machines Learn to Solve These Problems?
 ===========================================
@@ -42,12 +47,12 @@ Treating the learning system as a black box, the handwritten character is the in
     
     The hard part of machine learning is discovering the algorithm.
     
-    The algorithm needs to be able to adapt to the environment (which is represented by the *experience*). This means is should not only accept the input data but also be **adjustable**.
+    The algorithm needs to be able to adapt to the environment (which is represented by the *experience*). This means it should not only accept the input data but also be **adjustable**.
 
 **Step 4** Learning/Adjusting the Weights
     The learning algorithms should *adjust* the weights inputed into the algorithm such that the experience and prior knowledge may be *learned* into the system.
     
-    :math:`E = (X,D)` the experience is represented by the input and output
+    :math:`E = (X,D)` the experience is represented by the input and known training value
     
     :math:`F(W,X) = D` the output is derived from an algorithm which accepts weights and the input data.
     
