@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>04 - Event Handling &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G52GUI Graphical User Interfaces" href="index.html" />
+    <link rel="next" title="G53MLE Machine Learning" href="../G53MLE/index.html" />
+    <link rel="prev" title="03 - Windows &amp; Widgets" href="03.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G53MLE/index.html" title="G53MLE Machine Learning"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="03.html" title="03 - Windows &amp; Widgets"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G52GUI Graphical User Interfaces</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="event-handling">
+<span id="g52gui04"></span><h1>04 - Event Handling<a class="headerlink" href="#event-handling" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="processing-input-events">
+<h2>Processing Input Events<a class="headerlink" href="#processing-input-events" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Dispatch events from the user to the correct application/window</p>
+</li>
+<li><dl class="first docutils">
+<dt>Event/code Binding</dt>
+<dd><ul class="first last simple">
+<li>Bind the event to the code that will process it</li>
+<li>Windowing system/GUI code</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Redraw the presentation</dt>
+<dd><ul class="first last simple">
+<li>Notify the view of model changes, the view then tells the windowing system it needs to be redrawn.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="event-code-binding">
+<h2>Event/Code binding<a class="headerlink" href="#event-code-binding" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of different approaches used to map from the event to the code to be run in response to the event.</p>
+<p>The selected method should work well with the interface design tools and make the most of the programming language used.</p>
+<p>The emphasis has shifted from efficiency to the ability to handle the complexity of large applications.</p>
+<p><em>We need a method that can handle many events without swamping the programmer in unnecessary detail.</em></p>
+<p>Historically development has often been geared towards integrating methods into the programming language/tools used.</p>
+<ul class="simple">
+<li>Event Queue and type selection</li>
+<li>Window event tables</li>
+<li>Callback event handling</li>
+<li>WinProc event handling</li>
+<li>Inheritance event handling</li>
+</ul>
+</div>
+<div class="section" id="event-queue-and-type-selection">
+<h2>Event Queue and Type Selection<a class="headerlink" href="#event-queue-and-type-selection" title="Permalink to this headline">¶</a></h2>
+<p>With the early Macintosh computers the programmer would have to manage everything though a giant switch statement. Despite being hard it is computationally efficient and thus some mobile devices still use this implementation.</p>
+</div>
+<div class="section" id="window-event-tables">
+<h2>Window Event Tables<a class="headerlink" href="#window-event-tables" title="Permalink to this headline">¶</a></h2>
+<p>Sun didn&#8217;t like the previous implementation and developed window event tables for the GIGO windowing system. Since it was 1983 it relied upon pointers to functions in C.</p>
+<p>Each window would associate to a table of procedures which were indexed by the event type.</p>
+<p>It was all centred around the mouse as every event would carry the mouse position in its payload.</p>
+<p>GIGO used top-down/front-to-back window tree searching.</p>
+<p>If the top down seatch fails to find and entry in the window event table for the leaf window of the tree, then the event is redirected back up towards the windows parent. This was accomplished by (on setup) putting a special procedure in each table which would redirect events up the window hierarchy.</p>
+<p>This technique removes the responsibility of the event loop stuff from the programmer, but makes in hard to design and debug.</p>
+</div>
+<div class="section" id="callback-event-handling">
+<h2>Callback Event Handling<a class="headerlink" href="#callback-event-handling" title="Permalink to this headline">¶</a></h2>
+<p>Used in X Windows (1986), the programmer associates a name with each event handling procedure address and window properties include those names.</p>
+<p>On initialisation the system retrieves the address and uses them just as in the event tables method.</p>
+<p>Design tools can use those names and clear errors can be generated when a callback is missing.</p>
+</div>
+<div class="section" id="winproc-event-handling">
+<h2>WinProc Event Handling<a class="headerlink" href="#winproc-event-handling" title="Permalink to this headline">¶</a></h2>
+<p>WinProc was central to Microsoft&#8217;s Windows. Each window is associated with the address of a single window procedure that handles all events.</p>
+<p>Typically WinProc contained a switch statement which were specific to a window type and not generic.</p>
+<p>This technique is more modular than the more primitive switch statements and was as easy to implement as event tables.</p>
+<p>The implementation was opaque to design tools.</p>
+</div>
+<div class="section" id="inheritance-event-handling">
+<h2>Inheritance Event Handling<a class="headerlink" href="#inheritance-event-handling" title="Permalink to this headline">¶</a></h2>
+<p>SmallTalk-80 introduced OOP which is the basis of most current toolkits. The windowing system mist be able to deal with any widget at any time, thus all (object-oriented) widgets present a common interface.</p>
+<p>The root <em>Widget</em> class would contain a method of each type of event which would overridden by child classes.</p>
+</div>
+<div class="section" id="id1">
+<h2>Inheritance Event Handling<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Screen components all inherit from the base <em>Widget</em> class, and will override some of the inherited event handling methods (and also overriding <tt class="docutils literal"><span class="pre">redraw()</span></tt>).</p>
+<p><em>Window and Widget trees may be separate or combined.</em></p>
+<p>Writing code to handle an event involves writing the methods to handle the core set of widget events.</p>
+</div>
+<div class="section" id="id2">
+<h2>Inheritance Event Handling<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>An object-oriented event loop</p>
+<ul class="simple">
+<li>Associate a subclass of widget with every window in the tree</li>
+<li>When it receives and event the windowing systems invokes the appropriate method on the root widget of a window.</li>
+<li>That method either deals with it or passes it on to a child window.</li>
+<li>The event loop is so simple it can be hidden from the programmer (e.g. in C++ and Java).</li>
+</ul>
+</div>
+<div class="section" id="listeners">
+<h2>Listeners<a class="headerlink" href="#listeners" title="Permalink to this headline">¶</a></h2>
+<p>Raw user input events are only on part of the story, many events are generated from other sources as a consequence of more primitive user actions such as opening, closing or moving a window (windowing system) or plugging in a device (operating system).</p>
+<p>It follows that the windowing system needs to be able to select from thousands of types of event.</p>
+<p>The listener model evolved from inheritance-based approaches in order to handle issues of scale.</p>
+</div>
+<div class="section" id="java-interfaces">
+<h2>Java Interfaces<a class="headerlink" href="#java-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>Just a set of methods that an interface <strong>must</strong> implement. Also there is no requirement that the class implementing the interface must be part of any class hierarchy.</p>
+<p>A listener just defines and implements such an interface.</p>
+</div>
+<div class="section" id="listener-class-structure">
+<h2>Listener Class Structure<a class="headerlink" href="#listener-class-structure" title="Permalink to this headline">¶</a></h2>
+<p>In Java there are a set of interfaces for example Swing defines <tt class="docutils literal"><span class="pre">ActionListener</span></tt>.</p>
+<p>There are a set of objects which can produce events called <em>generators</em> for example <tt class="docutils literal"><span class="pre">JButton</span></tt> generates <tt class="docutils literal"><span class="pre">ActionEvents</span></tt> whenever the button is pressed.</p>
+<p>Then there are a set of objects what want to be notified of events called <em>listeners</em>, for example anything which implements <tt class="docutils literal"><span class="pre">ActionListener</span></tt>.</p>
+</div>
+<div class="section" id="problem">
+<h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
+<img alt="../../../../images/window.png" src="../../../../images/window.png" />
+<p>Each scroll bar generates the same type of event. An <tt class="docutils literal"><span class="pre">AdjustmentEvent</span></tt>.</p>
+<p>THe text widget needs to scroll appropriately. In could implement one <tt class="docutils literal"><span class="pre">ActionListener</span></tt> and add it as a listener to each scrollbar, but then it needs to disambiguate scrollbars making code more complex. A better way is to have a separate method for scrolling in the X direction and Y direction.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">04 - Event Handling</a><ul>
+<li><a class="reference internal" href="#processing-input-events">Processing Input Events</a></li>
+<li><a class="reference internal" href="#event-code-binding">Event/Code binding</a></li>
+<li><a class="reference internal" href="#event-queue-and-type-selection">Event Queue and Type Selection</a></li>
+<li><a class="reference internal" href="#window-event-tables">Window Event Tables</a></li>
+<li><a class="reference internal" href="#callback-event-handling">Callback Event Handling</a></li>
+<li><a class="reference internal" href="#winproc-event-handling">WinProc Event Handling</a></li>
+<li><a class="reference internal" href="#inheritance-event-handling">Inheritance Event Handling</a></li>
+<li><a class="reference internal" href="#id1">Inheritance Event Handling</a></li>
+<li><a class="reference internal" href="#id2">Inheritance Event Handling</a></li>
+<li><a class="reference internal" href="#listeners">Listeners</a></li>
+<li><a class="reference internal" href="#java-interfaces">Java Interfaces</a></li>
+<li><a class="reference internal" href="#listener-class-structure">Listener Class Structure</a></li>
+<li><a class="reference internal" href="#problem">Problem</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="03.html"
+                        title="previous chapter">03 - Windows &amp; Widgets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G53MLE/index.html"
+                        title="next chapter">G53MLE Machine Learning</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G52GUI/04.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G53MLE/index.html" title="G53MLE Machine Learning"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="03.html" title="03 - Windows &amp; Widgets"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G52GUI Graphical User Interfaces</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
