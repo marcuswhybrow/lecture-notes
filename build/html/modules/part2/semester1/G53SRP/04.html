@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>04 - Programming with Time &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="03 - Java Concurrency Control" href="03.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="03.html" title="03 - Java Concurrency Control"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="programming-with-time">
+<span id="g53mle04"></span><h1>04 - Programming with Time<a class="headerlink" href="#programming-with-time" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-notation-of-time">
+<h2>The Notation of Time<a class="headerlink" href="#the-notation-of-time" title="Permalink to this headline">¶</a></h2>
+<p>Transitivity: <img class="math" src="../../../../images/math/0ac930ebec6ea9e49366dd24bcef04e3d7841082.png" alt="\forall x,y,y:(x &lt; y \wedge y &lt; z) \Rightarrow x &lt; z"/></p>
+<p>Linearity: <img class="math" src="../../../../images/math/166c42a857d7ca5ca4de872e86c2350e35060def.png" alt="\forall x,y:x \not"/></p>
+</div>
+<div class="section" id="support-for-time">
+<h2>Support for Time<a class="headerlink" href="#support-for-time" title="Permalink to this headline">¶</a></h2>
+<p>Code execution can be unpredictable or variable. It is important to have access to the <em>real world</em> via an internal clock.</p>
+</div>
+<div class="section" id="the-system-clock">
+<h2>The System Clock<a class="headerlink" href="#the-system-clock" title="Permalink to this headline">¶</a></h2>
+<p>The JVM exposes a system clock as follows:</p>
+<div class="highlight-python"><pre>java.lang.System {
+    static long currentTimeMillis();
+}</pre>
+</div>
+<p>which is also used by <tt class="docutils literal"><span class="pre">java.util.Date()</span></tt> in order to initialise to the current time.</p>
+<p>It returns the number of milliseconds since midnight January 1st 1970 GMT.</p>
+<p>It depends on accuracy and granularity of the underlying hardware clock.</p>
+</div>
+<div class="section" id="what-is-time-for">
+<h2>What is time for?<a class="headerlink" href="#what-is-time-for" title="Permalink to this headline">¶</a></h2>
+<p>On-screen clocks may be presented to the user.</p>
+<p>Recording/measuring time of operations, events and messages such as consistency checks in security protocols.</p>
+<p>They allow us to do things at a correct time or rate.</p>
+<p>They also allow us to <strong>detect errors</strong> using timeouts.</p>
+</div>
+<div class="section" id="use-of-simple-delays">
+<h2>Use of Simple Delays<a class="headerlink" href="#use-of-simple-delays" title="Permalink to this headline">¶</a></h2>
+<p>We might be waiting for a concurrent action to complete in another thread or in the physical world.</p>
+<p>We might synchronise with an external time or event, or repeat a task at a specific rate.</p>
+</div>
+<div class="section" id="external-time-vs-local-time">
+<h2>External Time vs Local Time<a class="headerlink" href="#external-time-vs-local-time" title="Permalink to this headline">¶</a></h2>
+<p>Only some applications require access to the external calendar type time. Many applications require only relative times in order to function.</p>
+<p>Embedded systems may have one or both types of clock.</p>
+</div>
+<div class="section" id="busy-waiting-delay">
+<h2>Busy Waiting Delay<a class="headerlink" href="#busy-waiting-delay" title="Permalink to this headline">¶</a></h2>
+<p>Without support we would have to <em>busy</em> wait until the time we needed:</p>
+<div class="highlight-python"><pre>public class BustDelay {
+    public static void main(String[] args) {
+        long start = System.currentTImeMillis();
+        long delay = 1000;
+        while (System.currentTimeMillis() &lt; start + delay);
+
+        // execute some code after 1000 milliseconds
+    }
+}</pre>
+</div>
+</div>
+<div class="section" id="sleep">
+<h2>Sleep<a class="headerlink" href="#sleep" title="Permalink to this headline">¶</a></h2>
+<p>Instead of busy waiting Java allows a thread to perform a relative delay:</p>
+<div class="highlight-python"><pre>java.lang.Thread {
+    static void sleep(long millis);
+}</pre>
+</div>
+<p>Note that the delay is a minimum (explained later).</p>
+<p>The JVM can map a request to sleep to the OS which avoids busy waiting and most efficient:</p>
+<div class="highlight-python"><pre>public class SleepDelay {
+    public static void main(String[] args) {
+        long delay = 1000;
+        try {
+            Thread.sleep(delay);
+        } catch(InterruptedException ie) {
+            // awoken by Thread.interrupt() should ideally check the time is correct.
+        }
+    }
+}</pre>
+</div>
+</div>
+<div class="section" id="absolute-delays">
+<h2>Absolute Delays<a class="headerlink" href="#absolute-delays" title="Permalink to this headline">¶</a></h2>
+<p>Clock granularity, pre-emption and compute time make exact timing of sleep and code impossible.</p>
+<p>The solution is not to wait for a relative amount of time but to wait until the next pre-identified time to wake up.</p>
+</div>
+<div class="section" id="timeouts">
+<h2>Timeouts<a class="headerlink" href="#timeouts" title="Permalink to this headline">¶</a></h2>
+<p>Here are some timeout examples:</p>
+<p><tt class="docutils literal"><span class="pre">java.lang.Object</span></tt> has <tt class="docutils literal"><span class="pre">void</span> <span class="pre">wait(long</span> <span class="pre">delayMs)</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">java.lang.Thread</span></tt> has <tt class="docutils literal"><span class="pre">void</span> <span class="pre">join(long</span> <span class="pre">maxDelayMs)</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">java.net.Socket</span></tt> has <tt class="docutils literal"><span class="pre">void</span> <span class="pre">setSoTimeout(int</span> <span class="pre">timeout)</span></tt> and <tt class="docutils literal"><span class="pre">void</span> <span class="pre">setSoLinger(boolen</span> <span class="pre">on,</span> <span class="pre">in</span> <span class="pre">linger)</span></tt></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">04 - Programming with Time</a><ul>
+<li><a class="reference internal" href="#the-notation-of-time">The Notation of Time</a></li>
+<li><a class="reference internal" href="#support-for-time">Support for Time</a></li>
+<li><a class="reference internal" href="#the-system-clock">The System Clock</a></li>
+<li><a class="reference internal" href="#what-is-time-for">What is time for?</a></li>
+<li><a class="reference internal" href="#use-of-simple-delays">Use of Simple Delays</a></li>
+<li><a class="reference internal" href="#external-time-vs-local-time">External Time vs Local Time</a></li>
+<li><a class="reference internal" href="#busy-waiting-delay">Busy Waiting Delay</a></li>
+<li><a class="reference internal" href="#sleep">Sleep</a></li>
+<li><a class="reference internal" href="#absolute-delays">Absolute Delays</a></li>
+<li><a class="reference internal" href="#timeouts">Timeouts</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="03.html"
+                        title="previous chapter">03 - Java Concurrency Control</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/04.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="03.html" title="03 - Java Concurrency Control"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
