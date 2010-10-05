@@ -1,0 +1,32 @@
+.. _G53MLE02:
+
+===============
+02 - Perceptron
+===============
+
+Over the next few lectures we will study different methods of machine learning.
+
+Perceptron Basic
+================
+
+A Perceptron is a type of artificial neural network or ANN. It computes the sum of its weighted inputs and passes the result to a hard-limit threshold function.
+
+It was designed to represent a single neurone in the brain. No one can be sure what exactly a neurone does but this method has some nice properties anyway.
+
+Perceptron Operation
+====================
+
+A perceptron ACC accepts an input vector (list of numbers) of ``n`` size and their weights and also a bias number and calculates a linear combination of these inputs and outputs either a 1 or a -1.
+
+First a **weighted sum** is created which is the sum of all the inputs (:math:`x_i`) multiplied by their weights (:math:`w_i`) plus an additional bias weight (:math:`w_0`):
+
+.. math:: w_{0} + \sum_{i=1}^{n} w_{i}x_{i}
+
+Then the weighted sum is passed through a threshold and ether is outputted as 1 or -1.
+
+Perceptron Decision Surface
+===========================
+
+The decision surface (or line in a 2 dimensional vector, or line in a )
+
+*...*
