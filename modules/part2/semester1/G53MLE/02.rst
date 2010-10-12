@@ -27,6 +27,69 @@ Then the weighted sum is passed through a threshold and ether is outputted as 1 
 Perceptron Decision Surface
 ===========================
 
-The decision surface (or line in a 2 dimensional vector, or line in a )
+The decision surface is one which is understandable in the 1D, 2D and 3D space. It would be a point, line and plane respectively. Decision surfaces can still be  represented in **hyper feature space** (more than 3 dimensions) and are called **hyperplane decision surfaces**.
+
+The perceptron outputs a 1 (or fires an electron in the brains case) for instances which lie on one side of the hyperplane and a -1 (the neurone doesn't fire in the brain) for instances lying on the other side.
+
+For instances with 2 features we can represent the feature space in euclidian space (a graph commonly labeled with an x and y axis containing points or lines).
+
+Ordinarily the hypothesis consists of a bunch of inputs (:math:`x_i`) and a bunch of matching weights (:math:`w_i`) including a weight :math:`w_0` known as a bias which never changes as the other weights do. The weights and inputs are summed up in the following way for a 2 dimensional feature vector:
+
+.. math:: w_0 + w_1 x_1 + w_2 x_2
+
+When we want to draw the decision surface (in this case it is not a hyperplane but a simple visualisable line) we say that the result should be equal to 0:
+
+.. math:: w_0 + w_1 x_1 + w_2 x_2 = 0
+
+In order to represent this more closely to a euclidean line we might rearrange it thus:
+
+.. math:: w_2 x_2 = - w_1 x_1 - w_0
+
+Which is similar to the format :math:`y = ?x + ?` commonly seen in euclidian space.
+
+If for example we were trying to guess the weights for a hypothesis which created a decision surface which looked like this:
+
+.. image:: /media/G53MLE/02/images/euclidean-feature-space.png
+
+Then assuming the line intercepts the vertical axis at lets say 1, and that the gradient is -1 (for every unit traveled in the positive direction right we travel one unit in the negative direction down thus :math:`\frac{1}{-1} = -1`) the equation would look like so:
+
+.. math:: x_2 = - x_1 + 1
+
+Thus by rearranging the equation in order make it equal to 0 agin we can determine the values of weights of the hypothesis:
+
+.. math:: x_2 + x_1 - 1 = 0
+
+So we know that :math:`w_2 = 1`, :math:`w_1 = 1` and :math:`w_0 = - 1`, since :math:`w_2` is the coefficient of :math:`x_2`, :math:`w_1` is the coefficient of :math:`x_1` and :math:`w_0` is the constant.
+
+So What Can we Represent?
+*************************
+
+We can represent many boolean functions if we assume a True result to return a 1 and a False result to return a -1. For example the boolean operator AND would look like so:
+
+=============== =============== ===============
+:math:`x_1`     :math:`x_2`     :math:`d`
+=============== =============== ===============
+-1              -1              -1
+-1              +1              -1
++1              -1              -1
++1              +1              +1
+=============== =============== ===============
+
+.. image:: /media/G53MLE/02/images/and-feature-space.png
+
+
+*...*
+
+Representation Power
+====================
+
+*...*
+
+Training Algorithms
+===================
+
+Once the weight changing algorithm has been through each instance of the training data this is known as a single **Epoch**.
+
+Theory and real life are very different things.
 
 *...*

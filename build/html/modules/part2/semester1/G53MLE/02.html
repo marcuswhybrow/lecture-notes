@@ -25,7 +25,7 @@
     <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
     <link rel="up" title="G53MLE Machine Learning" href="index.html" />
     <link rel="next" title="G53SRP Systems and Real-Time Programming" href="../G53SRP/index.html" />
-    <link rel="prev" title="Motivating Problems" href="01.html" /> 
+    <link rel="prev" title="01 - Introduction" href="01.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,7 +38,7 @@
           <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="01.html" title="Motivating Problems"
+          <a href="01.html" title="01 - Introduction"
              accesskey="P">previous</a> |</li>
         <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">G53MLE Machine Learning</a> &raquo;</li> 
@@ -68,7 +68,74 @@
 </div>
 <div class="section" id="perceptron-decision-surface">
 <h2>Perceptron Decision Surface<a class="headerlink" href="#perceptron-decision-surface" title="Permalink to this headline">¶</a></h2>
-<p>The decision surface (or line in a 2 dimensional vector, or line in a )</p>
+<p>The decision surface is one which is understandable in the 1D, 2D and 3D space. It would be a point, line and plane respectively. Decision surfaces can still be  represented in <strong>hyper feature space</strong> (more than 3 dimensions) and are called <strong>hyperplane decision surfaces</strong>.</p>
+<p>The perceptron outputs a 1 (or fires an electron in the brains case) for instances which lie on one side of the hyperplane and a -1 (the neurone doesn&#8217;t fire in the brain) for instances lying on the other side.</p>
+<p>For instances with 2 features we can represent the feature space in euclidian space (a graph commonly labeled with an x and y axis containing points or lines).</p>
+<p>Ordinarily the hypothesis consists of a bunch of inputs (<img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/>) and a bunch of matching weights (<img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/>) including a weight <img class="math" src="../../../../images/math/eb37b8f84b267a3318413dcd963c9a5872051634.png" alt="w_0"/> known as a bias which never changes as the other weights do. The weights and inputs are summed up in the following way for a 2 dimensional feature vector:</p>
+<div class="math">
+<p><img src="../../../../images/math/45464210372e311bc04d8eac256bc1af4b5b8c84.png" alt="w_0 + w_1 x_1 + w_2 x_2" /></p>
+</div><p>When we want to draw the decision surface (in this case it is not a hyperplane but a simple visualisable line) we say that the result should be equal to 0:</p>
+<div class="math">
+<p><img src="../../../../images/math/292be5b3b933ee5ba2dd458d91d84d1fd4a4806d.png" alt="w_0 + w_1 x_1 + w_2 x_2 = 0" /></p>
+</div><p>In order to represent this more closely to a euclidean line we might rearrange it thus:</p>
+<div class="math">
+<p><img src="../../../../images/math/cfb6a825179c71b4e1f9e2701ee012415cf3bdae.png" alt="w_2 x_2 = - w_1 x_1 - w_0" /></p>
+</div><p>Which is similar to the format <img class="math" src="../../../../images/math/2577acc965dc2242d91cbd2f4245aed73e425461.png" alt="y = ?x + ?"/> commonly seen in euclidian space.</p>
+<p>If for example we were trying to guess the weights for a hypothesis which created a decision surface which looked like this:</p>
+<img alt="../../../../images/euclidean-feature-space.png" src="../../../../images/euclidean-feature-space.png" />
+<p>Then assuming the line intercepts the vertical axis at lets say 1, and that the gradient is -1 (for every unit traveled in the positive direction right we travel one unit in the negative direction down thus <img class="math" src="../../../../images/math/6ad1bfa29a2464ec1a1122c28669bd3f7ff62172.png" alt="\frac{1}{-1} = -1"/>) the equation would look like so:</p>
+<div class="math">
+<p><img src="../../../../images/math/c5212768b457c4122d0676abc24e9eeed3f72928.png" alt="x_2 = - x_1 + 1" /></p>
+</div><p>Thus by rearranging the equation in order make it equal to 0 agin we can determine the values of weights of the hypothesis:</p>
+<div class="math">
+<p><img src="../../../../images/math/013d683ec838d86b8636e8a626723836b351edd7.png" alt="x_2 + x_1 - 1 = 0" /></p>
+</div><p>So we know that <img class="math" src="../../../../images/math/0b2d26a426d1074257ae3703c9679d0316e52260.png" alt="w_2 = 1"/>, <img class="math" src="../../../../images/math/c5c00ce3d5af013bd6c23a855add41bb0d494ec4.png" alt="w_1 = 1"/> and <img class="math" src="../../../../images/math/43432500d45398242ee12bd3c7af9a1bd29403e1.png" alt="w_0 = - 1"/>, since <img class="math" src="../../../../images/math/0ce0501dff8a93818a4e5d9ecc570d8ab6472e5b.png" alt="w_2"/> is the coefficient of <img class="math" src="../../../../images/math/6a7d010bbff66a0c41e43310a51efbaa6bf63396.png" alt="x_2"/>, <img class="math" src="../../../../images/math/3c352e9db5a7134ca93f9fecce8fe99b0d4e5889.png" alt="w_1"/> is the coefficient of <img class="math" src="../../../../images/math/ccada11db7b2b90693e2fac4f887a57fce6f96bf.png" alt="x_1"/> and <img class="math" src="../../../../images/math/eb37b8f84b267a3318413dcd963c9a5872051634.png" alt="w_0"/> is the constant.</p>
+<div class="section" id="so-what-can-we-represent">
+<h3>So What Can we Represent?<a class="headerlink" href="#so-what-can-we-represent" title="Permalink to this headline">¶</a></h3>
+<p>We can represent many boolean functions if we assume a True result to return a 1 and a False result to return a -1. For example the boolean operator AND would look like so:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><img class="math" src="../../../../images/math/ccada11db7b2b90693e2fac4f887a57fce6f96bf.png" alt="x_1"/></th>
+<th class="head"><img class="math" src="../../../../images/math/6a7d010bbff66a0c41e43310a51efbaa6bf63396.png" alt="x_2"/></th>
+<th class="head"><img class="math" src="../../../../images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>-1</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr><td>-1</td>
+<td>+1</td>
+<td>-1</td>
+</tr>
+<tr><td>+1</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr><td>+1</td>
+<td>+1</td>
+<td>+1</td>
+</tr>
+</tbody>
+</table>
+<img alt="../../../../images/and-feature-space.png" src="../../../../images/and-feature-space.png" />
+<p><em>...</em></p>
+</div>
+</div>
+<div class="section" id="representation-power">
+<h2>Representation Power<a class="headerlink" href="#representation-power" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+</div>
+<div class="section" id="training-algorithms">
+<h2>Training Algorithms<a class="headerlink" href="#training-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>Once the weight changing algorithm has been through each instance of the training data this is known as a single <strong>Epoch</strong>.</p>
+<p>Theory and real life are very different things.</p>
 <p><em>...</em></p>
 </div>
 </div>
@@ -84,14 +151,19 @@
 <li><a class="reference internal" href="#">02 - Perceptron</a><ul>
 <li><a class="reference internal" href="#perceptron-basic">Perceptron Basic</a></li>
 <li><a class="reference internal" href="#perceptron-operation">Perceptron Operation</a></li>
-<li><a class="reference internal" href="#perceptron-decision-surface">Perceptron Decision Surface</a></li>
+<li><a class="reference internal" href="#perceptron-decision-surface">Perceptron Decision Surface</a><ul>
+<li><a class="reference internal" href="#so-what-can-we-represent">So What Can we Represent?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#representation-power">Representation Power</a></li>
+<li><a class="reference internal" href="#training-algorithms">Training Algorithms</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="01.html"
-                        title="previous chapter">Motivating Problems</a></p>
+                        title="previous chapter">01 - Introduction</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../G53SRP/index.html"
                         title="next chapter">G53SRP Systems and Real-Time Programming</a></p>
@@ -127,7 +199,7 @@
           <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
              >next</a> |</li>
         <li class="right" >
-          <a href="01.html" title="Motivating Problems"
+          <a href="01.html" title="01 - Introduction"
              >previous</a> |</li>
         <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
           <li><a href="index.html" >G53MLE Machine Learning</a> &raquo;</li> 

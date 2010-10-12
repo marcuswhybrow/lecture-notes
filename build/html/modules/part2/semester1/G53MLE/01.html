@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Motivating Problems &mdash; Lecture Notes v1.0 documentation</title>
+    <title>01 - Introduction &mdash; Lecture Notes v1.0 documentation</title>
     <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../static/doctools.js"></script>
     <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
     <link rel="up" title="G53MLE Machine Learning" href="index.html" />
-    <link rel="next" title="G53SRP Systems and Real-Time Programming" href="../G53SRP/index.html" />
+    <link rel="next" title="02 - Perceptron" href="02.html" />
     <link rel="prev" title="00 - Introduction" href="00.html" /> 
   </head>
   <body>
@@ -35,7 +35,7 @@
           <a href="../../../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+          <a href="02.html" title="02 - Perceptron"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="00.html" title="00 - Introduction"
@@ -50,8 +50,10 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="motivating-problems">
-<h1>Motivating Problems<a class="headerlink" href="#motivating-problems" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="introduction">
+<span id="g53mle01"></span><h1>01 - Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="motivating-problems">
+<h2>Motivating Problems<a class="headerlink" href="#motivating-problems" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Handwritten character recognition.</li>
 <li>Fingerprint recognition (e.g. at border control.)</li>
@@ -59,17 +61,17 @@
 </ul>
 </div>
 <div class="section" id="can-machines-learn-to-solve-these-problems">
-<h1>Can Machines Learn to Solve These Problems?<a class="headerlink" href="#can-machines-learn-to-solve-these-problems" title="Permalink to this headline">¶</a></h1>
+<h2>Can Machines Learn to Solve These Problems?<a class="headerlink" href="#can-machines-learn-to-solve-these-problems" title="Permalink to this headline">¶</a></h2>
 <p>More precisely can we program machines to learn to do these tasks?</p>
 </div>
 <div class="section" id="definition-of-learning">
-<h1>Definition of Learning<a class="headerlink" href="#definition-of-learning" title="Permalink to this headline">¶</a></h1>
+<h2>Definition of Learning<a class="headerlink" href="#definition-of-learning" title="Permalink to this headline">¶</a></h2>
 <p>A computer program is said to learn from experience <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> with respect to some class of tasks <img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> and performance measure <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>, if its performance at tasks in <img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>, as measured by <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>, improves with experience <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/>.</p>
 <p><strong>Handwriting Recognition Problem:</strong></p>
 <p>The task <img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is to recognise hand written characters. Thee measure of performance <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/> is the percent of characters correctly classified. The training experience <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> is a database of handwritten characters with given classifications.</p>
 </div>
 <div class="section" id="design-a-learning-system">
-<h1>Design a Learning System<a class="headerlink" href="#design-a-learning-system" title="Permalink to this headline">¶</a></h1>
+<h2>Design a Learning System<a class="headerlink" href="#design-a-learning-system" title="Permalink to this headline">¶</a></h2>
 <p>Treating the learning system as a black box, the handwritten character is the input and the output is the digital representation of the perceived character.</p>
 <dl class="docutils">
 <dt><strong>Step 1</strong> Collect Training Examples (Experience)</dt>
@@ -94,6 +96,7 @@
 </dd>
 </dl>
 </div>
+</div>
 
 
           </div>
@@ -103,18 +106,21 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Motivating Problems</a></li>
+<li><a class="reference internal" href="#">01 - Introduction</a><ul>
+<li><a class="reference internal" href="#motivating-problems">Motivating Problems</a></li>
 <li><a class="reference internal" href="#can-machines-learn-to-solve-these-problems">Can Machines Learn to Solve These Problems?</a></li>
 <li><a class="reference internal" href="#definition-of-learning">Definition of Learning</a></li>
 <li><a class="reference internal" href="#design-a-learning-system">Design a Learning System</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="00.html"
                         title="previous chapter">00 - Introduction</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../G53SRP/index.html"
-                        title="next chapter">G53SRP Systems and Real-Time Programming</a></p>
+  <p class="topless"><a href="02.html"
+                        title="next chapter">02 - Perceptron</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../../../sources/modules/part2/semester1/G53MLE/01.txt"
@@ -144,7 +150,7 @@
           <a href="../../../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+          <a href="02.html" title="02 - Perceptron"
              >next</a> |</li>
         <li class="right" >
           <a href="00.html" title="00 - Introduction"

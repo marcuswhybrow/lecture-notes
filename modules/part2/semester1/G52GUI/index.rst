@@ -12,6 +12,8 @@ Lectures:
     
     [0-9][0-9]
 
+*Lecture Notes stopped due to no exam*
+
 Convenor:
     `Tony Pridmore <http://www.cs.nott.ac.uk/~tpp/>`_
 
