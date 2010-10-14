@@ -1,0 +1,38 @@
+.. _G53SRP06:
+
+=========================================
+06 - Introduction to Real Time Scheduling
+=========================================
+
+Real Time ...
+=============
+
+A real-time system is any information processing system which has to respond to externally generated input stimuli within a finite and specified period. The correctness depends not only on the logical result but also the time it was delivered.
+
+Specifying Timing Constraints: Temporal Scopes
+==============================================
+
+For a section of code (a "process", "task", "scope" or Java runnable) specify:
+
+* When it should (nominally) start
+* When it must be completed by
+
+::
+
+    class Foo implements Runnable {
+        public void run() {
+            
+        }
+    }
+
+.. image:: /media/G53SRP/06/images/timeline.png
+
+Specifying the System
+=====================
+
+We nee to decompose the problem into a fixed set of tasks. Each will be implemented as a thread or some other schedulable thing.
+
+For each task:
+
+* Specify when it should be started. For example periodic (repeated or on a timer) or triggered by some other external event (such as an interrupt).
+* Specify the deadline within e

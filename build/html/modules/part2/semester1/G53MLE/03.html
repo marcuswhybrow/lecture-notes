@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>03 - ADLINE and Delta Rule &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53MLE Machine Learning" href="index.html" />
+    <link rel="next" title="Multiplayer Perceptrons" href="04.html" />
+    <link rel="prev" title="02 - Perceptron" href="02.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="04.html" title="Multiplayer Perceptrons"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="02.html" title="02 - Perceptron"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="adline-and-delta-rule">
+<span id="g53mle03"></span><h1>03 - ADLINE and Delta Rule<a class="headerlink" href="#adline-and-delta-rule" title="Permalink to this headline">¶</a></h1>
+<p>Adaptive Linear Element (ADLINE) vs Perceptron.</p>
+<p>ADLINE just outputs the weighted sum directly as apposed to the Perceptron with passes that weighted sum through a threshold as well.</p>
+<div class="section" id="the-adline-and-delta-rule">
+<h2>The ADLINE and Delta Rule<a class="headerlink" href="#the-adline-and-delta-rule" title="Permalink to this headline">¶</a></h2>
+<p>When the problem is not linearly separable the perceptron will fail to converge. ADLINE can overcome this difficulty by finding a best fit approximation to the target.</p>
+</div>
+<div class="section" id="the-adline-error-function">
+<h2>The ADLINE Error Function<a class="headerlink" href="#the-adline-error-function" title="Permalink to this headline">¶</a></h2>
+<p>We have training paris <img class="math" src="../../../../images/math/9d2bf3f70159be198de98d18a4f3db6847012e48.png" alt="&lt;X(k), d(k), k=1,2,...,K&gt;"/> where K is the number of training samples, the training error specifies the difference between the output of the ADLINE and the desired target.</p>
+<p>The error function <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> is defined as:</p>
+<div class="math">
+<p><img src="../../../../images/math/5fe86ec5e1e4a4a9c7d8563046c6faa8cf2c3d55.png" alt="E (W) = \frac{1}{2} \sum_{k=1}^K (d_k - y_k^2)" /></p>
+</div><p>where:</p>
+<div class="math">
+<p><img src="../../../../images/math/128382b2c26d9931e4691a38155a4af74a21fed8.png" alt="y_k = W^T X_k" /></p>
+</div><p>The difference between the actual output and the designed output is used by the error function in order to determine how close we got to approximating the desired function/weights.</p>
+<p>The smaller <img class="math" src="../../../../images/math/aa123a9552ce17567ad586d239bc4d7bdb276572.png" alt="E(W)"/> is the closer the approximation is to the perfect function.</p>
+<p>So the training task is to find <img class="math" src="../../../../images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W"/> such that <img class="math" src="../../../../images/math/aa123a9552ce17567ad586d239bc4d7bdb276572.png" alt="E(W)"/> is minimised.</p>
+<p>The differing values of <img class="math" src="../../../../images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W"/> creates a so called <em>error surface</em> which is visualisable if there are 2 or 3 weights. In 2D this surface would appear as valleys and mountains etc. spanning the hypothesis space. Our aim is to find the point which is the lowest in that error surface.</p>
+</div>
+<div class="section" id="the-gradient-descent-rule">
+<h2>The Gradient Descent Rule<a class="headerlink" href="#the-gradient-descent-rule" title="Permalink to this headline">¶</a></h2>
+<p>If you imagine a 2D graph displaying the error surface (in this case a line) we need to move <img class="math" src="../../../../images/math/08220645e4e46be7354d25bd0ef3b7d52751b200.png" alt="w(0)"/> to a new value, such that <img class="math" src="../../../../images/math/25f6430e2ef52c106126e123bcadfc4fd5a16103.png" alt="E(w(new)) &lt; E(w(0))"/>.</p>
+<p>This is easy if you are looking at the line, you can visually pick out the lowest point. To do this programmatically and without a priori knowledge we want to travel down negative gradients.</p>
+<p>This equates to moving in the opposite direction to the gradient, i.e. if the gradient going forward is positive (going up) we must move in the negative direction (backwards), which will take us downwards.</p>
+<p>Mathematically we can say:</p>
+<div class="math">
+<p><img src="../../../../images/math/0828771bdb8aaebc05a4ac766ce350695d1554bc.png" alt="w_{new} = w_{old} - \Delta sign" /></p>
+</div><div class="math">
+<p><img src="../../../../images/math/c02102d9f7067a8210e0f7797043b6145fb44e35.png" alt="\Delta E(W) = [\frac{\delta E}{ \delta w_1}, \frac{\delta E}{ \delta w_2}, ... , \frac{\delta E}{ \delta w_n}]" /></p>
+</div><p>The gradient training rule is for each individual weight is:</p>
+<div class="math">
+<p><img src="../../../../images/math/96257b9fbeb1dcac679f772e6ea00de8eded4d86.png" alt="w_i = w_i - n \frac{\delta E}{\delta w_i}" /></p>
+</div><p>where <img class="math" src="../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the training rate.</p>
+<p>The gradient descent training procedure is:</p>
+<ol class="arabic">
+<li><p class="first">Initialise <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/> to small values (for example in the range of -1 to 1) and choose a learning rate (e.g. n = 0.1).</p>
+</li>
+<li><dl class="first docutils">
+<dt>Until the termination condition is met, do</dt>
+<dd><ul class="first simple">
+<li>For all training sample pairs <img class="math" src="../../../../images/math/20db1219e28d3f4273bd3cc772c41a30758e4f74.png" alt="&lt;X_k, d_k&gt;"/> input the instance <img class="math" src="../../../../images/math/3e2f71afa7f9e5e033fd502b7085c7cf10c94927.png" alt="X_k"/> and compute:</li>
+</ul>
+<div class="math">
+<p><img src="../../../../images/math/17f46304e6c49b5bce1e6f08708f1d240a697e97.png" alt="\delta_i = i \sum_{k=1}^K (d_k - y_k) x_i(k)" /></p>
+</div><ul class="last">
+<li><p class="first">For each weight <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/>, do</p>
+<blockquote>
+<div class="math">
+<p><img src="../../../../images/math/f0f078cd9125844c4ac8333d7cca50e726dc8f1e.png" alt="w_i = w_i + n \delta_i" /></p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="stochastic-incremental-gradient-descent">
+<h2>Stochastic (Incremental) Gradient Descent<a class="headerlink" href="#stochastic-incremental-gradient-descent" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+</div>
+<div class="section" id="termination-of-training">
+<h2>Termination of Training<a class="headerlink" href="#termination-of-training" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+</div>
+<div class="section" id="gradient-descent-training">
+<h2>Gradient Descent Training<a class="headerlink" href="#gradient-descent-training" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">03 - ADLINE and Delta Rule</a><ul>
+<li><a class="reference internal" href="#the-adline-and-delta-rule">The ADLINE and Delta Rule</a></li>
+<li><a class="reference internal" href="#the-adline-error-function">The ADLINE Error Function</a></li>
+<li><a class="reference internal" href="#the-gradient-descent-rule">The Gradient Descent Rule</a></li>
+<li><a class="reference internal" href="#stochastic-incremental-gradient-descent">Stochastic (Incremental) Gradient Descent</a></li>
+<li><a class="reference internal" href="#termination-of-training">Termination of Training</a></li>
+<li><a class="reference internal" href="#gradient-descent-training">Gradient Descent Training</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="02.html"
+                        title="previous chapter">02 - Perceptron</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="04.html"
+                        title="next chapter">Multiplayer Perceptrons</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53MLE/03.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="04.html" title="Multiplayer Perceptrons"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="02.html" title="02 - Perceptron"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

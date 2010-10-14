@@ -1,0 +1,150 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>06 - Introduction to Real Time Scheduling &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="05 - Clocks and Times in RTSJ" href="05.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="05.html" title="05 - Clocks and Times in RTSJ"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction-to-real-time-scheduling">
+<span id="g53srp06"></span><h1>06 - Introduction to Real Time Scheduling<a class="headerlink" href="#introduction-to-real-time-scheduling" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="real-time">
+<h2>Real Time ...<a class="headerlink" href="#real-time" title="Permalink to this headline">¶</a></h2>
+<p>A real-time system is any information processing system which has to respond to externally generated input stimuli within a finite and specified period. The correctness depends not only on the logical result but also the time it was delivered.</p>
+</div>
+<div class="section" id="specifying-timing-constraints-temporal-scopes">
+<h2>Specifying Timing Constraints: Temporal Scopes<a class="headerlink" href="#specifying-timing-constraints-temporal-scopes" title="Permalink to this headline">¶</a></h2>
+<p>For a section of code (a &#8220;process&#8221;, &#8220;task&#8221;, &#8220;scope&#8221; or Java runnable) specify:</p>
+<ul class="simple">
+<li>When it should (nominally) start</li>
+<li>When it must be completed by</li>
+</ul>
+<div class="highlight-python"><pre>class Foo implements Runnable {
+    public void run() {
+
+    }
+}</pre>
+</div>
+<img alt="../../../../images/timeline.png" src="../../../../images/timeline.png" />
+</div>
+<div class="section" id="specifying-the-system">
+<h2>Specifying the System<a class="headerlink" href="#specifying-the-system" title="Permalink to this headline">¶</a></h2>
+<p>We nee to decompose the problem into a fixed set of tasks. Each will be implemented as a thread or some other schedulable thing.</p>
+<p>For each task:</p>
+<ul class="simple">
+<li>Specify when it should be started. For example periodic (repeated or on a timer) or triggered by some other external event (such as an interrupt).</li>
+<li>Specify the deadline within e</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">06 - Introduction to Real Time Scheduling</a><ul>
+<li><a class="reference internal" href="#real-time">Real Time ...</a></li>
+<li><a class="reference internal" href="#specifying-timing-constraints-temporal-scopes">Specifying Timing Constraints: Temporal Scopes</a></li>
+<li><a class="reference internal" href="#specifying-the-system">Specifying the System</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="05.html"
+                        title="previous chapter">05 - Clocks and Times in RTSJ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/06.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="05.html" title="05 - Clocks and Times in RTSJ"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

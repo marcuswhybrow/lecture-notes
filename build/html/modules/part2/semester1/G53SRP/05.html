@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>05 - Clocks and Times in RTSJ &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="06 - Introduction to Real Time Scheduling" href="06.html" />
+    <link rel="prev" title="04 - Programming with Time" href="04.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="06.html" title="06 - Introduction to Real Time Scheduling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Programming with Time"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="clocks-and-times-in-rtsj">
+<span id="g53srp05"></span><h1>05 - Clocks and Times in RTSJ<a class="headerlink" href="#clocks-and-times-in-rtsj" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="using-rtsj">
+<h2>Using RTSJ<a class="headerlink" href="#using-rtsj" title="Permalink to this headline">¶</a></h2>
+<p>See &#8220;running RTSJ&#8221; on WebCT (other resources).</p>
+<p>RTSJ is installed on <tt class="docutils literal"><span class="pre">archer.cs.nott.ac.uk</span></tt>.</p>
+</div>
+<div class="section" id="class-overview">
+<h2>Class Overview<a class="headerlink" href="#class-overview" title="Permalink to this headline">¶</a></h2>
+<img alt="../../../../images/class-overview.png" src="../../../../images/class-overview.png" />
+</div>
+<div class="section" id="highresolutiontime-class">
+<h2>HighResolutionTime Class<a class="headerlink" href="#highresolutiontime-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>package javax.realtime;
+
+public abstract class HighResolutionTime
+{
+    // nano-second resolution times
+    public long getMilliseconds();
+    public int getNanoseconds();
+    public void set(long millis,
+                    int nanos);
+    public Clock getClock();
+    // various utility/conversion methods
+    …
+    // high-res wait
+    public static waitForObject(Object target,
+        HighResolutionTime time)
+        throws InterruptedException;
+}</pre>
+</div>
+</div>
+<div class="section" id="absolutetime-class">
+<h2>AbsoluteTime Class<a class="headerlink" href="#absolutetime-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>package javax.realtime;
+
+public class AbsoluteTime extends HighResolutionTime {
+    // cons (also others)
+    public AbsoluteTime(long millis, int nanos);
+    // various utility conversions including…
+    public AbsoluteTime add(RelativeTime time);
+    public RelativeTime subtract(AbsoluteTime time);
+    public AbsoluteTime subtract(RelativeTime time);
+    …
+}</pre>
+</div>
+</div>
+<div class="section" id="relativetime-class">
+<h2>RelativeTime Class<a class="headerlink" href="#relativetime-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>package javax.realtime;
+
+public class RelativeTime
+    extends HighResolutionTime {
+    // cons (also others)
+    public RelativeTime(long millis, int nanos);
+    // various utility conversions including…
+    public RelativeTime add(RelativeTime time);
+    public RelativeTime subtract(RelativeTime time);
+    …
+}</pre>
+</div>
+</div>
+<div class="section" id="clock-class">
+<h2>Clock Class<a class="headerlink" href="#clock-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>package javax.realtime;
+
+public abstract class Clock {
+    // standard system realtime clock
+    public static Clock getRealtimeClock();
+    public AbsoluteTime getTime();
+    public RelativeTime getResolution();
+    // offset of this clock vs Epoch
+    public RelativeTime getEpochOffset();
+    …
+}</pre>
+</div>
+</div>
+<div class="section" id="rtclock-java">
+<h2>RTClock.java<a class="headerlink" href="#rtclock-java" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>…
+Clock clock = Clock.getRealtimeClock();
+AbsoluteTime time = clock.getTime();
+AbsoluteTime newTime = clock.getTime();
+RelativeTime elapsed = newTime.subtract(time);
+RelativeTime delay = new RelativeTime(1000,0);
+AbsoluteTime delayTime = newTime.add(delay);
+…</pre>
+</div>
+</div>
+<div class="section" id="rtsleep-java">
+<h2>RTSleep.java<a class="headerlink" href="#rtsleep-java" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>…
+Clock clock = Clock.getRealtimeClock();
+AbsoluteTime time = clock.getTime();
+RelativeTime delay = new RelativeTime(1000,0);
+AbsoluteTime delayTime = time.add(delay);
+RealtimeThread.sleep(delay);
+RealtimeThread.sleep(delayTime);
+…</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">05 - Clocks and Times in RTSJ</a><ul>
+<li><a class="reference internal" href="#using-rtsj">Using RTSJ</a></li>
+<li><a class="reference internal" href="#class-overview">Class Overview</a></li>
+<li><a class="reference internal" href="#highresolutiontime-class">HighResolutionTime Class</a></li>
+<li><a class="reference internal" href="#absolutetime-class">AbsoluteTime Class</a></li>
+<li><a class="reference internal" href="#relativetime-class">RelativeTime Class</a></li>
+<li><a class="reference internal" href="#clock-class">Clock Class</a></li>
+<li><a class="reference internal" href="#rtclock-java">RTClock.java</a></li>
+<li><a class="reference internal" href="#rtsleep-java">RTSleep.java</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="04.html"
+                        title="previous chapter">04 - Programming with Time</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="06.html"
+                        title="next chapter">06 - Introduction to Real Time Scheduling</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/05.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="06.html" title="06 - Introduction to Real Time Scheduling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Programming with Time"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

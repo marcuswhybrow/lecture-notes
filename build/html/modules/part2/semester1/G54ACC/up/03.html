@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>03 - Transport: Basics &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="G52CFJ C/C++ for Java Programmers" href="../../../semester2/G52CFJ/index.html" />
+    <link rel="prev" title="02 - Routing" href="02.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="02.html" title="02 - Routing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="transport-basics">
+<h1>03 - Transport: Basics<a class="headerlink" href="#transport-basics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="recap">
+<h2>Recap<a class="headerlink" href="#recap" title="Permalink to this headline">¶</a></h2>
+<p>TCP is connection oriented, providing reliability, flow control and congestion control.</p>
+<p>Congestion control will be covered in the next lecture.</p>
+</div>
+<div class="section" id="the-transport-layer">
+<h2>The Transport Layer<a class="headerlink" href="#the-transport-layer" title="Permalink to this headline">¶</a></h2>
+<p>This is process-to-process communication, for example host-to-host (or more precisely interface-to-interface). This allow multiplexing between the applications running on each host.</p>
+<p>There are two main protocols UDP (RFC 768) which uses best effort, unordered datagrams and TCP (RFC 793) which offers reliable, ordered byte-streams with the respect to the process and not the host.</p>
+<div class="section" id="port-numbers">
+<h3>Port Numbers<a class="headerlink" href="#port-numbers" title="Permalink to this headline">¶</a></h3>
+<p>Port numbers provide multiplexing of the hosts&#8217; network connection between processes. A 5-tuple can uniquely identify a traffic <em>flow</em> on the internet:</p>
+<p>(source IP, destination IP, source Port, destination Port, Protocol)</p>
+<p>The destination port can often identify a service.</p>
+<p>There is a 16 bit number space for protocols:</p>
+<ul class="simple">
+<li><strong>0 -&gt; 1023</strong> well-known usually requiring root privileges</li>
+<li><a href="#id1"><span class="problematic" id="id2">**</span></a>1024 -&gt; 49151 registered but often out of date</li>
+<li><a href="#id3"><span class="problematic" id="id4">**</span></a>49152 -&gt; 65535 dynamic/private/ephemeral</li>
+</ul>
+</div>
+</div>
+<div class="section" id="user-datagram-protocol">
+<h2>User Datagram Protocol<a class="headerlink" href="#user-datagram-protocol" title="Permalink to this headline">¶</a></h2>
+<p>User Datagram Protocol or UDP is about the simplest possible transport protocol. It provides a simple datagram over IP&#8217;s packets including a <em>datagram checksum</em> and <em>port numbers</em>.</p>
+<p>The checksum gives processes some reliability, for example if you receive some data, it was (probably) intended fro you and was (probably) transmitted correctly.</p>
+<p>Ports enable multiple processes per host to use IP networking simultaneously.</p>
+<div class="section" id="udp-headers">
+<h3>UDP Headers<a class="headerlink" href="#udp-headers" title="Permalink to this headline">¶</a></h3>
+<p><em>...</em></p>
+</div>
+</div>
+<div class="section" id="transmission-control-protocol">
+<h2>Transmission Control Protocol<a class="headerlink" href="#transmission-control-protocol" title="Permalink to this headline">¶</a></h2>
+<p>Transmission Control Protocol or TCP is reliable, it will retransmit data if it gets lost. It is ordered, data is guaranteed to arrive in the order it was sent. It is also a byte-stream, there is no need for the application to segment the data itself (although it can be common to insert delimiters).</p>
+<p>However a network is asynchronous, which means there is no indication or guarantee of delivery. We need to use timers to infer loss but the real job is to determine what the timers should be.</p>
+<div class="section" id="a-general-principle">
+<h3>A General Principle<a class="headerlink" href="#a-general-principle" title="Permalink to this headline">¶</a></h3>
+<p>&#8220;TCP implementations will follow a general principle of robustness: be conservative in what you do, be liberal in what you accept from others.&#8221; (RFC 793)</p>
+<p>This is followed in most of the good internet protocols, although consider the trade-off between robustness and enforcing upgradability/evolution.</p>
+</div>
+<div class="section" id="tcp-header">
+<h3>TCP Header<a class="headerlink" href="#tcp-header" title="Permalink to this headline">¶</a></h3>
+<p><em>...</em></p>
+</div>
+<div class="section" id="connections-state-machine">
+<h3>Connections: State Machine<a class="headerlink" href="#connections-state-machine" title="Permalink to this headline">¶</a></h3>
+<p>Connections can be quite complex, because a bidirectional connection must be setup. Transitions through the different states are achieved by API calls (sockets), packets and timer expiries.</p>
+<p>Typically there are three phases: <strong>connecting</strong>, <strong>established</strong> and <strong>closing</strong>.</p>
+<img alt="../../../../../images/state-machine.png" src="../../../../../images/state-machine.png" />
+</div>
+<div class="section" id="connections-setup">
+<h3>Connections: Setup<a class="headerlink" href="#connections-setup" title="Permalink to this headline">¶</a></h3>
+<p>The first step in any communication is to setup a connection. This is accomplished via a 3-way handshake:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">[A]</span> <span class="pre">SYN</span></tt> - &#8220;I wish to connect using <img class="math" src="../../../../../images/math/f1d677380ed21c96164182da94d4924c0308fe67.png" alt="seqno = x"/>&#8220;</li>
+<li><tt class="docutils literal"><span class="pre">[B]</span> <span class="pre">SYN/ACK</span></tt> - &#8220;Sure, <img class="math" src="../../../../../images/math/4bdfe9ac75b2c53c607a7161a41f14b0d75dfa4d.png" alt="ackno = x + 1"/>; likewise with <img class="math" src="../../../../../images/math/17891640c90737ed93cb82490b714fc3a9b9da18.png" alt="seqno = y"/>&#8220;</li>
+<li><tt class="docutils literal"><span class="pre">[A]</span> <span class="pre">ACK</span></tt> - &#8220;Acknowledged, <img class="math" src="../../../../../images/math/f80809c70fbddce635486a6b91c13d65c1e5d110.png" alt="ackno = y + 1"/>&#8220;</li>
+</ol>
+<p>The minimum required for both parties is to agree a connection has been setup and data can be sent with the final <tt class="docutils literal"><span class="pre">ACK</span></tt>.</p>
+<p>Connections are <em>bidirectional</em> meaning data can flow both ways.</p>
+</div>
+<div class="section" id="connections-teardown">
+<h3>COnnections: Teardown<a class="headerlink" href="#connections-teardown" title="Permalink to this headline">¶</a></h3>
+<p><em>...</em></p>
+</div>
+<div class="section" id="priority-and-precedence">
+<h3>Priority and Precedence<a class="headerlink" href="#priority-and-precedence" title="Permalink to this headline">¶</a></h3>
+<p><em>...</em></p>
+</div>
+</div>
+<div class="section" id="reliability">
+<h2>Reliability<a class="headerlink" href="#reliability" title="Permalink to this headline">¶</a></h2>
+<p>Basically this means retransmitting data when it is lost, but there are three problems:</p>
+<ol class="arabic simple">
+<li>How to detect loss?</li>
+<li>How to avoid loss due to host congestion?</li>
+<li>How to avoid loss due to network congestion?</li>
+</ol>
+<p>You can detect loss via byte-stream sequence numbers:</p>
+<ol class="arabic simple">
+<li>The sender sends <tt class="docutils literal"><span class="pre">seqno</span></tt></li>
+<li>The receiver sends <tt class="docutils literal"><span class="pre">ackno</span></tt></li>
+<li>The sender can detect how far receiver is through the stream of data</li>
+</ol>
+<div class="section" id="timeouts">
+<h3>Timeouts<a class="headerlink" href="#timeouts" title="Permalink to this headline">¶</a></h3>
+<p>But how long should we wait to retransmit a packet. This length of time is called a <strong>retransmit time out</strong> or RTO. This time is bust first account for the time it would take to send a packet to the receiver and get it back again, since this is the fastest possible round trip time (or RTT).</p>
+<div class="math">
+<p><img src="../../../../../images/math/85ffc382f16e50e0687792e519495aa4e89bfa2d.png" alt="RTT_{sample} = time_{ackR_{x}} - time_{packetT_{x}}
+
+RTT_{estimated} = \alpha . RTT_{estimated} + (1 - \alpha) . RTT_{sample}
+
+\alpha = \frac{7}{8}" /></p>
+</div><p><em>...</em></p>
+</div>
+<div class="section" id="flow-control">
+<h3>Flow Control<a class="headerlink" href="#flow-control" title="Permalink to this headline">¶</a></h3>
+<p>How to avoid loss in the receiver. The <tt class="docutils literal"><span class="pre">Rx</span></tt> host needs to put data somewhere.
+It&#8217;s likely to be busy in an OS scheduling sense and buffer management is required for connection.</p>
+<p>To stop the buffer overflowing and packets having to be dropped the receiver (Rx) advertises a window size. So a window size of 5 would be saying I can accept another 5 packets in my buffer.</p>
+<p>This advertisement enables Tx to avoid sending so much that Rx will be forced to drop it, wasting network (and Tx host) resources, and avoiding network induced loss in congestion control.</p>
+</div>
+<div class="section" id="connections-hosts">
+<h3>Connections: Hosts<a class="headerlink" href="#connections-hosts" title="Permalink to this headline">¶</a></h3>
+<p>Connection state is managed by the Transmission Control Block or TCB, each containing state used to mange the connection.</p>
+<p><em>...</em></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">03 - Transport: Basics</a><ul>
+<li><a class="reference internal" href="#recap">Recap</a></li>
+<li><a class="reference internal" href="#the-transport-layer">The Transport Layer</a><ul>
+<li><a class="reference internal" href="#port-numbers">Port Numbers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#user-datagram-protocol">User Datagram Protocol</a><ul>
+<li><a class="reference internal" href="#udp-headers">UDP Headers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transmission-control-protocol">Transmission Control Protocol</a><ul>
+<li><a class="reference internal" href="#a-general-principle">A General Principle</a></li>
+<li><a class="reference internal" href="#tcp-header">TCP Header</a></li>
+<li><a class="reference internal" href="#connections-state-machine">Connections: State Machine</a></li>
+<li><a class="reference internal" href="#connections-setup">Connections: Setup</a></li>
+<li><a class="reference internal" href="#connections-teardown">COnnections: Teardown</a></li>
+<li><a class="reference internal" href="#priority-and-precedence">Priority and Precedence</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reliability">Reliability</a><ul>
+<li><a class="reference internal" href="#timeouts">Timeouts</a></li>
+<li><a class="reference internal" href="#flow-control">Flow Control</a></li>
+<li><a class="reference internal" href="#connections-hosts">Connections: Hosts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="02.html"
+                        title="previous chapter">02 - Routing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../../semester2/G52CFJ/index.html"
+                        title="next chapter">G52CFJ C/C++ for Java Programmers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/up/03.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="02.html" title="02 - Routing"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
