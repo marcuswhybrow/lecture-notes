@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>07 - Event-Driven Programming &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="06 - Introduction to Real Time Scheduling" href="06.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="06.html" title="06 - Introduction to Real Time Scheduling"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="event-driven-programming">
+<span id="g53stp"></span><h1>07 - Event-Driven Programming<a class="headerlink" href="#event-driven-programming" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<p>Events are things which happen, i.e. which have a time or <em>temporal</em> extend. For example a key press or message being received over the network etc.</p>
+<p>Events occur (effectively or actually) independently from the execution of the program (i.e. at any time).</p>
+<p>An <strong>event handler</strong> is a package of code for responding to that event. Typically also a temporal scope.</p>
+</div>
+<div class="section" id="event-despatching">
+<h2>Event Despatching<a class="headerlink" href="#event-despatching" title="Permalink to this headline">¶</a></h2>
+<p>Events can be <strong>polled for</strong> explicitly by the <strong>user code</strong>. There is a need to choose a polling frequency to balance idle load with responsiveness.</p>
+<p>Event can also be polled for with <strong>OS support</strong>. For example using a UNIX poll or select, to wait for one or more blocking OS events and/or a timeout.</p>
+</div>
+<div class="section" id="event-driven-programs-common-polling-based-model">
+<h2>Event-Driven Programs: Common Polling-Based Model<a class="headerlink" href="#event-driven-programs-common-polling-based-model" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+</div>
+<div class="section" id="simple-event-driven-programming">
+<h2>Simple Event-Driven Programming<a class="headerlink" href="#simple-event-driven-programming" title="Permalink to this headline">¶</a></h2>
+<p>For example GUI programming or timed programming or scalable I/O or dataflow etc. In these cases there are distinct initialisation and active phases and there can be explicit representation of events (as objects for example).</p>
+</div>
+<div class="section" id="good-practice">
+<h2>Good Practice<a class="headerlink" href="#good-practice" title="Permalink to this headline">¶</a></h2>
+<p>It is a good idea to keep event handler execution times short, handing off long-running activities to helper threads.</p>
+<p>If you are doing your own event dispatching avoid busy waiting (i.e. intensive polling loops). At the very least put in a (long as possible) sleep or wait before re-checking.</p>
+</div>
+<div class="section" id="events-and-timers">
+<h2>Events and Timers<a class="headerlink" href="#events-and-timers" title="Permalink to this headline">¶</a></h2>
+<p>Events can be caused by the <em>firing</em> of timers. Timers can be <em>one-shot</em> (fires only once) or repeated (periodically fires at a certain rate).</p>
+<p>Standard Java support two lots of timers: <tt class="docutils literal"><span class="pre">java.util.Timer.*</span></tt> and <tt class="docutils literal"><span class="pre">javax.swing.Timer.*</span></tt></p>
+</div>
+<div class="section" id="java-util-timers">
+<h2>java.util Timers<a class="headerlink" href="#java-util-timers" title="Permalink to this headline">¶</a></h2>
+<p>Events can be caused by timers. A <tt class="docutils literal"><span class="pre">java.util.TimerTask</span></tt> is a <tt class="docutils literal"><span class="pre">Runnable</span></tt> object that represents unit of work (e.g. a simulation tick, network update time etc.)</p>
+<p>A <tt class="docutils literal"><span class="pre">java.util.Timer</span></tt> represents a background thread that executres a set of <tt class="docutils literal"><span class="pre">TimerTask``s</span> <span class="pre">non-concurrently.</span> <span class="pre">It</span> <span class="pre">enforces</span> <span class="pre">order,</span> <span class="pre">avoids</span> <span class="pre">overhead</span> <span class="pre">of</span> <span class="pre">multiple</span> <span class="pre">threads</span> <span class="pre">or</span> <span class="pre">thread</span> <span class="pre">per</span> <span class="pre">task</span> <span class="pre">adn</span> <span class="pre">cannot</span> <span class="pre">directly</span> <span class="pre">call</span> <span class="pre">swing</span> <span class="pre">(see</span> <span class="pre">``javax.swing.SwingUtilities.invokeLater</span></tt> and <tt class="docutils literal"><span class="pre">javax.swing.SwingUtilities.invokeAndWait)</span></tt></p>
+</div>
+<div class="section" id="javax-swing-timers">
+<h2>javax.swing Timers<a class="headerlink" href="#javax-swing-timers" title="Permalink to this headline">¶</a></h2>
+<p>There are timers which are integrated with the Swing GUI event dispatch thread, which means its safe to directly manipulate Swing widgets.</p>
+<p>A <tt class="docutils literal"><span class="pre">java.awt.event.ActionListener</span></tt> represents a unit of work (e.g. a GUI redraw or update) and is executed by the standard Swing event handling thread. This thread enforces ordering of timers and also other GUI events, which means a long-running handler will delay <strong>ALL</strong> GUI events and timers!</p>
+</div>
+<div class="section" id="other-forms-of-event-despatching">
+<h2>Other Forms of Event Despatching<a class="headerlink" href="#other-forms-of-event-despatching" title="Permalink to this headline">¶</a></h2>
+<p>Events can be asynchronously notified. This is similar to exception handling where the exception is <strong>not</strong> signalled by the thread or process which handles it. Meaning it is not related to the current thread activity, and may or may not resume.</p>
+</div>
+<div class="section" id="rtsj-asynchronous-events">
+<h2>RTSJ Asynchronous Events<a class="headerlink" href="#rtsj-asynchronous-events" title="Permalink to this headline">¶</a></h2>
+<p>In RTSJ asynchronous events are data-less occurrences. The event carries <strong>no</strong> information (unlike Swing events). <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> instances represent the type of event and <strong>not</strong> a particular occurrence of it. <tt class="docutils literal"><span class="pre">AsyncEventHandler</span></tt> instances can be registered with an <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> instance. The handler is <strong>released</strong> when the event fires.</p>
+</div>
+<div class="section" id="rtsj-program-internal-events">
+<h2>RTSJ Program - Internal Events<a class="headerlink" href="#rtsj-program-internal-events" title="Permalink to this headline">¶</a></h2>
+<p>An <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> can be explicitly fired by another activity within the application via a method called <tt class="docutils literal"><span class="pre">fire()</span></tt>.</p>
+</div>
+<div class="section" id="rtsj-posixsignalhandler">
+<h2>RTSJ POSIXSignalHandler<a class="headerlink" href="#rtsj-posixsignalhandler" title="Permalink to this headline">¶</a></h2>
+<p>This is a class which is required only on POSIX (UNIX) platforms and provides a standards way to register handlers for POSIZ signals (e.g. Ctrl-C).</p>
+</div>
+<div class="section" id="rtsj-external-events">
+<h2>RTSJ External Events<a class="headerlink" href="#rtsj-external-events" title="Permalink to this headline">¶</a></h2>
+<p>An <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> may be triggered by a low-level system event (such as an interrupt). Each <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> is <em>bound</em> to the named <strong>happening</strong> using a method called <tt class="docutils literal"><span class="pre">bindTo</span></tt>. A happening is a string which represents something that <em>happens</em> externally. The JVM detects/traps the underlying <em>happening,</em> and causes the <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> to fire.</p>
+</div>
+<div class="section" id="rtsj-timer-events">
+<h2>RTSJ Timer Events<a class="headerlink" href="#rtsj-timer-events" title="Permalink to this headline">¶</a></h2>
+<p>This is comparable to <tt class="docutils literal"><span class="pre">java.util.Timer</span></tt> and <tt class="docutils literal"><span class="pre">java.util.TimerTask</span></tt>. Realtime <tt class="docutils literal"><span class="pre">Timer</span></tt> extends <tt class="docutils literal"><span class="pre">AsyncEvent</span></tt> whereas <tt class="docutils literal"><span class="pre">OneShotTimer</span></tt> and <tt class="docutils literal"><span class="pre">PeriodicTimer</span></tt> extend <tt class="docutils literal"><span class="pre">Timer</span></tt> for on-shot or periodic use.</p>
+<p>Threading is handled by a realtime VM or <tt class="docutils literal"><span class="pre">BoundAsycEventHandler</span></tt>. Realtime equivalent of <tt class="docutils literal"><span class="pre">TimerTask</span></tt> is a regular realtime <tt class="docutils literal"><span class="pre">AsyncEventHandler</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">07 - Event-Driven Programming</a><ul>
+<li><a class="reference internal" href="#events">Events</a></li>
+<li><a class="reference internal" href="#event-despatching">Event Despatching</a></li>
+<li><a class="reference internal" href="#event-driven-programs-common-polling-based-model">Event-Driven Programs: Common Polling-Based Model</a></li>
+<li><a class="reference internal" href="#simple-event-driven-programming">Simple Event-Driven Programming</a></li>
+<li><a class="reference internal" href="#good-practice">Good Practice</a></li>
+<li><a class="reference internal" href="#events-and-timers">Events and Timers</a></li>
+<li><a class="reference internal" href="#java-util-timers">java.util Timers</a></li>
+<li><a class="reference internal" href="#javax-swing-timers">javax.swing Timers</a></li>
+<li><a class="reference internal" href="#other-forms-of-event-despatching">Other Forms of Event Despatching</a></li>
+<li><a class="reference internal" href="#rtsj-asynchronous-events">RTSJ Asynchronous Events</a></li>
+<li><a class="reference internal" href="#rtsj-program-internal-events">RTSJ Program - Internal Events</a></li>
+<li><a class="reference internal" href="#rtsj-posixsignalhandler">RTSJ POSIXSignalHandler</a></li>
+<li><a class="reference internal" href="#rtsj-external-events">RTSJ External Events</a></li>
+<li><a class="reference internal" href="#rtsj-timer-events">RTSJ Timer Events</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="06.html"
+                        title="previous chapter">06 - Introduction to Real Time Scheduling</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/07.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="06.html" title="06 - Introduction to Real Time Scheduling"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
