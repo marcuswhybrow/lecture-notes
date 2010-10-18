@@ -125,18 +125,85 @@
 </tbody>
 </table>
 <img alt="../../../../images/and-feature-space.png" src="../../../../images/and-feature-space.png" />
-<p><em>...</em></p>
+<p>Essentially a perceptron can solve any problem where the objects are linearly separable:</p>
+<img alt="../../../../images/linearly-separable.png" src="../../../../images/linearly-separable.png" />
+<p>However some problems are <strong>linearly non-sparable</strong>. A good example of this is the exclusive or function or XOR:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><img class="math" src="../../../../images/math/ccada11db7b2b90693e2fac4f887a57fce6f96bf.png" alt="x_1"/></th>
+<th class="head"><img class="math" src="../../../../images/math/6a7d010bbff66a0c41e43310a51efbaa6bf63396.png" alt="x_2"/></th>
+<th class="head"><img class="math" src="../../../../images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>-1</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr><td>-1</td>
+<td>+1</td>
+<td>+1</td>
+</tr>
+<tr><td>+1</td>
+<td>-1</td>
+<td>+1</td>
+</tr>
+<tr><td>+1</td>
+<td>+1</td>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+<p>XOR produces a graph which looks like this where it is impossible to separate the +1&#8217;s from the -1&#8217;s by a straight line:</p>
+<img alt="../../../../images/linearly-non-separable.png" src="../../../../images/linearly-non-separable.png" />
 </div>
-</div>
-<div class="section" id="representation-power">
-<h2>Representation Power<a class="headerlink" href="#representation-power" title="Permalink to this headline">¶</a></h2>
-<p><em>...</em></p>
 </div>
 <div class="section" id="training-algorithms">
 <h2>Training Algorithms<a class="headerlink" href="#training-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>In problems where the answer <em>is</em> linearly separable, a perceptron must learn where the line (decision surface) is best placed to separate the feature space.</p>
+<p>This is achieved by presenting the perceptron with training pairs known as an experience (X,D) where X is the set of vector (meaning list of numbers) training instances (input) and D is the set of vector classifications (+1 or -1) for each input. These experiences are presented to the perceptron for training <em>one at a time</em> until the process converges.</p>
+<p>The procedure is as follows:</p>
+<ol class="arabic">
+<li><p class="first">Set the weights to small random values (e.g. in the rang -1 to 1)</p>
+</li>
+<li><p class="first">Present X to the perceptron and calculate the <img class="math" src="../../../../images/math/3df21786c9e165df0ded522bb36d830b7d9a453c.png" alt="output"/> (+1 or -1) by the following process:</p>
+<blockquote>
+<p><img class="math" src="../../../../images/math/cc1124120435c843174c1bd246af8fb7054e603e.png" alt="output = threshold(R)"/></p>
+<p>where:</p>
+</blockquote>
+</li>
+</ol>
+<div class="math">
+<p><img src="../../../../images/math/ddfbae8a3f71339be55abdab87f160566756d834.png" alt="R = w_0 + \sum_{i=1}^n e_i x_i" /></p>
+</div><div class="math">
+<p><img src="../../../../images/math/142392a51e9eb67d7d55b186cb5e7f6852942166.png" alt="threshold =
+\left\{
+    \begin{array}{ll}
+        +1 &amp; \mbox{if } R &gt; 0 \\
+        0  &amp; \mbox{otherwise }
+    \end{array}
+\right." /></p>
+</div><ol class="arabic">
+<li><p class="first">Update the weights for <img class="math" src="../../../../images/math/40062b8e7106a0b59f1bc2533bec962b4fb784cf.png" alt="i = 1,2,...,n"/>:</p>
+<blockquote>
+<p><img class="math" src="../../../../images/math/3374407d48df36ef2c253e08935177a216a15c65.png" alt="w_i \leftarrow w_i + \eta (d - y) x_i"/></p>
+<p>where <img class="math" src="../../../../images/math/f0949fde45227d05dcb1f33148e8385bd87ed42f.png" alt="0 &lt; \eta &lt; 1"/> is a training rate</p>
+</blockquote>
+</li>
+<li><p class="first">Repeat by going to step 2.</p>
+</li>
+</ol>
 <p>Once the weight changing algorithm has been through each instance of the training data this is known as a single <strong>Epoch</strong>.</p>
-<p>Theory and real life are very different things.</p>
-<p><em>...</em></p>
+<div class="section" id="convergence-theorem">
+<h3>Convergence Theorem<a class="headerlink" href="#convergence-theorem" title="Permalink to this headline">¶</a></h3>
+<p>There perceptron training rule discussed will eventually converge on a single hypothesis from the hypothesis space of lines finding a <strong>weight vector</strong> which correctly classifies all training samples within a finite number of iterations, <strong>provided the training examples are linearly separable</strong> and provided a sufficiently small <img class="math" src="../../../../images/math/03a45952f8115322d2879f7d090126f059757ba0.png" alt="\eta"/> is used.</p>
+<p>Unfortunately theory and real life can differ very much and things may not be as simple as they can be described mathematically.</p>
+</div>
 </div>
 </div>
 
@@ -155,8 +222,10 @@
 <li><a class="reference internal" href="#so-what-can-we-represent">So What Can we Represent?</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#representation-power">Representation Power</a></li>
-<li><a class="reference internal" href="#training-algorithms">Training Algorithms</a></li>
+<li><a class="reference internal" href="#training-algorithms">Training Algorithms</a><ul>
+<li><a class="reference internal" href="#convergence-theorem">Convergence Theorem</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
