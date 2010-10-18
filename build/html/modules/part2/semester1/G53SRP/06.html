@@ -63,22 +63,39 @@
 <li>When it should (nominally) start</li>
 <li>When it must be completed by</li>
 </ul>
-<div class="highlight-python"><pre>class Foo implements Runnable {
-    public void run() {
-
-    }
-}</pre>
-</div>
 <img alt="../../../../images/timeline.png" src="../../../../images/timeline.png" />
 </div>
 <div class="section" id="specifying-the-system">
 <h2>Specifying the System<a class="headerlink" href="#specifying-the-system" title="Permalink to this headline">¶</a></h2>
-<p>We nee to decompose the problem into a fixed set of tasks. Each will be implemented as a thread or some other schedulable thing.</p>
+<p>We need to decompose the problem into a fixed set of tasks. Each will be implemented as a thread or some other schedulable thing.</p>
 <p>For each task:</p>
 <ul class="simple">
 <li>Specify when it should be started. For example periodic (repeated or on a timer) or triggered by some other external event (such as an interrupt).</li>
-<li>Specify the deadline within e</li>
+<li>Specify the deadline within which it should finish.</li>
 </ul>
+<p>Then arrange for the system to run those tasks at the correct times and in the right order.</p>
+</div>
+<div class="section" id="overview-of-realtime">
+<h2>Overview of Realtime<a class="headerlink" href="#overview-of-realtime" title="Permalink to this headline">¶</a></h2>
+<p>There are multiple concurrent process which run either periodically via a sleep or delay process or start sporadically via external events. Both types have deadlines.</p>
+<p>Everything in the system is correct if periodic processes are run at the correct rate and all deadline are met.</p>
+<p>The scheduler must make processes runnable at the defined times and in the correct order.</p>
+</div>
+<div class="section" id="priorities">
+<h2>Priorities<a class="headerlink" href="#priorities" title="Permalink to this headline">¶</a></h2>
+<p>So in what order should the tasks be executed?</p>
+<ol class="arabic">
+<li><p class="first">Decide a general strategy (e.g. fixed priority scheduling)</p>
+<blockquote>
+<p>Assign a priority to each process in advance and always run the highest-priority runnable process.</p>
+</blockquote>
+</li>
+<li><p class="first">Assign priorities to each process (e.g. shortest deadline first)</p>
+<blockquote>
+<p>Also known as <em>Deadline Monotonic Priority Ordering</em> (DMPO). This method can be shown to be optimal. In other words if any strategy works then this one will.</p>
+</blockquote>
+</li>
+</ol>
 </div>
 </div>
 
@@ -94,6 +111,8 @@
 <li><a class="reference internal" href="#real-time">Real Time ...</a></li>
 <li><a class="reference internal" href="#specifying-timing-constraints-temporal-scopes">Specifying Timing Constraints: Temporal Scopes</a></li>
 <li><a class="reference internal" href="#specifying-the-system">Specifying the System</a></li>
+<li><a class="reference internal" href="#overview-of-realtime">Overview of Realtime</a></li>
+<li><a class="reference internal" href="#priorities">Priorities</a></li>
 </ul>
 </li>
 </ul>
