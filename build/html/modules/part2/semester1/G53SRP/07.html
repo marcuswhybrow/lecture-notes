@@ -65,7 +65,18 @@
 </div>
 <div class="section" id="event-driven-programs-common-polling-based-model">
 <h2>Event-Driven Programs: Common Polling-Based Model<a class="headerlink" href="#event-driven-programs-common-polling-based-model" title="Permalink to this headline">¶</a></h2>
-<p><em>...</em></p>
+<p>Your code would define the following:</p>
+<ul class="simple">
+<li>Initialisation of the polling thread</li>
+<li>Handlers/callbacks when the poller detects an event</li>
+<li>What happens when the poller thread terminates</li>
+</ul>
+<p>Behind the scenes:</p>
+<ul class="simple">
+<li>Once initialised it waits for the next event (which relies on OS support for efficient multi-event polling)</li>
+<li>Once an event is detected it is dispatched calling the handler/callback you defined.</li>
+<li>The thread is either done or continues polling for the next event.</li>
+</ul>
 </div>
 <div class="section" id="simple-event-driven-programming">
 <h2>Simple Event-Driven Programming<a class="headerlink" href="#simple-event-driven-programming" title="Permalink to this headline">¶</a></h2>
