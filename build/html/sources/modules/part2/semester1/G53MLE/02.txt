@@ -1,0 +1,143 @@
+.. _G53MLE02:
+
+===============
+02 - Perceptron
+===============
+
+Over the next few lectures we will study different methods of machine learning.
+
+Perceptron Basic
+================
+
+A Perceptron is a type of artificial neural network or ANN. It computes the sum of its weighted inputs and passes the result to a hard-limit threshold function.
+
+It was designed to represent a single neurone in the brain. No one can be sure what exactly a neurone does but this method has some nice properties anyway.
+
+Perceptron Operation
+====================
+
+A perceptron ACC accepts an input vector (list of numbers) of ``n`` size and their weights and also a bias number and calculates a linear combination of these inputs and outputs either a 1 or a -1.
+
+First a **weighted sum** is created which is the sum of all the inputs (:math:`x_i`) multiplied by their weights (:math:`w_i`) plus an additional bias weight (:math:`w_0`):
+
+.. math:: w_{0} + \sum_{i=1}^{n} w_{i}x_{i}
+
+Then the weighted sum is passed through a threshold and ether is outputted as 1 or -1.
+
+Perceptron Decision Surface
+===========================
+
+The decision surface is one which is understandable in the 1D, 2D and 3D space. It would be a point, line and plane respectively. Decision surfaces can still be  represented in **hyper feature space** (more than 3 dimensions) and are called **hyperplane decision surfaces**.
+
+The perceptron outputs a 1 (or fires an electron in the brains case) for instances which lie on one side of the hyperplane and a -1 (the neurone doesn't fire in the brain) for instances lying on the other side.
+
+For instances with 2 features we can represent the feature space in euclidian space (a graph commonly labeled with an x and y axis containing points or lines).
+
+Ordinarily the hypothesis consists of a bunch of inputs (:math:`x_i`) and a bunch of matching weights (:math:`w_i`) including a weight :math:`w_0` known as a bias which never changes as the other weights do. The weights and inputs are summed up in the following way for a 2 dimensional feature vector:
+
+.. math:: w_0 + w_1 x_1 + w_2 x_2
+
+When we want to draw the decision surface (in this case it is not a hyperplane but a simple visualisable line) we say that the result should be equal to 0:
+
+.. math:: w_0 + w_1 x_1 + w_2 x_2 = 0
+
+In order to represent this more closely to a euclidean line we might rearrange it thus:
+
+.. math:: w_2 x_2 = - w_1 x_1 - w_0
+
+Which is similar to the format :math:`y = ?x + ?` commonly seen in euclidian space.
+
+If for example we were trying to guess the weights for a hypothesis which created a decision surface which looked like this:
+
+.. image:: /media/G53MLE/02/images/euclidean-feature-space.png
+
+Then assuming the line intercepts the vertical axis at lets say 1, and that the gradient is -1 (for every unit traveled in the positive direction right we travel one unit in the negative direction down thus :math:`\frac{1}{-1} = -1`) the equation would look like so:
+
+.. math:: x_2 = - x_1 + 1
+
+Thus by rearranging the equation in order make it equal to 0 agin we can determine the values of weights of the hypothesis:
+
+.. math:: x_2 + x_1 - 1 = 0
+
+So we know that :math:`w_2 = 1`, :math:`w_1 = 1` and :math:`w_0 = - 1`, since :math:`w_2` is the coefficient of :math:`x_2`, :math:`w_1` is the coefficient of :math:`x_1` and :math:`w_0` is the constant.
+
+So What Can we Represent?
+*************************
+
+We can represent many boolean functions if we assume a True result to return a 1 and a False result to return a -1. For example the boolean operator AND would look like so:
+
+=============== =============== ===============
+:math:`x_1`     :math:`x_2`     :math:`d`
+=============== =============== ===============
+-1              -1              -1
+-1              +1              -1
++1              -1              -1
++1              +1              +1
+=============== =============== ===============
+
+.. image:: /media/G53MLE/02/images/and-feature-space.png
+
+Essentially a perceptron can solve any problem where the objects are linearly separable:
+
+.. image:: /media/G53MLE/02/images/linearly-separable.png
+
+However some problems are **linearly non-sparable**. A good example of this is the exclusive or function or XOR:
+
+=============== =============== ===============
+:math:`x_1`     :math:`x_2`     :math:`d`
+=============== =============== ===============
+-1              -1              -1
+-1              +1              +1
++1              -1              +1
++1              +1              -1
+=============== =============== ===============
+
+XOR produces a graph which looks like this where it is impossible to separate the +1's from the -1's by a straight line:
+
+.. image:: /media/G53MLE/02/images/linearly-non-separable.png
+
+Training Algorithms
+===================
+
+In problems where the answer *is* linearly separable, a perceptron must learn where the line (decision surface) is best placed to separate the feature space.
+
+This is achieved by presenting the perceptron with training pairs known as an experience (X,D) where X is the set of vector (meaning list of numbers) training instances (input) and D is the set of vector classifications (+1 or -1) for each input. These experiences are presented to the perceptron for training *one at a time* until the process converges.
+
+The procedure is as follows:
+
+#. Set the weights to small random values (e.g. in the rang -1 to 1)
+#. Present X to the perceptron and calculate the :math:`output` (+1 or -1) by the following process:
+
+    :math:`output = threshold(R)`
+    
+    where:
+    
+.. math:: R = w_0 + \sum_{i=1}^n e_i x_i
+    
+.. math::
+
+    threshold =
+    \left\{
+        \begin{array}{ll}
+            +1 & \mbox{if } R > 0 \\
+            0  & \mbox{otherwise }
+        \end{array}
+    \right.
+    
+#. Update the weights for :math:`i = 1,2,...,n`:
+
+    :math:`w_i \leftarrow w_i + \eta (d - y) x_i`
+
+    where :math:`0 < \eta < 1` is a training rate
+
+#. Repeat by going to step 2.
+
+Once the weight changing algorithm has been through each instance of the training data this is known as a single **Epoch**.
+
+
+Convergence Theorem
+*******************
+
+There perceptron training rule discussed will eventually converge on a single hypothesis from the hypothesis space of lines finding a **weight vector** which correctly classifies all training samples within a finite number of iterations, **provided the training examples are linearly separable** and provided a sufficiently small :math:`\eta` is used.
+
+Unfortunately theory and real life can differ very much and things may not be as simple as they can be described mathematically.
