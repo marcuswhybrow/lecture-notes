@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>05 - Connecting &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="G52CFJ C/C++ for Java Programmers" href="../../../semester2/G52CFJ/index.html" />
+    <link rel="prev" title="04 - Transport: Advanced" href="04.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Transport: Advanced"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="connecting">
+<span id="g54accu05"></span><h1>05 - Connecting<a class="headerlink" href="#connecting" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="address-shortages">
+<h2>Address Shortages<a class="headerlink" href="#address-shortages" title="Permalink to this headline">¶</a></h2>
+<p>IPv4 supports 32 but addresses. 96% of these are allocated already (300,00 net-blocks). By current projections, by June 2011 we will have handed out all the global addresses and by Feb 2012 all regional addresses will be gone.</p>
+<p>However the number of connected devices is exploding.</p>
+<p>IPv6 supports 128 bit addresses, so this will make the address deficiencies go away. Unfortunately the routing protocols need to be updated and all the stuff that was implemented to support IPv4 need to be updated.</p>
+<div class="section" id="nat">
+<h3>NAT<a class="headerlink" href="#nat" title="Permalink to this headline">¶</a></h3>
+<p>Network Address Translation allows for private addressing (RFC 1918) and these private addresses should never be externally routed. They look like 172.16/12, 192.168/16 10/8</p>
+<p>Traditional NAT (RFC 3022 and also RFC 2663) use private addresses internally and map those into a small set of routable addresses. Source ports are used to distinguish connections and requires IP and TCP/UDP headers to be rewritten, modifying information such as the address, port and checksums.</p>
+</div>
+<div class="section" id="layer-violation">
+<h3>Layer Violation<a class="headerlink" href="#layer-violation" title="Permalink to this headline">¶</a></h3>
+<p>Information leaking from one layer (ISO layers) to another is known as layer violation. Generally it is considered poor form but is sometimes useful for feature or performance.</p>
+<p>NAT often causes layer violation to explode and commonly happens when address are abused as host identifiers (they&#8217;re not, theyre address for routing to interfaces).</p>
+<p>Also IP fragmentation, some packet options and some ICMP stuff is made difficult when NAT is involved.</p>
+</div>
+<div class="section" id="ice-stun">
+<h3>ICE, STUN<a class="headerlink" href="#ice-stun" title="Permalink to this headline">¶</a></h3>
+<p>Session Traversal Utilities for NAT (RFC 5389). The client attempts to characterise NAT behaviour using a third-part server &#8220;on the outside&#8221; this is a server which is not behind a NAT device known as a rendezvous server.</p>
+<p>Interactive Connectivity Establishment (RFC 5245) commonly used with SIP, SDP (for voice-on-IP) generally <em>offer/answer</em> protocols.</p>
+<p>Uses STUN to determine and select from a set of <em>candidate transport addresses</em>. THe selected addresses are then propagated and used.</p>
+</div>
+</div>
+<div class="section" id="middleboxes">
+<h2>Middleboxes<a class="headerlink" href="#middleboxes" title="Permalink to this headline">¶</a></h2>
+<p>A NAT is an example of a (transparent) middlebox. There are others:</p>
+<ul class="simple">
+<li>Firewalls</li>
+<li>Proxies</li>
+<li>Caches</li>
+</ul>
+<p>They often provide very useful services but can be a problem due to incomplete protocol support (ICMP). They can also be buggy and unreliable.</p>
+<div class="section" id="end-to-end-argument">
+<h3>End-to-End Argument<a class="headerlink" href="#end-to-end-argument" title="Permalink to this headline">¶</a></h3>
+<p>Functions whose implementation requires application involvement should not be provided at lower layers. That is unless partial implementation helps performance (we will revisit this later in the course).</p>
+</div>
+</div>
+<div class="section" id="naming">
+<h2>Naming<a class="headerlink" href="#naming" title="Permalink to this headline">¶</a></h2>
+<p>IP addresses are not especially human-readable and not always appropriate granularity (i.e. I don&#8217;t want to talk to an interface I want to talk to google.com, whatever interface that is on).</p>
+<p><strong>HOSTS.TXT</strong></p>
+<p>A file <tt class="docutils literal"><span class="pre">/etc/hosts</span></tt> mapping names to numbers was invented to do this. Originally in ARPANET the hosts file was transferred to all the machines on the network via FTP. It was simple but not automatic or scalable.</p>
+<p>A scalable version of this was made via distributed hierarchical servers and called Domain Name Service (DNS).</p>
+<div class="section" id="dns-protocol">
+<h3>DNS Protocol<a class="headerlink" href="#dns-protocol" title="Permalink to this headline">¶</a></h3>
+<p>Domain Name Service (RFC 1034, RFC 1035, RFC 2181)</p>
+<p>DNS is a client-server protocol returning a variety of records which commonly uses UDP for queries but may also use TCP, which is most notably used for bulk transfers between servers.</p>
+<p>Hierarchy is &#8220;baked in&#8221;. The names-space divides into <em>zones</em>. Top Level Domains are usually professionally managed and root servers know now to get everywhere.</p>
+<p>There is not a 1:1 mapping between names and numbers since multiple domain names can point to the same IP address.</p>
+</div>
+<div class="section" id="name-service">
+<h3>Name Service<a class="headerlink" href="#name-service" title="Permalink to this headline">¶</a></h3>
+<p>TLDs are operated by registrars and delegate sub-domains to other registrars and so down the hierarchy.</p>
+<p>Eventually a customer rents a subdomain/name (which means a registrar installs the appropriate records).</p>
+<p>Setup primary and secondary servers for subdomains, separate IP netblocks and physical networks.</p>
+<p>DNS is a <em>very</em> common single-point-of-failure.</p>
+</div>
+<div class="section" id="queries">
+<h3>Queries<a class="headerlink" href="#queries" title="Permalink to this headline">¶</a></h3>
+<p>Queries are either <em>recursive</em> or <em>iterative</em>. A server can either be <em>authoritative</em> or <em>caching</em> for any given record. To discover the authoritative requires a query to the root, thus the load on root servers is very high.</p>
+<p>A caching server works by caching records locally with an expiry time or <em>soft-state</em>.</p>
+<p>It is possible to acquire a zone&#8217;s complete set via <em>zone transfer</em>. But access to this is often controlled.</p>
+</div>
+<div class="section" id="responses">
+<h3>Responses<a class="headerlink" href="#responses" title="Permalink to this headline">¶</a></h3>
+<p>The following record types may be returned for a query:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>CNAME</td>
+<td>name <img class="math" src="../../../../../images/math/e12b6767375342ed57d27678e3ea1cdb97f47e15.png" alt="\rightarrow"/> Canonical Name</td>
+</tr>
+<tr><td>A</td>
+<td>name <img class="math" src="../../../../../images/math/e12b6767375342ed57d27678e3ea1cdb97f47e15.png" alt="\rightarrow"/> number</td>
+</tr>
+<tr><td>PTR</td>
+<td>name or number <img class="math" src="../../../../../images/math/e12b6767375342ed57d27678e3ea1cdb97f47e15.png" alt="\rightarrow"/> name</td>
+</tr>
+<tr><td>NS</td>
+<td>domain <img class="math" src="../../../../../images/math/e12b6767375342ed57d27678e3ea1cdb97f47e15.png" alt="\rightarrow"/> authoritative name server</td>
+</tr>
+<tr><td>MX</td>
+<td>domain <img class="math" src="../../../../../images/math/e12b6767375342ed57d27678e3ea1cdb97f47e15.png" alt="\rightarrow"/> Mail Exchange</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="security">
+<h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h3>
+<p>DNS is quite insecure.</p>
+<dl class="docutils">
+<dt>Cache Poisoning:</dt>
+<dd>Caching and soft-state timeouts mean bad data propagates and can persist for some time. Even if through a simple mistake.</dd>
+<dt>Man-in-the-middle Attacks:</dt>
+<dd>Iterative/Recursive queries almost demand this</dd>
+<dt>Name spoofing:</dt>
+<dd>Similar DNS names appear the same to end-users</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="quality-of-service">
+<h2>Quality of Service<a class="headerlink" href="#quality-of-service" title="Permalink to this headline">¶</a></h2>
+<p>What do you do when capacity &lt; demand? if capacity &gt; demand there is no need for Qos. The aim is to reducing queuing (latency, jitter and loss).</p>
+<p>QoS was basically retrofitted onto the internet and there are two versions:</p>
+<ul>
+<li><p class="first">Integrated Services (IntServ)</p>
+<blockquote>
+<p>Allows (on connection setup) to specify that I want no more than say 100ms delay on this packet. It doesn&#8217;t work on the internet since this requires every router on the way to co-operate. Its also complicated</p>
+</blockquote>
+</li>
+<li><p class="first">Differentiated Services (DiffServ)</p>
+<blockquote>
+<p>Instead of specific values DiffServ defines classes of packets and you can request that your packets be in a specific quality class.</p>
+</blockquote>
+</li>
+</ul>
+<p>However neither of these are especially widely used. This is because the internet started off with being able to cope with varying changes in latency. For example TCP can deal with a wide range of latencies and still make progress. So essentially the need is not that great.</p>
+<p>However it was built into ATM networks, since the whole point of ATM was to provide a quality of service.</p>
+<div class="section" id="intserv-vs-diffserv">
+<h3>IntServ vs DiffServ<a class="headerlink" href="#intserv-vs-diffserv" title="Permalink to this headline">¶</a></h3>
+<p>IntServ:</p>
+<ul class="simple">
+<li>Operates on explicitly signalled flows</li>
+<li>FLow setup specifies some QoS</li>
+<li>Routers perform Connection Admission COntrol</li>
+</ul>
+<p>DiffServ:</p>
+<ul class="simple">
+<li>Operates on <em>traffic aggregates</em></li>
+<li>Label packets with desired services class, low latency, low loss, high throughput defined.</li>
+<li>Routers apply queuing as operator sees fit.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">05 - Connecting</a><ul>
+<li><a class="reference internal" href="#address-shortages">Address Shortages</a><ul>
+<li><a class="reference internal" href="#nat">NAT</a></li>
+<li><a class="reference internal" href="#layer-violation">Layer Violation</a></li>
+<li><a class="reference internal" href="#ice-stun">ICE, STUN</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#middleboxes">Middleboxes</a><ul>
+<li><a class="reference internal" href="#end-to-end-argument">End-to-End Argument</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#naming">Naming</a><ul>
+<li><a class="reference internal" href="#dns-protocol">DNS Protocol</a></li>
+<li><a class="reference internal" href="#name-service">Name Service</a></li>
+<li><a class="reference internal" href="#queries">Queries</a></li>
+<li><a class="reference internal" href="#responses">Responses</a></li>
+<li><a class="reference internal" href="#security">Security</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quality-of-service">Quality of Service</a><ul>
+<li><a class="reference internal" href="#intserv-vs-diffserv">IntServ vs DiffServ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="04.html"
+                        title="previous chapter">04 - Transport: Advanced</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../../semester2/G52CFJ/index.html"
+                        title="next chapter">G52CFJ C/C++ for Java Programmers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/up/05.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Transport: Advanced"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
