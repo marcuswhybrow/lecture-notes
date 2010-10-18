@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>03 - ADLINE and Delta Rule &mdash; Lecture Notes v1.0 documentation</title>
+    <title>03 - ADALINE and Delta Rule &mdash; Lecture Notes v1.0 documentation</title>
     <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -50,45 +50,60 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="adline-and-delta-rule">
-<span id="g53mle03"></span><h1>03 - ADLINE and Delta Rule<a class="headerlink" href="#adline-and-delta-rule" title="Permalink to this headline">¶</a></h1>
-<p>Adaptive Linear Element (ADLINE) vs Perceptron.</p>
-<p>ADLINE just outputs the weighted sum directly as apposed to the Perceptron with passes that weighted sum through a threshold as well.</p>
-<div class="section" id="the-adline-and-delta-rule">
-<h2>The ADLINE and Delta Rule<a class="headerlink" href="#the-adline-and-delta-rule" title="Permalink to this headline">¶</a></h2>
-<p>When the problem is not linearly separable the perceptron will fail to converge. ADLINE can overcome this difficulty by finding a best fit approximation to the target.</p>
+  <div class="section" id="adaline-and-delta-rule">
+<span id="g53mle03"></span><h1>03 - ADALINE and Delta Rule<a class="headerlink" href="#adaline-and-delta-rule" title="Permalink to this headline">¶</a></h1>
+<p>ADAptive LINear Element (ADALINE) vs Perceptron.</p>
+<p>ADALINE just outputs the weighted sum directly as apposed to the Perceptron with passes that weighted sum through a threshold as well.</p>
+<div class="section" id="the-adaline-and-delta-rule">
+<h2>The ADALINE and Delta Rule<a class="headerlink" href="#the-adaline-and-delta-rule" title="Permalink to this headline">¶</a></h2>
+<p>When the problem is not linearly separable the perceptron will fail to converge. ADALINE can overcome this difficulty by finding a best fit approximation to the target.</p>
 </div>
-<div class="section" id="the-adline-error-function">
-<h2>The ADLINE Error Function<a class="headerlink" href="#the-adline-error-function" title="Permalink to this headline">¶</a></h2>
-<p>We have training paris <img class="math" src="../../../../images/math/9d2bf3f70159be198de98d18a4f3db6847012e48.png" alt="&lt;X(k), d(k), k=1,2,...,K&gt;"/> where K is the number of training samples, the training error specifies the difference between the output of the ADLINE and the desired target.</p>
+<div class="section" id="the-adaline-error-function">
+<h2>The ADALINE Error Function<a class="headerlink" href="#the-adaline-error-function" title="Permalink to this headline">¶</a></h2>
+<p>We have training paris <img class="math" src="../../../../images/math/fe6759d0f6a7fb0976713e3b87600fbf3df41299.png" alt="(X_k, d_k)"/> for <img class="math" src="../../../../images/math/74cb84fc185fb0d5f3b0626ba8448eb6f03c69c0.png" alt="k=1,2,...,K"/> where K is the number of training samples, the training error specifies the difference between the output of the ADLINE and the desired target.</p>
 <p>The error function <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> is defined as:</p>
 <div class="math">
-<p><img src="../../../../images/math/5fe86ec5e1e4a4a9c7d8563046c6faa8cf2c3d55.png" alt="E (W) = \frac{1}{2} \sum_{k=1}^K (d_k - y_k^2)" /></p>
-</div><p>where:</p>
+<p><img src="../../../../images/math/51973704621febabf6bdc5d68a2801c0bb5fd822.png" alt="E (W) = \frac{1}{2} \sum_{k=1}^K (d_k - y_k)^2" /></p>
+</div><p>where <img class="math" src="../../../../images/math/f7d09bd8dc83be3b4a1bc205b9cc6fa40b23c7a4.png" alt="d_k"/> is the desired output and <img class="math" src="../../../../images/math/c5dd4a48fae40d106f05aa536bdbebd1f0195842.png" alt="y_k"/> is the actual output from the ADLINE neurone, both for experience <img class="math" src="../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>.</p>
+<p><strong>Clarification:</strong></p>
+<p>The ADALINE neurone still calculates its output in the same way as the perceptron did, however without passing it through a threshold function:</p>
 <div class="math">
-<p><img src="../../../../images/math/128382b2c26d9931e4691a38155a4af74a21fed8.png" alt="y_k = W^T X_k" /></p>
-</div><p>The difference between the actual output and the designed output is used by the error function in order to determine how close we got to approximating the desired function/weights.</p>
+<p><img src="../../../../images/math/a4c9fe62834b68cec26c5b293760ed5a954e4960.png" alt="Y = w_0 + \sum_{i=1}^n w_i x_i" /></p>
+</div><p>where <img class="math" src="../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the number of inputs. This can be represented more simply. If we instead take <img class="math" src="../../../../images/math/eb37b8f84b267a3318413dcd963c9a5872051634.png" alt="w_0"/> and append it onto the end of the weight vector <img class="math" src="../../../../images/math/9ee4b825a2e36ae093ed7be5e4851ef453b34914.png" alt="w"/> and append a 1 to the end of the inputs vector <img class="math" src="../../../../images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> we can simply write:</p>
+<div class="math">
+<p><img src="../../../../images/math/a8754fe86b82f0c423e9ed64f0f41844bb8f2204.png" alt="Y = \sum_{i=1}^n w_i x_i" /></p>
+</div><p>since for <img class="math" src="../../../../images/math/801b4b6c57a1e85c609e277fa66555060aacd29f.png" alt="i=n"/>, <img class="math" src="../../../../images/math/58b1a374e4f361c453842e07e48181a3a80e58c0.png" alt="w_n x_n"/> will be <img class="math" src="../../../../images/math/d339871135de097c85f233a14e70731c0890a08f.png" alt="w_0 \times 1"/>, which will be summed together with the other values. Mathematically this is a common format which is given the name <strong>dot product</strong>, which is denoted <img class="math" src="../../../../images/math/f9f63cf42226d35b10709e5af724d27db47b5db4.png" alt="w \cdot x"/>, so these are all the same thing:</p>
+<div class="math">
+<p><img src="../../../../images/math/f85f5e9d4b4284d76063ae5ba60131f2969a4b88.png" alt="w \cdot x = w_1 x_1 + w_2 x_2 + ... + w_n x_n = \sum_{i=1}^n w_i x_i" /></p>
+</div><p>So lets take an example, if we have a 3 dimensional input vector say <img class="math" src="../../../../images/math/7ea1254e1659daa32cfc60a6a0969efd6bda75e1.png" alt="\left[10,20,30\right]"/> and a bias (formally <img class="math" src="../../../../images/math/eb37b8f84b267a3318413dcd963c9a5872051634.png" alt="w_0"/>) of 5 and current weights for the 3 dimensional input vector <img class="math" src="../../../../images/math/46a000f647ec82810b2e87f0e02ae4f986003e53.png" alt="\left[0.1,0.2,0.3\right]"/> we would (using the <img class="math" src="../../../../images/math/c8f77e3035db5fe9a4975967750ac1a6454bda8c.png" alt="\Sigma"/> based sum function) have the following:</p>
+<div class="math">
+<p><img src="../../../../images/math/82c8933fa92a5997cde515339077e37936df42f9.png" alt="y = 5 + (0.1 \times 10) + (0.2 \times 20) + (0.3 \times 30)" /></p>
+</div><p>If we convert the input and weight vectors to incorporate the bias we can use the dot product instead. So the inputs vector would be <img class="math" src="../../../../images/math/6478e03f03cf7f853c75ebffc4c3d790480d98a7.png" alt="\left[10,20,30,1\right]"/> and the weights vector would be <img class="math" src="../../../../images/math/5188996f1beae09c6607207788f4afc620ab27f8.png" alt="\left[0.1,0.2,0.3,5\right]"/>, now we get:</p>
+<div class="math">
+<p><img src="../../../../images/math/616580602394e0d390c3f12df48c64507aee177e.png" alt="y = \left[0.1,0.2,0.3,5\right] \cdot \left[10,20,30,1\right] = (0.1 \times 10) + (0.2 \times 20) + (0.3 \times 30) + (5 \times 1)" /></p>
+</div><p><strong>OK Back to the Error function stuff:</strong></p>
+<p>The difference between the actual output and the designed output (<img class="math" src="../../../../images/math/c3056a73a19e823d6557381375c63a266f012a1a.png" alt="(d_k - y_k)^2"/>) is used by the error function in order to determine how close we got to approximating the desired function/weights.</p>
 <p>The smaller <img class="math" src="../../../../images/math/aa123a9552ce17567ad586d239bc4d7bdb276572.png" alt="E(W)"/> is the closer the approximation is to the perfect function.</p>
 <p>So the training task is to find <img class="math" src="../../../../images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W"/> such that <img class="math" src="../../../../images/math/aa123a9552ce17567ad586d239bc4d7bdb276572.png" alt="E(W)"/> is minimised.</p>
 <p>The differing values of <img class="math" src="../../../../images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W"/> creates a so called <em>error surface</em> which is visualisable if there are 2 or 3 weights. In 2D this surface would appear as valleys and mountains etc. spanning the hypothesis space. Our aim is to find the point which is the lowest in that error surface.</p>
 </div>
 <div class="section" id="the-gradient-descent-rule">
 <h2>The Gradient Descent Rule<a class="headerlink" href="#the-gradient-descent-rule" title="Permalink to this headline">¶</a></h2>
-<p>If you imagine a 2D graph displaying the error surface (in this case a line) we need to move <img class="math" src="../../../../images/math/08220645e4e46be7354d25bd0ef3b7d52751b200.png" alt="w(0)"/> to a new value, such that <img class="math" src="../../../../images/math/25f6430e2ef52c106126e123bcadfc4fd5a16103.png" alt="E(w(new)) &lt; E(w(0))"/>.</p>
+<p>If you imagine a 2D graph displaying the error surface (in this case some sort of curved line) we need to move <img class="math" src="../../../../images/math/08220645e4e46be7354d25bd0ef3b7d52751b200.png" alt="w(0)"/> to a new value, such that <img class="math" src="../../../../images/math/25f6430e2ef52c106126e123bcadfc4fd5a16103.png" alt="E(w(new)) &lt; E(w(0))"/>.</p>
 <p>This is easy if you are looking at the line, you can visually pick out the lowest point. To do this programmatically and without a priori knowledge we want to travel down negative gradients.</p>
 <p>This equates to moving in the opposite direction to the gradient, i.e. if the gradient going forward is positive (going up) we must move in the negative direction (backwards), which will take us downwards.</p>
 <p>Mathematically we can say:</p>
 <div class="math">
 <p><img src="../../../../images/math/0828771bdb8aaebc05a4ac766ce350695d1554bc.png" alt="w_{new} = w_{old} - \Delta sign" /></p>
 </div><div class="math">
-<p><img src="../../../../images/math/c02102d9f7067a8210e0f7797043b6145fb44e35.png" alt="\Delta E(W) = [\frac{\delta E}{ \delta w_1}, \frac{\delta E}{ \delta w_2}, ... , \frac{\delta E}{ \delta w_n}]" /></p>
+<p><img src="../../../../images/math/7de01a57a87fe4abf501fce0a68332934f4ea406.png" alt="\bigtriangledown E(W) = \left[\frac{\delta E}{ \delta w_1}, \frac{\delta E}{ \delta w_2}, ... , \frac{\delta E}{ \delta w_n}\right]" /></p>
 </div><p>The gradient training rule is for each individual weight is:</p>
 <div class="math">
-<p><img src="../../../../images/math/96257b9fbeb1dcac679f772e6ea00de8eded4d86.png" alt="w_i = w_i - n \frac{\delta E}{\delta w_i}" /></p>
-</div><p>where <img class="math" src="../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the training rate.</p>
+<p><img src="../../../../images/math/870c838688421e5284476e54e65d34bc11dddf8b.png" alt="w_i = w_i - \eta \frac{\delta E}{\delta w_i}" /></p>
+</div><p>where <img class="math" src="../../../../images/math/03a45952f8115322d2879f7d090126f059757ba0.png" alt="\eta"/> is the training rate.</p>
 <p>The gradient descent training procedure is:</p>
 <ol class="arabic">
-<li><p class="first">Initialise <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/> to small values (for example in the range of -1 to 1) and choose a learning rate (e.g. n = 0.1).</p>
+<li><p class="first">Initialise <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/> to small values (for example in the range of -1 to 1) and choose a learning rate (e.g. <img class="math" src="../../../../images/math/10d3c4268556dc684f09030e93b533413a025608.png" alt="\eta = 0.1"/>).</p>
 </li>
 <li><dl class="first docutils">
 <dt>Until the termination condition is met, do</dt>
@@ -100,9 +115,8 @@
 </div><ul class="last">
 <li><p class="first">For each weight <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/>, do</p>
 <blockquote>
-<div class="math">
-<p><img src="../../../../images/math/f0f078cd9125844c4ac8333d7cca50e726dc8f1e.png" alt="w_i = w_i + n \delta_i" /></p>
-</div></blockquote>
+<p><img class="math" src="../../../../images/math/e044301f60d69adc2389b61a33bcd00ca5d06e00.png" alt="w_i = w_i + n \delta_i"/></p>
+</blockquote>
 </li>
 </ul>
 </dd>
@@ -112,14 +126,44 @@
 </div>
 <div class="section" id="stochastic-incremental-gradient-descent">
 <h2>Stochastic (Incremental) Gradient Descent<a class="headerlink" href="#stochastic-incremental-gradient-descent" title="Permalink to this headline">¶</a></h2>
-<p><em>...</em></p>
+<p>Also known as online mode, Least Mean Square (LMS), Widrow-Hoff, and the Delta Rule the process is as follows:</p>
+<ol class="arabic">
+<li><p class="first">Initialise all <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/> to small values (e.g. in the range -1 to +1), choose a learning rate (e.g. <img class="math" src="../../../../images/math/8dcb27139a6ffefd56adc716bf9a6f27afb7e4c2.png" alt="\eta = 0.01"/>, which should be a smaller value than the one used in batch mode).</p>
+</li>
+<li><p class="first">Until the termination condition is met, do:</p>
+<blockquote>
+<ol class="arabic">
+<li><p class="first">For <strong>each</strong> training sample pair <img class="math" src="../../../../images/math/fe6759d0f6a7fb0976713e3b87600fbf3df41299.png" alt="(X_k, d_k)"/> compute:</p>
+<blockquote>
+<p><img class="math" src="../../../../images/math/27ae1f275a1d5b6a346aa54ae5dff38eed6674b8.png" alt="\delta_i = - (d_k - y_k) X_{k_i}"/></p>
+</blockquote>
+</li>
+<li><p class="first">Then for each weight <img class="math" src="../../../../images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/>, do:</p>
+<blockquote>
+<p><img class="math" src="../../../../images/math/72f0dd9f43b72a385b1b1a2da5ecf32d0eaa84a2.png" alt="w_i \leftarrow w_i + \eta \delta_i"/></p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="training-iterations-epochs">
+<h2>Training Iterations, Epochs<a class="headerlink" href="#training-iterations-epochs" title="Permalink to this headline">¶</a></h2>
+<p>Training is an iterative process, thus training samples are used repeatedly for training. Assuming we have <img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> training samples <img class="math" src="../../../../images/math/fe6759d0f6a7fb0976713e3b87600fbf3df41299.png" alt="(X_k, d_k)"/> for <img class="math" src="../../../../images/math/74cb84fc185fb0d5f3b0626ba8448eb6f03c69c0.png" alt="k=1,2,...,K"/>, then an epoch is the presentation of all <img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> training samples to the function approximation process <strong>once</strong>.</p>
+<p>The order of training sample presentation between epochs can (and should) be different, and training may take many epochs to complete.</p>
 </div>
 <div class="section" id="termination-of-training">
 <h2>Termination of Training<a class="headerlink" href="#termination-of-training" title="Permalink to this headline">¶</a></h2>
-<p><em>...</em></p>
+<p>To terminate training, there are normally two ways:</p>
+<ol class="arabic simple">
+<li>When a pre-set number of training epochs is reached</li>
+<li>When the error is smaller than a pre-set value</li>
+</ol>
 </div>
-<div class="section" id="gradient-descent-training">
-<h2>Gradient Descent Training<a class="headerlink" href="#gradient-descent-training" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<p>Chapter 4, Machine Learning, T. M. Mitchell 1997</p>
 </div>
 </div>
 
@@ -131,13 +175,14 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">03 - ADLINE and Delta Rule</a><ul>
-<li><a class="reference internal" href="#the-adline-and-delta-rule">The ADLINE and Delta Rule</a></li>
-<li><a class="reference internal" href="#the-adline-error-function">The ADLINE Error Function</a></li>
+<li><a class="reference internal" href="#">03 - ADALINE and Delta Rule</a><ul>
+<li><a class="reference internal" href="#the-adaline-and-delta-rule">The ADALINE and Delta Rule</a></li>
+<li><a class="reference internal" href="#the-adaline-error-function">The ADALINE Error Function</a></li>
 <li><a class="reference internal" href="#the-gradient-descent-rule">The Gradient Descent Rule</a></li>
 <li><a class="reference internal" href="#stochastic-incremental-gradient-descent">Stochastic (Incremental) Gradient Descent</a></li>
+<li><a class="reference internal" href="#training-iterations-epochs">Training Iterations, Epochs</a></li>
 <li><a class="reference internal" href="#termination-of-training">Termination of Training</a></li>
-<li><a class="reference internal" href="#gradient-descent-training">Gradient Descent Training</a></li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
 </ul>
 </li>
 </ul>
