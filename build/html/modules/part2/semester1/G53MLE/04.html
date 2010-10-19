@@ -75,12 +75,43 @@
 </div>
 <div class="section" id="sigmoid-unit">
 <h2>Sigmoid Unit<a class="headerlink" href="#sigmoid-unit" title="Permalink to this headline">¶</a></h2>
-<p>A sigmoid unit is very similar to a perceptron. It takes an n diminutional input and calculates a weighted sum. Then were the perceptron put that value through a threshold function and the ADLINE method just output the value directly the Sigmoid unit puts the output value through a <strong>signmoid function</strong>.</p>
+<p>A sigmoid unit is very similar to a perceptron. It takes an n diminutional input and calculates a weighted sum. Then were the perceptron put that value through a threshold function and the ADLINE method just output the value directly the Sigmoid unit puts the output value through a <strong>sigmoid function</strong>.</p>
 <p>A sigmoid function looks like this and its values can range from 0 to 1:</p>
 <div class="math">
 <p><img src="../../../../images/math/e39f963e3bb4e8c9555ecfdffb953e95148f420a.png" alt="\frac{1}{1 + e^{-x}}" /></p>
 </div><img alt="../../../../images/sigmoid.png" src="../../../../images/sigmoid.png" />
 <p>The non-linearity allows for more values meaning that multilayer networks (which are used to divide the feature space non-linearly) can form non-linear decision surfaces more easily.</p>
+<p>The error gradient for a Sigmoid Unit is:</p>
+<div class="math">
+<p><img src="../../../../images/math/4e597ab78aa12dcf88bfa32e447bdf873077fc16.png" alt="E(W) = \frac{1}{2} \sum_{k=1}^K (d_k - y_k)^2" /></p>
+</div><p>which is the same as ADALINE.</p>
+</div>
+<div class="section" id="back-propagation-algorithm">
+<h2>Back-Propagation Algorithm<a class="headerlink" href="#back-propagation-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Back-propagation is a gradient descent over the entire networks weight vectors. In practice, it often works well and can run multiple times. It minimises error over all training samples but will only find a local minimum and not a global one (meaning it just finishes in the first valley it falls into).</p>
+<p>However training can take thousands of iterations but after training using the network is fast.</p>
+<p>We also want have a <strong>generalisation capability</strong> which means, assuming the hypothesis (weight vector) is perfect for the training samples and always guesses correctly, it should also guess correctly for new, yet unobserved data.</p>
+</div>
+<div class="section" id="learning-hidden-layer-representation">
+<h2>Learning Hidden Layer Representation<a class="headerlink" href="#learning-hidden-layer-representation" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to use hidden layers in a neural network to still solve problems. Because the hidden layers introduce more weights which there is a higher level of possible hypotheses which could still correctly classify input.</p>
+<p>This means that the hidden layers can change slightly but still provide the same output effect, which is a benefit over traditional programs since if one bit of a traditional program is incorrect it is going to cause some sort of error eventually.</p>
+<p>This property means that a neural network with hidden layers can deal with noise.</p>
+<p>During the course of training the network changes. Eventually if you arrive at a stable state the program is solved.</p>
+</div>
+<div class="section" id="expressive-capabilities">
+<h2>Expressive Capabilities<a class="headerlink" href="#expressive-capabilities" title="Permalink to this headline">¶</a></h2>
+<p>So what exactly can a hidden layers do for us...</p>
+<p>Boolean functions:</p>
+<ul class="simple">
+<li>Every boolean function can be represented by a network with a single hidden layer</li>
+<li>However it might require exponential (determined by the number of input inputs) hidden units.</li>
+</ul>
+<p>Continuous:</p>
+<ul class="simple">
+<li>Every bounded continuous function can be approximated with arbitrarily small error, by a network with one hidden layer.</li>
+<li>Any function can be approximated to arbitrary accuracy by a network with two hidden layers.</li>
+</ul>
 </div>
 </div>
 
@@ -98,6 +129,9 @@
 <li><a class="reference internal" href="#multilayer-network">Multilayer Network</a></li>
 <li><a class="reference internal" href="#multilayer-perceptron">Multilayer Perceptron</a></li>
 <li><a class="reference internal" href="#sigmoid-unit">Sigmoid Unit</a></li>
+<li><a class="reference internal" href="#back-propagation-algorithm">Back-Propagation Algorithm</a></li>
+<li><a class="reference internal" href="#learning-hidden-layer-representation">Learning Hidden Layer Representation</a></li>
+<li><a class="reference internal" href="#expressive-capabilities">Expressive Capabilities</a></li>
 </ul>
 </li>
 </ul>
