@@ -1,0 +1,51 @@
+.. _G53IDS01:
+
+=================
+01 - Introduction
+=================
+
+
+
+Admin
+=====
+
+8 October
+    Agree project topic with supervisor
+
+15 October
+    Submission of details project proposal including a detailed project plan (2 pages)
+
+29 October
+    Submission of revised project proposal (pdf submitted to ``cw submit`` id 306)
+
+29 November
+    Presentation (10%)
+
+28 February
+    Dissertation outline and sample chapter of your dissertation to the supervisor for formative feedback
+
+6 May
+    Submission of dissertation (80%)
+
+12 May
+    demo (10%)
+
+What Should A Project Include
+=============================
+
+Should involve programming
+
+Should make a contribution to other peoples knowledge.
+
+Project Proposal
+================
+
+* Project Title
+* Aims and objectives (what the project is going to achieve)
+* Background and motivation (why its worth doing: may be very short if it is obvious, sometimes quite detailed if it is in a narrow research area)
+* Project plan (how are you going to spend the next year of time)
+
+Planning Your Project
+=====================
+
+* Need to 
