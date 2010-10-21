@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>09 - More on Asynchronous Events in RTSJ &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="08 - RTSJ Support for Scheduling and Deadlines" href="08.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="08.html" title="08 - RTSJ Support for Scheduling and Deadlines"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="more-on-asynchronous-events-in-rtsj">
+<span id="g53srp09"></span><h1>09 - More on Asynchronous Events in RTSJ<a class="headerlink" href="#more-on-asynchronous-events-in-rtsj" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="asynceventhandler-notes">
+<h2>AsyncEventHandler notes<a class="headerlink" href="#asynceventhandler-notes" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Each AsyncEventHandler has its own &#8220;Arrival Time Queue&#8221; which can be though of as the release time queue.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Each time the associated event is fired, that time is added to the arrival time queue.</dt>
+<dd><ul class="first last simple">
+<li>Subject to arrival time queue and minimum inter-arrival time behaviour.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">The system will schedule a call to <tt class="docutils literal"><span class="pre">handleAsyncEven()</span></tt> for each time in the queue, each having its own deadline &amp; cost.</p>
+</li>
+<li><p class="first">The number of times in the queue (-1) is visible in the API as the &#8220;pending fire count&#8221;.</p>
+</li>
+<li><p class="first">Event handler code can check and manipulate the queue (for example to remove additional releases).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="periodic-aperiodic-and-sporadic-events">
+<h2>Periodic, Aperiodic and Sporadic Events<a class="headerlink" href="#periodic-aperiodic-and-sporadic-events" title="Permalink to this headline">¶</a></h2>
+<p>Irrespective of its actual cause or nature, a realtime event can be classified as:</p>
+<ul class="simple">
+<li><strong>Periodic</strong> - occurring at some fixed interval</li>
+<li><strong>Aperiodic</strong> - occurring with no temporal pattern</li>
+<li><strong>Sporadic</strong> - occurring from time to time but not &#8220;too&#8221; often</li>
+</ul>
+<p>This must be know to assess the system&#8217;s schedulability.</p>
+</div>
+<div class="section" id="release-parameters-classes">
+<h2>Release Parameters Classes<a class="headerlink" href="#release-parameters-classes" title="Permalink to this headline">¶</a></h2>
+<img alt="../../../../images/release-parameters-classes.png" src="../../../../images/release-parameters-classes.png" />
+</div>
+<div class="section" id="aperiodic-events">
+<h2>Aperiodic Events<a class="headerlink" href="#aperiodic-events" title="Permalink to this headline">¶</a></h2>
+<p>An aperiodic event can occur at any time and successive releases may occur arbitrary closely together. THe CPU requirements for aperiodic events can be potentially infinite meaning we can never guarantee to meet deadlines with aperiodic events.</p>
+<p>Releases occurring, before the previous release completes, are queued. When this happens the release time is recorded. Various queue behaviours are possible.</p>
+</div>
+<div class="section" id="arrival-time-queue-length">
+<h2>Arrival Time Queue Length<a class="headerlink" href="#arrival-time-queue-length" title="Permalink to this headline">¶</a></h2>
+<p>EventHandler arrival time queue has an initial length specified by AperiodicParameters. Remember that the queue includes the current release also. New firing are added to empty slots in the queue. If the queue is full then what happens is determined by the behaviour of the queue.</p>
+</div>
+<div class="section" id="arrival-time-queue-overflow-behaviours">
+<h2>Arrival Time Queue Overflow Behaviours<a class="headerlink" href="#arrival-time-queue-overflow-behaviours" title="Permalink to this headline">¶</a></h2>
+<p>If the queue is full and another event fires there are several behaviours which can be employed:</p>
+<ul class="simple">
+<li><strong>EXCEPT</strong> throws <tt class="docutils literal"><span class="pre">ArivalTImeQueueOverflowException</span></tt> from <tt class="docutils literal"><span class="pre">fire()</span></tt>. Similar to ignore if caused by an external happening.</li>
+<li><strong>IGNORE</strong> ignores the firing; the queue is unchanged.</li>
+<li><strong>REPLACE</strong> replaces the last time in the queue.</li>
+<li><strong>SAVE</strong> extends the queue (which is the default)</li>
+</ul>
+</div>
+<div class="section" id="sporadic-events">
+<h2>Sporadic Events<a class="headerlink" href="#sporadic-events" title="Permalink to this headline">¶</a></h2>
+<p>Sporadic events are similar to aperiodic events but also have a Minimum Inter-arrival Time (or MIT). This is a way to tell Java that an event can happen no more frequently than a certain period. The MIT is used for analysis and scheduling, the worst-case periodic equivalent is having the MIT as the period.</p>
+<p>Sporadic events are checked at run-time and have arrival queues just like other events, but also has some extra queue constraints.</p>
+</div>
+<div class="section" id="minimal-inter-arrival-behaviours">
+<h2>Minimal Inter-Arrival Behaviours<a class="headerlink" href="#minimal-inter-arrival-behaviours" title="Permalink to this headline">¶</a></h2>
+<p>If there is an MIT violation we have several options:</p>
+<ul class="simple">
+<li><strong>EXCEPT</strong> throw a <tt class="docutils literal"><span class="pre">MITViolationException</span></tt> from <tt class="docutils literal"><span class="pre">fire()</span></tt></li>
+<li><strong>IGNORE</strong> ignores the firing; the queue is unchanged.</li>
+<li><strong>REPLACE</strong> replaces the last time in the queue</li>
+<li><strong>SAVE</strong> adds it to the queue (extending it if required). Note that the actual time the event fired is replaced with the first available time which would not have been an MIT violation.</li>
+</ul>
+</div>
+<div class="section" id="timer-class-details">
+<h2>Timer Class Details<a class="headerlink" href="#timer-class-details" title="Permalink to this headline">¶</a></h2>
+<p>Timers have state, and only tick along if started.</p>
+<p>The only state a timer will fire from, is when it is both running and enabled. A disabled timer will still keep ticking but will not create events.</p>
+</div>
+<div class="section" id="boundasynceventhandler">
+<h2>BoundAsyncEventHandler<a class="headerlink" href="#boundasynceventhandler" title="Permalink to this headline">¶</a></h2>
+<p>Extends <tt class="docutils literal"><span class="pre">AsyncEventHandler</span></tt> and has the same constructor and arguments.</p>
+<p>It is permanently associated with a <tt class="docutils literal"><span class="pre">RealtimeThread</span></tt> avoiding any additional delay in assigning a fired <tt class="docutils literal"><span class="pre">AsyncEventHandler</span></tt> to a system <tt class="docutils literal"><span class="pre">RealtimeThread</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">09 - More on Asynchronous Events in RTSJ</a><ul>
+<li><a class="reference internal" href="#asynceventhandler-notes">AsyncEventHandler notes</a></li>
+<li><a class="reference internal" href="#periodic-aperiodic-and-sporadic-events">Periodic, Aperiodic and Sporadic Events</a></li>
+<li><a class="reference internal" href="#release-parameters-classes">Release Parameters Classes</a></li>
+<li><a class="reference internal" href="#aperiodic-events">Aperiodic Events</a></li>
+<li><a class="reference internal" href="#arrival-time-queue-length">Arrival Time Queue Length</a></li>
+<li><a class="reference internal" href="#arrival-time-queue-overflow-behaviours">Arrival Time Queue Overflow Behaviours</a></li>
+<li><a class="reference internal" href="#sporadic-events">Sporadic Events</a></li>
+<li><a class="reference internal" href="#minimal-inter-arrival-behaviours">Minimal Inter-Arrival Behaviours</a></li>
+<li><a class="reference internal" href="#timer-class-details">Timer Class Details</a></li>
+<li><a class="reference internal" href="#boundasynceventhandler">BoundAsyncEventHandler</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="08.html"
+                        title="previous chapter">08 - RTSJ Support for Scheduling and Deadlines</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/09.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="08.html" title="08 - RTSJ Support for Scheduling and Deadlines"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

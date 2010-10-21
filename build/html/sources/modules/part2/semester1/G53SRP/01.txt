@@ -1,0 +1,128 @@
+.. _G53SRP01:
+
+======================================
+01 - Systems and Real-Time Programming
+======================================
+
+Aim
+===
+
+To look at the issues of programming relevant to real-time concurrent and **embedded systems**. Where timeliness, reliability (predictability) and interfacing with hardware are required.
+
+This module has a particular emphasis on Java, including the Real-time Specification for Java.
+
+Topics
+======
+
+* Realtime embedded systems
+* The Realtime Specification for Java (RTSJ)
+* TIme and its use in programs
+* Event-driven realtime programming
+* Other realtime programming facilities
+* Realtime scheduling and schedulability
+* Reliability, failure and fault tolerance
+* Hardware interfacing
+
+Why?
+====
+
+* *Real* systems are like this.
+* Being correct is not always enough
+* Computers have increasingly critical riles to play in the real-world
+
+What is a real-time system?
+===========================
+
+Any information processing system which must respond to external input within a finite and specified period, is called a *real-time system*.
+
+In these systems correctness depends not only on the logical result but also the time it was delivered. Failure to respond can be as bad a wrong answer.
+
+99% of all processors are created for embedded systems. Since this means the computer is part f a larger engineering system it must react in real-time.
+
+Some Example
+============
+
+Simple Fluid Control
+    A pipe has a valve and a flow meter. Readings from the flow meter are input into the computer, the correct valve angle is calculated in order to maintain a certain flow, and the that value is output in real-time to the valve device.
+    
+Production Control
+    On a car production line, there is a conveyor belt of moving parts which must be fixed together to create a working automobile at the end.
+
+Terminology
+===========
+
+**Hard real-time**
+    Systems where its imperative that responses occur within the required deadline.
+**Soft real-time**
+    Deadlines are important but the system may still function if deadlines are occasionally missed.
+**Real real-time**
+    The same as *hard real-time* systems, but in addition the timings are very short.
+**Firm real-time**
+    Half way between *real real-time* and *hard real-time*.
+    
+Typical Embedded System
+=======================
+
+* algorithms for digital control
+* data logging
+* data retrieval and display
+* operator interface
+
+Characteristics of an RTS
+=========================
+
+* Large and complex
+* Concurrent control of separate system components (since devices operate in parallel in the real world, it makes sense to model this.)
+* Facilities to interact with special purpose hardware
+* Extremely reliable and safe (typically controlling the environment in which they exist)
+* Guaranteed response times (need to be able to predict the response times for systems). Efficiency is important but predictability is essential.
+
+The Realtime Specifications for Java (RTSJ)
+===========================================
+
+Programming realtime systems requires appropriate support from the programming language
+
+========    =================================================================================
+Language    Description
+========    =================================================================================
+Java        Platform independent, high-level, non-realtime. Java has no real-time guarantees. 
+Contra C    Relatively low level, system programming language
+========    =================================================================================
+
+Enter RTSJ. RTJS has some guiding principles:
+
+* Must be backward compatible with non real-time Java programs
+* Support the principle of "write once, run anywhere" (but not at the expense of predictability)
+* Address the current real-time system practice and allow future implementations to include advanced features
+* Give priority to predictable executions in all design trade-offs
+* Require no syntactic extensions to the Java language
+* Allow implementers flexibility
+
+RTSJ Enhancements
+=================
+
+* Memory management (Java garbage collection is not predicable)
+* time values and clocks
+* schedulable objects and scheduling
+* real-time thread
+* asynchronous event handling and timers
+* asynchronous transfer of control (one part of a programme can create exceptions in another part)
+* physical memory access
+
+NB Real Time Java functionality requires Real Time OS support.
+
+Time-Line
+=========
+
+======= ==================
+Version Year
+======= ==================
+1.0     1998-2002
+1.0.1   2005
+1.0.2   2006
+1.1     in progress [#f1]_
+======= ==================
+
+.. rubric:: Footnotes
+
+.. [#f1] mainly incremental fixes and enhancements (starting to include multi processor supports)

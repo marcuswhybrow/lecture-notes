@@ -1,0 +1,54 @@
+.. _G53SRP06:
+
+=========================================
+06 - Introduction to Real Time Scheduling
+=========================================
+
+Real Time ...
+=============
+
+A real-time system is any information processing system which has to respond to externally generated input stimuli within a finite and specified period. The correctness depends not only on the logical result but also the time it was delivered.
+
+Specifying Timing Constraints: Temporal Scopes
+==============================================
+
+For a section of code (a "process", "task", "scope" or Java runnable) specify:
+
+* When it should (nominally) start
+* When it must be completed by
+
+.. image:: /media/G53SRP/06/images/timeline.png
+
+Specifying the System
+=====================
+
+We need to decompose the problem into a fixed set of tasks. Each will be implemented as a thread or some other schedulable thing.
+
+For each task:
+
+* Specify when it should be started. For example periodic (repeated or on a timer) or triggered by some other external event (such as an interrupt).
+* Specify the deadline within which it should finish.
+
+Then arrange for the system to run those tasks at the correct times and in the right order.
+
+Overview of Realtime
+====================
+
+There are multiple concurrent process which run either periodically via a sleep or delay process or start sporadically via external events. Both types have deadlines.
+
+Everything in the system is correct if periodic processes are run at the correct rate and all deadline are met.
+
+The scheduler must make processes runnable at the defined times and in the correct order.
+
+Priorities
+==========
+
+So in what order should the tasks be executed?
+
+#. Decide a general strategy (e.g. fixed priority scheduling)
+
+    Assign a priority to each process in advance and always run the highest-priority runnable process.
+    
+#. Assign priorities to each process (e.g. shortest deadline first)
+
+    Also known as *Deadline Monotonic Priority Ordering* (DMPO). This method can be shown to be optimal. In other words if any strategy works then this one will.
