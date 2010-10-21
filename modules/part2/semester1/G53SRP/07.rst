@@ -1,4 +1,4 @@
-.. _G53STP:
+.. _G53SRP:
 
 =============================
 07 - Event-Driven Programming
