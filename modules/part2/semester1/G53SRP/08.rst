@@ -30,3 +30,9 @@ Schedulable Properties
 ======================
 
 ``SchedulingParameter`` is scheduler-specific thread information (for example priority.)
+
+``ReleaseParameters`` Temporal charactersitst of the thread (release time, period, deadline etc.)
+
+``MemoryParameters`` memory usage of thread (max size, max rate of allocation)
+
+``ProcessingGroupParameters``

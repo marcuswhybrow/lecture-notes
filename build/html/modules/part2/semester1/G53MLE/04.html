@@ -113,6 +113,12 @@
 <li>Any function can be approximated to arbitrary accuracy by a network with two hidden layers.</li>
 </ul>
 </div>
+<div class="section" id="generalisation-overfitting-and-stopping-criterion">
+<h2>Generalisation, Overfitting and Stopping Criterion<a class="headerlink" href="#generalisation-overfitting-and-stopping-criterion" title="Permalink to this headline">¶</a></h2>
+<p>What is the appropriate condition for stopping the weight update loop?</p>
+<p>One method is to continue until the error E falls below some predefined value. This is not a very good idea, since back-propagation is susceptible to <strong>overfitting</strong> the weights to the training examples at the cost of decreasing <strong>generalisation</strong> accuracy over other unseen examples.</p>
+<p>A way to stop overfitting is to use the training data in a slightly different way. By taking half of the training data out of the training set and creating a new <strong>validation set</strong> we can training on the training set and test error rates on the validation set. We can stop training on the training set once the error has been minimised to a certain point over the validation set.</p>
+</div>
 </div>
 
 
@@ -132,6 +138,7 @@
 <li><a class="reference internal" href="#back-propagation-algorithm">Back-Propagation Algorithm</a></li>
 <li><a class="reference internal" href="#learning-hidden-layer-representation">Learning Hidden Layer Representation</a></li>
 <li><a class="reference internal" href="#expressive-capabilities">Expressive Capabilities</a></li>
+<li><a class="reference internal" href="#generalisation-overfitting-and-stopping-criterion">Generalisation, Overfitting and Stopping Criterion</a></li>
 </ul>
 </li>
 </ul>

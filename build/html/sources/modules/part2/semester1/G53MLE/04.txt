@@ -87,3 +87,12 @@ Continuous:
 
 * Every bounded continuous function can be approximated with arbitrarily small error, by a network with one hidden layer.
 * Any function can be approximated to arbitrary accuracy by a network with two hidden layers.
+
+Generalisation, Overfitting and Stopping Criterion
+==================================================
+
+What is the appropriate condition for stopping the weight update loop?
+
+One method is to continue until the error E falls below some predefined value. This is not a very good idea, since back-propagation is susceptible to **overfitting** the weights to the training examples at the cost of decreasing **generalisation** accuracy over other unseen examples.
+
+A way to stop overfitting is to use the training data in a slightly different way. By taking half of the training data out of the training set and creating a new **validation set** we can training on the training set and test error rates on the validation set. We can stop training on the training set once the error has been minimised to a certain point over the validation set.
