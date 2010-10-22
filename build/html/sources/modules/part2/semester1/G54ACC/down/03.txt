@@ -83,3 +83,69 @@ But this meant twice as many bits, so *4b5* was introduces which has 16 symbols 
 *3b10b* 256 symbols with 1024 code words, used for Gigabit Ethernet, PCIExpress, Serial ATA, USB 3.0 DVB, DVI, HDMI, DAT, ...
 
 Finally *64b44b* is actually a scrambler with a 2 bit preamble. Used with 10GigE and actually nearly everything 10G.
+
+Error Detection
+===============
+
+Think of the 4b5b coding. What if ``10001`` is received? There has been a 1 bit error (meaning it could have been ``10101`` or ``10011`` originally), or maybe more bits of error.
+
+Regardless of how many bits have been changed we know that there *is* an error.
+
+.. image:: /media/G54ACC/down/03/images/error-detection.png
+
+Parity
+======
+
+A simple bit parity per byte/word spots and odd number of bit flips (1 being quite common).
+
+Commonly used anywhere in an Si chip that you have memory (registers, cache etc.)
+
+2D parity can correct single bit errors:
+
+.. image:: /media/G54ACC/down/03/images/2d-parity-check.png
+
+More Codes
+==========
+
+**2-out-of-5 codes** (used on supermarket goods) can detect single bit errors.
+
+**Hamming Codes** are a general class of codes. It can correct single bit errors or detect single and 2 bit errors and has the rule :math:`d + p + 1 \leq 2^p` where :math:`d` are data bits and :math:`p` are parity bits.
+
+However (7,4) is more widely used. For the data bits :math:`d_1 d_2 d_3 d_4`, what is transmitted is: :math:`p_1 p_2 d_1 p_3 d_2 d_3 d_4` where:
+
+.. math::
+
+    p_1 = d_1 + d_2 + d_4
+    
+    p_2 = d_1 + d_3 + d_4
+    
+    p_3 = d_2 + d_3 + d_4
+    
+You need to change 3 bits to map any valid code to another one, and this is know as the *Hamming Distance*.
+
+CRCs
+====
+
+Cyclic Redundancy Check.
+
+If we view data as a binary polynomial, called :math:`D`. We choose a *generator* polynomial :math:`G` of length :math:`r + 1`. We than calculate the remainder :math:`R = D \times \frac{2^r}{G}`.
+
+You then transmit :math:`D \times s^r + R` along with the data. The receiver :math:`\frac{D \times s^r + R}{G} = 0` must be true otherwise there is an error.
+
+Why CRCs
+========
+
+CRCs provide a good provable error detection property. It is really easy to implement in hardware:
+
+.. image:: /media/G54ACC/down/03/images/crc.png
+
+This same process is quite taxing when implemented in software, and sometimes a CRC instruction is provided to help with this.
+
+Another Everyday Code
+=====================
+
+Reed Solomon codes (more modern) as originally described: We view the message as a binary polynomial (again) of length :math:`k`. We evaluate the polynomial at :math:`n` distinct points such that :math:`n > k`. The :math:`n` values are sent and data can be recovered if we receive any :math:`k`. Reed Solomon has a Hamming distance of :math:`n - k + 1`.
+
+CDs use two Reed Solomon codes (32, 28) and (28, 24) which interleave the results. This means that a CS can recover from 4000 bit error bursts or a scratch 2.5 mm in length on the CDs surface.
+
+Reed Solomon coding is used for deep space transmission to spacecraft.

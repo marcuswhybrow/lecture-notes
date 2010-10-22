@@ -112,6 +112,50 @@
 <p><em>3b10b</em> 256 symbols with 1024 code words, used for Gigabit Ethernet, PCIExpress, Serial ATA, USB 3.0 DVB, DVI, HDMI, DAT, ...</p>
 <p>Finally <em>64b44b</em> is actually a scrambler with a 2 bit preamble. Used with 10GigE and actually nearly everything 10G.</p>
 </div>
+<div class="section" id="error-detection">
+<h2>Error Detection<a class="headerlink" href="#error-detection" title="Permalink to this headline">¶</a></h2>
+<p>Think of the 4b5b coding. What if <tt class="docutils literal"><span class="pre">10001</span></tt> is received? There has been a 1 bit error (meaning it could have been <tt class="docutils literal"><span class="pre">10101</span></tt> or <tt class="docutils literal"><span class="pre">10011</span></tt> originally), or maybe more bits of error.</p>
+<p>Regardless of how many bits have been changed we know that there <em>is</em> an error.</p>
+<img alt="../../../../../images/error-detection.png" src="../../../../../images/error-detection.png" />
+</div>
+<div class="section" id="parity">
+<h2>Parity<a class="headerlink" href="#parity" title="Permalink to this headline">¶</a></h2>
+<p>A simple bit parity per byte/word spots and odd number of bit flips (1 being quite common).</p>
+<p>Commonly used anywhere in an Si chip that you have memory (registers, cache etc.)</p>
+<p>2D parity can correct single bit errors:</p>
+<img alt="../../../../../images/2d-parity-check.png" src="../../../../../images/2d-parity-check.png" />
+</div>
+<div class="section" id="more-codes">
+<h2>More Codes<a class="headerlink" href="#more-codes" title="Permalink to this headline">¶</a></h2>
+<p><strong>2-out-of-5 codes</strong> (used on supermarket goods) can detect single bit errors.</p>
+<p><strong>Hamming Codes</strong> are a general class of codes. It can correct single bit errors or detect single and 2 bit errors and has the rule <img class="math" src="../../../../../images/math/14eb1ab5eb3d2960e8eca67d6efc710bfc58524e.png" alt="d + p + 1 \leq 2^p"/> where <img class="math" src="../../../../../images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/> are data bits and <img class="math" src="../../../../../images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/> are parity bits.</p>
+<p>However (7,4) is more widely used. For the data bits <img class="math" src="../../../../../images/math/59c1ad861b1229c3ed8922969d3904059e76c4b6.png" alt="d_1 d_2 d_3 d_4"/>, what is transmitted is: <img class="math" src="../../../../../images/math/ef82f1d16dc19b7a770c33469f4c71404b33f50e.png" alt="p_1 p_2 d_1 p_3 d_2 d_3 d_4"/> where:</p>
+<div class="math">
+<p><img src="../../../../../images/math/1cc3a142ed47d20fab298d692055040963cabcc5.png" alt="p_1 = d_1 + d_2 + d_4
+
+p_2 = d_1 + d_3 + d_4
+
+p_3 = d_2 + d_3 + d_4" /></p>
+</div><p>You need to change 3 bits to map any valid code to another one, and this is know as the <em>Hamming Distance</em>.</p>
+</div>
+<div class="section" id="crcs">
+<h2>CRCs<a class="headerlink" href="#crcs" title="Permalink to this headline">¶</a></h2>
+<p>Cyclic Redundancy Check.</p>
+<p>If we view data as a binary polynomial, called <img class="math" src="../../../../../images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>. We choose a <em>generator</em> polynomial <img class="math" src="../../../../../images/math/6e28ce12d49d39f160d5a0ef54077fc98e4b9d2b.png" alt="G"/> of length <img class="math" src="../../../../../images/math/b2b73622164a58a075328cc4c875e5930f2075ca.png" alt="r + 1"/>. We than calculate the remainder <img class="math" src="../../../../../images/math/bcdba846ccb8a13b7356896c699bcc873f906f9a.png" alt="R = D \times \frac{2^r}{G}"/>.</p>
+<p>You then transmit <img class="math" src="../../../../../images/math/9594742edd25bd9d3d061699d9c2d714310ed978.png" alt="D \times s^r + R"/> along with the data. The receiver <img class="math" src="../../../../../images/math/b2fe3d1ea00d4cecab930f53c09602fd706e5e83.png" alt="\frac{D \times s^r + R}{G} = 0"/> must be true otherwise there is an error.</p>
+</div>
+<div class="section" id="why-crcs">
+<h2>Why CRCs<a class="headerlink" href="#why-crcs" title="Permalink to this headline">¶</a></h2>
+<p>CRCs provide a good provable error detection property. It is really easy to implement in hardware:</p>
+<img alt="../../../../../images/crc.png" src="../../../../../images/crc.png" />
+<p>This same process is quite taxing when implemented in software, and sometimes a CRC instruction is provided to help with this.</p>
+</div>
+<div class="section" id="another-everyday-code">
+<h2>Another Everyday Code<a class="headerlink" href="#another-everyday-code" title="Permalink to this headline">¶</a></h2>
+<p>Reed Solomon codes (more modern) as originally described: We view the message as a binary polynomial (again) of length <img class="math" src="../../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>. We evaluate the polynomial at <img class="math" src="../../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> distinct points such that <img class="math" src="../../../../../images/math/258f341522a07d90c6764135a658189a6d9ac0fd.png" alt="n &gt; k"/>. The <img class="math" src="../../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> values are sent and data can be recovered if we receive any <img class="math" src="../../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>. Reed Solomon has a Hamming distance of <img class="math" src="../../../../../images/math/74f5e3b588dc7c81e3c7dde4e47f9146e434b8a1.png" alt="n - k + 1"/>.</p>
+<p>CDs use two Reed Solomon codes (32, 28) and (28, 24) which interleave the results. This means that a CS can recover from 4000 bit error bursts or a scratch 2.5 mm in length on the CDs surface.</p>
+<p>Reed Solomon coding is used for deep space transmission to spacecraft.</p>
+</div>
 </div>
 
 
@@ -132,6 +176,12 @@
 <li><a class="reference internal" href="#recovering-the-bits">Recovering the Bits</a></li>
 <li><a class="reference internal" href="#coding-scramblers">Coding - Scramblers</a></li>
 <li><a class="reference internal" href="#coding-block-codes">Coding - Block Codes</a></li>
+<li><a class="reference internal" href="#error-detection">Error Detection</a></li>
+<li><a class="reference internal" href="#parity">Parity</a></li>
+<li><a class="reference internal" href="#more-codes">More Codes</a></li>
+<li><a class="reference internal" href="#crcs">CRCs</a></li>
+<li><a class="reference internal" href="#why-crcs">Why CRCs</a></li>
+<li><a class="reference internal" href="#another-everyday-code">Another Everyday Code</a></li>
 </ul>
 </li>
 </ul>
