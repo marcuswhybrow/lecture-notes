@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>06 - K-Nearest Neighbour Classifier &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53MLE Machine Learning" href="index.html" />
+    <link rel="next" title="G53SRP Systems and Real-Time Programming" href="../G53SRP/index.html" />
+    <link rel="prev" title="04 - Multilayer Perceptrons" href="04.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Multilayer Perceptrons"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="k-nearest-neighbour-classifier">
+<span id="g53mle05"></span><h1>06 - K-Nearest Neighbour Classifier<a class="headerlink" href="#k-nearest-neighbour-classifier" title="Permalink to this headline">¶</a></h1>
+<p>The K-Nearest Neighbour Classifier uses feature space. <em>Feature vectors</em> (also known as points in the feature space) represent <em>objects</em>.</p>
+<p>An arbitrary point can be nearer to another point than some other point.</p>
+<div class="section" id="nearest-neighbours">
+<h2>Nearest Neighbours<a class="headerlink" href="#nearest-neighbours" title="Permalink to this headline">¶</a></h2>
+<p>We need a mathematical way to represent how far any two points are from each other. We call this <strong>distance</strong>.</p>
+<p>If we have 2 points in a feature space:</p>
+<div class="math">
+<p><img src="../../../../images/math/994272e71755ec8f811c1149965270b0ec4e16c7.png" alt="x_i = (x_{i1}, x_{i2}, ..., x_{in})
+
+x_j = (x_{j1}, x_{j2}, ..., x_{jn})" /></p>
+</div><p>Then the distance between <img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/> and <img class="math" src="../../../../images/math/ac0e6fa105993ce976db0dc241d59ab8e68e6efc.png" alt="x_j"/> is:</p>
+<div class="math">
+<p><img src="../../../../images/math/1df4bd65304dde99da95b8464c3ae61983230132.png" alt="D(i,j) = \sum_{k=1}^n (x_{ik} - x_{jk})^2" /></p>
+</div></div>
+<div class="section" id="nearest-neighbour-algorithm">
+<h2>Nearest Neighbour Algorithm<a class="headerlink" href="#nearest-neighbour-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Given the training data <img class="math" src="../../../../images/math/ddb549ddc8265f4fce09b5cd93ecb91b56e733c1.png" alt="(X_1, D_1), (X_2, D_2), ..., (X_N, D_N)"/>.</p>
+<p>We define a distance metric between points in the input space. Common measures are:</p>
+<ul>
+<li><p class="first">Euclidean Distance:</p>
+<blockquote>
+<div class="math">
+<p><img src="../../../../images/math/1df4bd65304dde99da95b8464c3ae61983230132.png" alt="D(i,j) = \sum_{k=1}^n (x_{ik} - x_{jk})^2" /></p>
+</div></blockquote>
+</li>
+<li><p class="first">City Block Distance:</p>
+<blockquote>
+<p>Instead of the direct linear distance, City Block distance is consists of the translation necessary in order to move a point to another point.</p>
+</blockquote>
+</li>
+</ul>
+<p>There are other ways in which distance is recorded, but these are the main ones (but event then mainly Euclidean distance is used).</p>
+</div>
+<div class="section" id="k-nearest-neighbour-model">
+<h2>K-Nearest Neighbour Model<a class="headerlink" href="#k-nearest-neighbour-model" title="Permalink to this headline">¶</a></h2>
+<p>Given a test point <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+<ol class="arabic">
+<li><p class="first">FInd the K (some positive number) nearest training inputs to <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+<blockquote>
+<p>This means that we calculate the distance to all other points and take the nearest K. Computationally this is not scalable and algorithms have been developed to combat this, however for now we can just calculate all the distances.</p>
+<img alt="../../../../images/nearest-neighbour.png" src="../../../../images/nearest-neighbour.png" />
+</blockquote>
+</li>
+<li><p class="first">Then we denote the K nearest points as 1 through <img class="math" src="../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>.</p>
+<blockquote>
+<p>(X_1, D_1), (X_2, D_2), ..., (X_k, D_k)</p>
+</blockquote>
+</li>
+</ol>
+<p>Then the most common class in the set <img class="math" src="../../../../images/math/6ed46bf29422b1f67d9d7e40a488d85c75e1bc5e.png" alt="{D_1, D_2, ..., D_k}"/> is the output of the algorithm.</p>
+</div>
+<div class="section" id="id1">
+<h2>K-Nearest Neighbour Model<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Picking the size of <img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is something the programmer must do and effects how many objects we are using to decide what the most dominant (of the nearest objects) class is.</p>
+<p>We can train the size of K and pick the K which provides the lowest classification error overall.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">06 - K-Nearest Neighbour Classifier</a><ul>
+<li><a class="reference internal" href="#nearest-neighbours">Nearest Neighbours</a></li>
+<li><a class="reference internal" href="#nearest-neighbour-algorithm">Nearest Neighbour Algorithm</a></li>
+<li><a class="reference internal" href="#k-nearest-neighbour-model">K-Nearest Neighbour Model</a></li>
+<li><a class="reference internal" href="#id1">K-Nearest Neighbour Model</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="04.html"
+                        title="previous chapter">04 - Multilayer Perceptrons</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G53SRP/index.html"
+                        title="next chapter">G53SRP Systems and Real-Time Programming</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53MLE/06.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Multilayer Perceptrons"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
