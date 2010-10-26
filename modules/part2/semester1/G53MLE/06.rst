@@ -55,7 +55,7 @@ Given a test point :math:`X`.
 
 #. Then we denote the K nearest points as 1 through :math:`k`.
 
-    (X_1, D_1), (X_2, D_2), ..., (X_k, D_k)
+    .. math:: (X_1, D_1), (X_2, D_2), ..., (X_k, D_k)
 
 Then the most common class in the set :math:`{D_1, D_2, ..., D_k}` is the output of the algorithm.
 
