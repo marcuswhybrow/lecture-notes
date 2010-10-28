@@ -1,0 +1,98 @@
+.. _G53MLE04:
+
+===========================
+04 - Multilayer Perceptrons
+===========================
+
+Limitations of Single Layer Perceptron
+======================================
+
+A single layer perceptron can only express linear (no :math:`x^2` stuff - meaning no curves) decision surfaces.
+
+Non-Linear Decision Surfaces
+============================
+
+A speech recognition task involves distinguishing 10 possible vowels all spoken in the context of "h_d" (i.e. hit, had, head, etc.). The input speech is represented by two numerical parameters obtained by spectral analysis of the sound, allowing easy visualisation of the decision surfaces over the 2D feature space.
+
+Essentially lots of input values can be put through some black box function which we don't have to know about which outputs 2 values allow the feature space to be 2D and visualisable.
+
+Multilayer Network
+==================
+
+We can build a multilayer network which will represent the highly nonlinear decision surfaces.
+
+Multilayer Perceptron
+=====================
+
+A 3 layer perceptron may look like this:
+
+.. image:: /media/G53MLE/04/images/multilayer.png
+
+The initial *Fan-out units* in the first layer literally just push the input value to lots of other units in the next layer to be used as their input.
+
+Architecturally there are input units (the ones on the very left), output units (the ones on the very right) and then hidden units (the ones which are not input or output units).
+
+Typically each layer is fully connected to the next layer, meaning that a units output is one of the input for every unit in the next layer.
+
+Sigmoid Unit
+============
+
+A sigmoid unit is very similar to a perceptron. It takes an n diminutional input and calculates a weighted sum. Then were the perceptron put that value through a threshold function and the ADLINE method just output the value directly the Sigmoid unit puts the output value through a **sigmoid function**.
+
+A sigmoid function looks like this and its values can range from 0 to 1:
+
+.. math:: \frac{1}{1 + e^{-x}}
+
+.. image:: /media/G53MLE/04/images/sigmoid.png
+
+The non-linearity allows for more values meaning that multilayer networks (which are used to divide the feature space non-linearly) can form non-linear decision surfaces more easily.
+
+The error gradient for a Sigmoid Unit is:
+
+.. math:: E(W) = \frac{1}{2} \sum_{k=1}^K (d_k - y_k)^2
+
+which is the same as ADALINE.
+
+Back-Propagation Algorithm
+==========================
+
+Back-propagation is a gradient descent over the entire networks weight vectors. In practice, it often works well and can run multiple times. It minimises error over all training samples but will only find a local minimum and not a global one (meaning it just finishes in the first valley it falls into).
+
+However training can take thousands of iterations but after training using the network is fast.
+
+We also want have a **generalisation capability** which means, assuming the hypothesis (weight vector) is perfect for the training samples and always guesses correctly, it should also guess correctly for new, yet unobserved data.
+
+Learning Hidden Layer Representation
+====================================
+
+It is possible to use hidden layers in a neural network to still solve problems. Because the hidden layers introduce more weights which there is a higher level of possible hypotheses which could still correctly classify input.
+
+This means that the hidden layers can change slightly but still provide the same output effect, which is a benefit over traditional programs since if one bit of a traditional program is incorrect it is going to cause some sort of error eventually.
+
+This property means that a neural network with hidden layers can deal with noise.
+
+During the course of training the network changes. Eventually if you arrive at a stable state the program is solved.
+
+Expressive Capabilities
+=======================
+
+So what exactly can a hidden layers do for us...
+
+Boolean functions:
+
+* Every boolean function can be represented by a network with a single hidden layer
+* However it might require exponential (determined by the number of input inputs) hidden units.
+
+Continuous:
+
+* Every bounded continuous function can be approximated with arbitrarily small error, by a network with one hidden layer.
+* Any function can be approximated to arbitrary accuracy by a network with two hidden layers.
+
+Generalisation, Overfitting and Stopping Criterion
+==================================================
+
+What is the appropriate condition for stopping the weight update loop?
+
+One method is to continue until the error E falls below some predefined value. This is not a very good idea, since back-propagation is susceptible to **overfitting** the weights to the training examples at the cost of decreasing **generalisation** accuracy over other unseen examples.
+
+A way to stop overfitting is to use the training data in a slightly different way. By taking half of the training data out of the training set and creating a new **validation set** we can training on the training set and test error rates on the validation set. We can stop training on the training set once the error has been minimised to a certain point over the validation set.

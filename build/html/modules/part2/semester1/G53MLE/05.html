@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../static/doctools.js"></script>
     <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
     <link rel="up" title="G53MLE Machine Learning" href="index.html" />
-    <link rel="next" title="G53SRP Systems and Real-Time Programming" href="../G53SRP/index.html" />
+    <link rel="next" title="06 - K-Nearest Neighbour Classifier" href="06.html" />
     <link rel="prev" title="04 - Multilayer Perceptrons" href="04.html" /> 
   </head>
   <body>
@@ -35,7 +35,7 @@
           <a href="../../../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+          <a href="06.html" title="06 - K-Nearest Neighbour Classifier"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="04.html" title="04 - Multilayer Perceptrons"
@@ -52,13 +52,108 @@
             
   <div class="section" id="bayesian-learning">
 <span id="g53mle05"></span><h1>05 - Bayesian Learning<a class="headerlink" href="#bayesian-learning" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="probability">
-<h2>Probability<a class="headerlink" href="#probability" title="Permalink to this headline">¶</a></h2>
-<p>The world is a very uncertain place and after 30 years of Artificial Intelligence, Database research has danced around this fact. Now a few AI researchers have decided to use some ideas from the eighteenth century.</p>
-</div>
 <div class="section" id="discrete-random-variables">
 <h2>Discrete Random Variables<a class="headerlink" href="#discrete-random-variables" title="Permalink to this headline">¶</a></h2>
-<p><img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a boolean-valued random variable if <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> denotes an event, and there is some degree of uncertainty as to whether <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> occurs.</p>
+<p>If <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a boolean valued random variable denoting an event, and there is some degree of uncertainty as to whether <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> occurs.</p>
+<p>For example <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> could be:</p>
+<ul class="simple">
+<li>The US president in 2023 will be Male</li>
+<li>You wake up tomorrow with a headache</li>
+<li>You have Ebola</li>
+</ul>
+</div>
+<div class="section" id="probabilities">
+<h2>Probabilities<a class="headerlink" href="#probabilities" title="Permalink to this headline">¶</a></h2>
+<p>We write <img class="math" src="../../../../images/math/6f70328223696bf019cbd1df694fcae4c01a995d.png" alt="P(A)"/> as &#8220;the fraction of possible worlds in which <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is true&#8221;.</p>
+</div>
+<div class="section" id="axioms-of-probability-theory">
+<h2>Axioms of Probability Theory<a class="headerlink" href="#axioms-of-probability-theory" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">All probabilities lie between 0 and 1</p>
+<blockquote>
+<div class="math">
+<p><img src="../../../../images/math/2c68d5c90469a7e862939790c880c932c988b5b5.png" alt="0 &lt;= P(A) &lt;= 1" /></p>
+</div></blockquote>
+</li>
+<li><p class="first">A true proposition has probability 1, and a false proposition has probability 0</p>
+<blockquote>
+<div class="math">
+<p><img src="../../../../images/math/3eac0e27ea059f69b78be2191d9c4348e3a73c0d.png" alt="P(true) = 1
+
+P(false) = 0" /></p>
+</div></blockquote>
+</li>
+</ol>
+<p># THe probability of disjunction is:</p>
+<blockquote>
+<div class="math">
+<p><img src="../../../../images/math/1cc900a073e90677eddc46e1d31f05f0697f8688.png" alt="P(A \vee B) = P(A) + P(B) - P(A \wedge B)" /></p>
+</div></blockquote>
+</div>
+<div class="section" id="theorems-from-the-axioms">
+<h2>Theorems from the Axioms<a class="headerlink" href="#theorems-from-the-axioms" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../../../images/math/610f83447547bbdebe44aa68b8a5a1509ad1a4c5.png" alt="P( \lnot A) = P( \sim A) = 1 - P(A)
+
+P(A) = P(A \wedge B) + P(A \wedge \sim B)" /></p>
+</div></div>
+<div class="section" id="multivalued-random-variables">
+<h2>Multivalued Random Variables<a class="headerlink" href="#multivalued-random-variables" title="Permalink to this headline">¶</a></h2>
+<p>Suppose <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> can take on exactly one value of the set <img class="math" src="../../../../images/math/333964964aa2d0609278eff4198f0b5c47bf7bff.png" alt="{v_1, v_2, ..., v_k}"/>:</p>
+<div class="math">
+<p><img src="../../../../images/math/6ef4f7353b3c0e1528741274cc6c19b9bed44c9e.png" alt="P(A = v_i \wedge A = v_j) = 0 if i \neq j
+
+P(A = v_1 \vee A = V-2 \vee ... \vee A = v_k) = 1 = \sum_{j=1}^i P(A = v_j)" /></p>
+</div></div>
+<div class="section" id="conditional-probability">
+<h2>Conditional Probability<a class="headerlink" href="#conditional-probability" title="Permalink to this headline">¶</a></h2>
+<p>The probability <img class="math" src="../../../../images/math/a933631c847ef31f4523f0160ebc84e9612ee6c1.png" alt="P(A|B)"/> is the fraction of worlds in which <img class="math" src="../../../../images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> is true that also have A as true.</p>
+<p>For example:
+* <img class="math" src="../../../../images/math/b1902d279ba37d60bdce4e0e987b7cd19d48974e.png" alt="H"/> is &#8220;Having a headache&#8221;
+* <img class="math" src="../../../../images/math/a055f405829e64a3b70253ab67cb45ed6ed5bb29.png" alt="F"/> is &#8220;Coming down with Flu&#8221;</p>
+<p>If:</p>
+<div class="math">
+<p><img src="../../../../images/math/bc82b6270b2c90c4869da7395fb968506e3245f5.png" alt="P(H) = \frac{1}{10}
+P(F) = \frac{1}{40}
+P(H|F) = \frac{1}{2}" /></p>
+</div><p>Remember that <img class="math" src="../../../../images/math/420cc117ac14be836ba6cadebf4155acc8eba715.png" alt="P(H|F)"/> means &#8220;what is the probability of <img class="math" src="../../../../images/math/b1902d279ba37d60bdce4e0e987b7cd19d48974e.png" alt="H"/> if <img class="math" src="../../../../images/math/a055f405829e64a3b70253ab67cb45ed6ed5bb29.png" alt="F"/> is true&#8221;.</p>
+</div>
+<div class="section" id="definition-of-conditional-probability">
+<h2>Definition of Conditional Probability<a class="headerlink" href="#definition-of-conditional-probability" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../../../images/math/56b3a4c53b33ab99e37d03ee923c24105d68369a.png" alt="P(H|F) = \frac{P(H \wedge F)}{P(F)}" /></p>
+</div><p>And also <em>The Chain Rule</em></p>
+<div class="math">
+<p><img src="../../../../images/math/c37529da0a4ea239eda90d55c750a2e334b5cf6c.png" alt="P(A \wedge B) = P(A|B) P(B)" /></p>
+</div></div>
+<div class="section" id="probabilistic-inference">
+<h2>Probabilistic Inference<a class="headerlink" href="#probabilistic-inference" title="Permalink to this headline">¶</a></h2>
+<p>It is <strong>not</strong> good reasoning to say that &#8220;I have woken up with a headache, thus there is a 50% chance I have of coming down with the flu since 50% of flus lead to a headache&#8221;.</p>
+<div class="math">
+<p><img src="../../../../images/math/aa6bd4eaa9226bf4761dbc777b93434c7a0efaf5.png" alt="P(F \wedge H) = P(H|F) P(F) = \frac{1}{80}" /></p>
+</div><p>However:</p>
+<div class="math">
+<p><img src="../../../../images/math/b7b8fa0fbdcd0cedfa6775f452fbc976d5f6217f.png" alt="P(F|H) = \frac{P(F \wedge H)}{P(H)} = \frac{\frac{1}{80}}{\frac{1}{10}} = \frac{1}{8}" /></p>
+</div></div>
+<div class="section" id="bayes-rule">
+<h2>Bayes Rule<a class="headerlink" href="#bayes-rule" title="Permalink to this headline">¶</a></h2>
+<p><strong>Bayes, Thomas (1763)</strong> AN essay towards solving a problem in the doctrine of chances. Philosophical Transactions of the Royal Society of London.</p>
+<p>So Bayes Rule is:</p>
+<div class="math">
+<p><img src="../../../../images/math/4b3f357456851a7f645fa346a5d4ab1d06b16834.png" alt="P(A|B) = \frac{P(A \wedge B)}{P(B)} = \frac{P(V|A)P(A)}{P(B)}" /></p>
+</div></div>
+<div class="section" id="id1">
+<h2>Bayesian Learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>So we can use this rule in a machine learning context by first renaming the variable more appropriately:</p>
+<div class="math">
+<p><img src="../../../../images/math/40cb3d38c87ee1b05915063a64718d3546bd89d4.png" alt="P(h|x) = \frac{P(x|h)P(h)}{P(x)}" /></p>
+</div><p>where <img class="math" src="../../../../images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> is the data and <img class="math" src="../../../../images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/> is the hypothesis.</p>
+<ul class="simple">
+<li><img class="math" src="../../../../images/math/3e68730c936e4d6959516f6226ac7cc77be734ab.png" alt="P(h)"/> is the probability of hypothesis <img class="math" src="../../../../images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/> before seeing any data.</li>
+<li><img class="math" src="../../../../images/math/8d686b89599e9d6d47b82b6ef4e20753d530b730.png" alt="P(x|h)"/> is the probability of the data if the hypothesis <img class="math" src="../../../../images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/> is true.</li>
+<li><img class="math" src="../../../../images/math/a281a95da216a5207079894e80b3094bdc40c20f.png" alt="P(h|x)"/> is the probability of hypothesis <img class="math" src="../../../../images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/> after having see the data <img class="math" src="../../../../images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</li>
+</ul>
+<p><em>...</em></p>
 </div>
 </div>
 
@@ -71,8 +166,16 @@
   <h3><a href="../../../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">05 - Bayesian Learning</a><ul>
-<li><a class="reference internal" href="#probability">Probability</a></li>
 <li><a class="reference internal" href="#discrete-random-variables">Discrete Random Variables</a></li>
+<li><a class="reference internal" href="#probabilities">Probabilities</a></li>
+<li><a class="reference internal" href="#axioms-of-probability-theory">Axioms of Probability Theory</a></li>
+<li><a class="reference internal" href="#theorems-from-the-axioms">Theorems from the Axioms</a></li>
+<li><a class="reference internal" href="#multivalued-random-variables">Multivalued Random Variables</a></li>
+<li><a class="reference internal" href="#conditional-probability">Conditional Probability</a></li>
+<li><a class="reference internal" href="#definition-of-conditional-probability">Definition of Conditional Probability</a></li>
+<li><a class="reference internal" href="#probabilistic-inference">Probabilistic Inference</a></li>
+<li><a class="reference internal" href="#bayes-rule">Bayes Rule</a></li>
+<li><a class="reference internal" href="#id1">Bayesian Learning</a></li>
 </ul>
 </li>
 </ul>
@@ -81,8 +184,8 @@
   <p class="topless"><a href="04.html"
                         title="previous chapter">04 - Multilayer Perceptrons</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../G53SRP/index.html"
-                        title="next chapter">G53SRP Systems and Real-Time Programming</a></p>
+  <p class="topless"><a href="06.html"
+                        title="next chapter">06 - K-Nearest Neighbour Classifier</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../../../sources/modules/part2/semester1/G53MLE/05.txt"
@@ -112,7 +215,7 @@
           <a href="../../../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+          <a href="06.html" title="06 - K-Nearest Neighbour Classifier"
              >next</a> |</li>
         <li class="right" >
           <a href="04.html" title="04 - Multilayer Perceptrons"

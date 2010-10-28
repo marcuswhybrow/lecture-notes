@@ -1,0 +1,86 @@
+.. _G53SRP09:
+
+========================================
+09 - More on Asynchronous Events in RTSJ
+========================================
+
+AsyncEventHandler notes
+=======================
+
+* Each AsyncEventHandler has its own "Arrival Time Queue" which can be though of as the release time queue.
+* Each time the associated event is fired, that time is added to the arrival time queue.
+    * Subject to arrival time queue and minimum inter-arrival time behaviour.
+* The system will schedule a call to ``handleAsyncEven()`` for each time in the queue, each having its own deadline & cost.
+* The number of times in the queue (-1) is visible in the API as the "pending fire count".
+* Event handler code can check and manipulate the queue (for example to remove additional releases).
+
+Periodic, Aperiodic and Sporadic Events
+=======================================
+
+Irrespective of its actual cause or nature, a realtime event can be classified as:
+
+* **Periodic** - occurring at some fixed interval
+* **Aperiodic** - occurring with no temporal pattern
+* **Sporadic** - occurring from time to time but not "too" often
+
+This must be know to assess the system's schedulability.
+
+Release Parameters Classes
+==========================
+
+.. image:: /media/G53SRP/09/images/release-parameters-classes.png
+
+Aperiodic Events
+================
+
+An aperiodic event can occur at any time and successive releases may occur arbitrary closely together. THe CPU requirements for aperiodic events can be potentially infinite meaning we can never guarantee to meet deadlines with aperiodic events.
+
+Releases occurring, before the previous release completes, are queued. When this happens the release time is recorded. Various queue behaviours are possible.
+
+Arrival Time Queue Length
+=========================
+
+EventHandler arrival time queue has an initial length specified by AperiodicParameters. Remember that the queue includes the current release also. New firing are added to empty slots in the queue. If the queue is full then what happens is determined by the behaviour of the queue.
+
+Arrival Time Queue Overflow Behaviours
+======================================
+
+If the queue is full and another event fires there are several behaviours which can be employed:
+
+* **EXCEPT** throws ``ArivalTImeQueueOverflowException`` from ``fire()``. Similar to ignore if caused by an external happening.
+* **IGNORE** ignores the firing; the queue is unchanged.
+* **REPLACE** replaces the last time in the queue.
+* **SAVE** extends the queue (which is the default)
+
+Sporadic Events
+===============
+
+Sporadic events are similar to aperiodic events but also have a Minimum Inter-arrival Time (or MIT). This is a way to tell Java that an event can happen no more frequently than a certain period. The MIT is used for analysis and scheduling, the worst-case periodic equivalent is having the MIT as the period.
+
+Sporadic events are checked at run-time and have arrival queues just like other events, but also has some extra queue constraints.
+
+Minimal Inter-Arrival Behaviours
+================================
+
+If there is an MIT violation we have several options:
+
+* **EXCEPT** throw a ``MITViolationException`` from ``fire()``
+* **IGNORE** ignores the firing; the queue is unchanged.
+* **REPLACE** replaces the last time in the queue
+* **SAVE** adds it to the queue (extending it if required). Note that the actual time the event fired is replaced with the first available time which would not have been an MIT violation.
+
+Timer Class Details
+===================
+
+Timers have state, and only tick along if started.
+
+The only state a timer will fire from, is when it is both running and enabled. A disabled timer will still keep ticking but will not create events.
+
+BoundAsyncEventHandler
+======================
+
+Extends ``AsyncEventHandler`` and has the same constructor and arguments.
+
+It is permanently associated with a ``RealtimeThread`` avoiding any additional delay in assigning a fired ``AsyncEventHandler`` to a system ``RealtimeThread``.
+
+
