@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>04 - Optical &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="01 - IP and Up" href="../up/01.html" />
+    <link rel="prev" title="03 - Physical" href="03.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../up/01.html" title="01 - IP and Up"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="03.html" title="03 - Physical"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="optical">
+<span id="g54accd04"></span><h1>04 - Optical<a class="headerlink" href="#optical" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ethernet-physical">
+<h2>Ethernet Physical<a class="headerlink" href="#ethernet-physical" title="Permalink to this headline">¶</a></h2>
+<p>10Base5 ethernet used vampire taps in order to connect devices to the ether. After that 10Base2 (or Thinwire) cables were employed. They were simpler and had T junctions instead of the vampire taps. But still just essentially a single piece of wire.</p>
+<p>Today we used twisted pair cabling (10BaseT - T for Twisted pair), having a range of 500m.</p>
+<p>All of the above ethernet types use Manchester encoding in order to transmit bits.</p>
+<p>100BaseT uses 1 pair of the cable for each direction of communication, and 1000BaseT uses 2 pairs of cable in each direction.</p>
+<p>For 10GBaseT (10 gigabit twisted pair) it could not be implemented early on since the hardware generated to much heat, using 25 watts. PCI standards enforce that it could not generate that much heat, and be sold to the public.</p>
+</div>
+<div class="section" id="ethernet-optical">
+<h2>Ethernet Optical<a class="headerlink" href="#ethernet-optical" title="Permalink to this headline">¶</a></h2>
+<p>People wanted to run ethernet over optical fibres. <strong>10BaseFL</strong> used 850nm (don&#8217;t worry about what that means) and has a range of 2KM. Mostly it was used to connect standard twisted pair networks over long distances.</p>
+<p>Then 100BaseFX (1200nm 2KM), 100BaseSX (850nm) and 100BaseLX (1300nm 10/20/40KM) were introduced. There re event more variants than these.</p>
+</div>
+<div class="section" id="optical-fibre">
+<h2>Optical Fibre<a class="headerlink" href="#optical-fibre" title="Permalink to this headline">¶</a></h2>
+<p>Optical fibre works by using a light source (LASER, or LED) to generate a continuous light. THe signal is modulated onto the light and received by a photodetector on the other end.</p>
+<p>This could be done over very long distances (greater than 1000Km) and achieve very high speeds (greater than 40 Gbps/wavelength) and is also nearly error-free, since it is immune to most external influences unlike the electrical based twisted pair BaseT.</p>
+<p>Fibre has a profound influence on network architecture and pretty much dominates any long distance transmission.</p>
+<p>Light is modulated by splitting the light along two paths, and slowing the first photon  down such that it collides with the second photon. This cancels out the light and provides darkness.</p>
+<p>Inside the cable <em>total internal reflection</em> is used to keep the photons inside, thus if you bend the cable two harshly the light will escape the cable and render the cable useless.</p>
+</div>
+<div class="section" id="multimode-single-mode-fibre">
+<h2>Multimode &amp; Single-mode Fibre<a class="headerlink" href="#multimode-single-mode-fibre" title="Permalink to this headline">¶</a></h2>
+<p>Multimode fibre allow multiple light rays to follow different paths. These different paths can interfere with each other and cause dispersion. This means the wave forms can be changed by the time they reach the end.</p>
+<p>Single-mode fibre provides only enough space to carry one direct light ray, and are much faster than multimode. A width of 8 microns will be small enough to enforce a single wave path, however manufacturing techniques had to evolve in order to reliably create a fibre this thin.</p>
+</div>
+<div class="section" id="optical-fibre-properties">
+<h2>Optical Fibre Properties<a class="headerlink" href="#optical-fibre-properties" title="Permalink to this headline">¶</a></h2>
+<p>Advantages:</p>
+<ul class="simple">
+<li>Very low attenuation</li>
+<li>Noise immunity</li>
+<li>Extremely high bandwidth</li>
+<li>No corrosion</li>
+<li>More compact &amp; lighter than copper wire</li>
+<li>Long distances (&gt; 1000Km)</li>
+<li>High speeds (&gt; 40Gbps per wavelength)</li>
+<li>Nearly error-free (BER of <img class="math" src="../../../../../images/math/087c8ab055a9ce4710cb2152bf39d2ffca3df574.png" alt="10^{-15}"/>)</li>
+</ul>
+<p>Disadvantages:</p>
+<ul class="simple">
+<li>New types of optical signal impairments &amp; dispersion, meaning polarisation dependence and wavelength dependence.</li>
+<li>Limited bend radius, if the physical arc of cable is too high, the light will be lost or will not reflect. Can shatter.</li>
+<li>Difficult to splice cables together.</li>
+<li>Mechanical vibration becomes signal noise.</li>
+</ul>
+</div>
+<div class="section" id="very-low-attenuation">
+<h2>Very Low Attenuation<a class="headerlink" href="#very-low-attenuation" title="Permalink to this headline">¶</a></h2>
+<p><em>Rayleigh scattering</em> Is a function which defines how much loss you will experience at different wavelength of light used in a fibre-optic cable per kilometre. However environmental effects cause deviation from this function as displayed by the red line in the graph below. Different grades of fibre provide subtly different lines.</p>
+<img alt="../../../../../images/attenuation.png" src="../../../../../images/attenuation.png" />
+<p>It cheaper to build light emitters which operate at the lower wavelengths, but lower wavelengths experience higher loss. So it is essentially a cost-efficiency balance.</p>
+</div>
+<div class="section" id="wavelength-division-multiplexing">
+<h2>Wavelength-Division Multiplexing<a class="headerlink" href="#wavelength-division-multiplexing" title="Permalink to this headline">¶</a></h2>
+<p>So different wavelengths carry separate signals, which are multiplexed into a shared optical fibre. A standard single fibre today can carry 160 wavelengths at 10Gbps per  wavelength coming to a grand total of 1.6 Tbps.</p>
+</div>
+<div class="section" id="regenerators-optical-amplifiers">
+<h2>Regenerators &amp; Optical Amplifiers<a class="headerlink" href="#regenerators-optical-amplifiers" title="Permalink to this headline">¶</a></h2>
+<p>The maximum span of an optical signal is determined by the available power &amp; the attenuation. For example if 30dB of power is available then at 550nm the optical signal attenuates at 0.25dB per km. So the max span is 30dB/0.25 km/dB = 120Km.</p>
+<p>Optical amplifiers amplify optical signal (with no equalisation or regeneration) but the number of these optical amplifiers is limited in any given path due to certain impairments.</p>
+<p>The optical signal must be regenerated when this limit is reached using electrical devices and not optical ones. The signal is converted form optical-to-electrical (O-to-E) and the equalised, the signal is detected and the retransmitted (using E-to-O). It&#8217;s expensive.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">04 - Optical</a><ul>
+<li><a class="reference internal" href="#ethernet-physical">Ethernet Physical</a></li>
+<li><a class="reference internal" href="#ethernet-optical">Ethernet Optical</a></li>
+<li><a class="reference internal" href="#optical-fibre">Optical Fibre</a></li>
+<li><a class="reference internal" href="#multimode-single-mode-fibre">Multimode &amp; Single-mode Fibre</a></li>
+<li><a class="reference internal" href="#optical-fibre-properties">Optical Fibre Properties</a></li>
+<li><a class="reference internal" href="#very-low-attenuation">Very Low Attenuation</a></li>
+<li><a class="reference internal" href="#wavelength-division-multiplexing">Wavelength-Division Multiplexing</a></li>
+<li><a class="reference internal" href="#regenerators-optical-amplifiers">Regenerators &amp; Optical Amplifiers</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="03.html"
+                        title="previous chapter">03 - Physical</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../up/01.html"
+                        title="next chapter">01 - IP and Up</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/down/04.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../up/01.html" title="01 - IP and Up"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="03.html" title="03 - Physical"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
