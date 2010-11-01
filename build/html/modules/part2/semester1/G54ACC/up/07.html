@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>07 - IP Network Management &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="G52CFJ C/C++ for Java Programmers" href="../../../semester2/G52CFJ/index.html" />
+    <link rel="prev" title="06 - Applications" href="06.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="06.html" title="06 - Applications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ip-network-management">
+<span id="g53acc07"></span><h1>07 - IP Network Management<a class="headerlink" href="#ip-network-management" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-network-management">
+<h2>What is Network Management?<a class="headerlink" href="#what-is-network-management" title="Permalink to this headline">¶</a></h2>
+<p>Computer networks are considered to have three operating timescales, <strong>data</strong> (packet forwarding in microseconds and milliseconds), <strong>control</strong> (flows and connections in seconds and minutes) and <strong>management</strong> (aggregates and networks in hours and days).</p>
+<p>So we are concerned with <em>the network</em> rather than particular devices or protocols. With any network standardisation is the key!</p>
+<div class="section" id="iso-fcaps-functional-separation">
+<h3>ISO FCAPS: Functional Separation<a class="headerlink" href="#iso-fcaps-functional-separation" title="Permalink to this headline">¶</a></h3>
+<p>FCAPS is an acronym:</p>
+<ul class="simple">
+<li>Fault - Recognise, isolate, correctness, log faults</li>
+<li>Configuration - collect, store, track configurations</li>
+<li>Accounting - collect statistics, bill users, enforce quotas</li>
+<li>Performance - monitor trends, set thresholds, trigger alarms</li>
+<li>Security - identify, secure, manage risks</li>
+</ul>
+</div>
+<div class="section" id="tmn-ems-administrative-separation">
+<h3>TMN EMS: Administrative Separation<a class="headerlink" href="#tmn-ems-administrative-separation" title="Permalink to this headline">¶</a></h3>
+<p>An alternative to a function separation is an administrative one.</p>
+<p>TMN EMS stands for Telecommunications Management Network Element Management System.</p>
+</div>
+<div class="section" id="network-management">
+<h3>Network Management<a class="headerlink" href="#network-management" title="Permalink to this headline">¶</a></h3>
+<p>Models of general communication networks tend to be quite abstract and tedious. Many practitioner still seem excited about OO programming and WIMP interfaces, probably because implementation is hard due to so many excessively long complex standards.</p>
+<ol class="arabic simple">
+<li>What should be happening</li>
+<li>What is happening</li>
+<li>What shouldn&#8217;t be happening?</li>
+<li>What will be happening</li>
+</ol>
+<p>We will be concentrating on IP networks and in this environment there are lots of acronyms such as ICMP, SNMP, MIB, RFC.</p>
+<p>We will be talking about networks about about <img class="math" src="../../../../../images/math/db61fd75a1a8bb6fa2b202b6b73daf9b4c9838d0.png" alt="10^2"/> routers and <img class="math" src="../../../../../images/math/e7d8b576968ccdbfeff38053b7c606905adb945e.png" alt="10^5"/> hosts. We will be concentrating on the routers and not the hosts, and will be ignoring <em>service management</em> such as DNS, AD, file stores etc.</p>
+</div>
+</div>
+<div class="section" id="ip-network-components">
+<h2>IP Network Components<a class="headerlink" href="#ip-network-components" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+<div class="section" id="multiple-router-flavours">
+<h3>Multiple Router Flavours<a class="headerlink" href="#multiple-router-flavours" title="Permalink to this headline">¶</a></h3>
+<p><strong>Core</strong> routers are big, fast and expensive such as the Cisco HFR or the Juniper T-640. They use anything from OC-12 (622Mbps) up to (OC-769 which is around 50Gbps).</p>
+<p><strong>Transit or Peering-facing</strong> routers are smaller and use OC-3 and up and provide a good GigE density. These are used for ACLs, BGP, uRPF.</p>
+<p><strong>Customer-facing</strong> routers incorporate technologies for sharing services to different customers effectively and any other services. Some acronyms seen here are FR and ATM.</p>
+<p><strong>Broadband aggregator</strong> routers are designed for high scalability, using sessions, ports and reconnections.</p>
+<p><strong>Customer-premises</strong> (CPE) routers are around maybe 100Mbps. These handle NAT, DHCP, provide a firewall, maybe wireless, VoIP etc. THey are low cost, low-end, and can just be software on a PC.</p>
+</div>
+<div class="section" id="network-design">
+<h3>Network Design<a class="headerlink" href="#network-design" title="Permalink to this headline">¶</a></h3>
+<p>ISPs, IXs, enterprises and campuses have these kinds of networks. There are many types of design such as:</p>
+<ul class="simple">
+<li>Flat</li>
+<li>Hierarchical</li>
+<li>Hybrids</li>
+<li>Multiple Scales</li>
+</ul>
+<p>There are many constraints involved in networks:</p>
+<dl class="docutils">
+<dt>Business</dt>
+<dd><ul class="first last simple">
+<li>Backwards compatibly</li>
+<li>Who can connect to your network</li>
+<li>Peering (joining your network with another companies network)</li>
+</ul>
+</dd>
+<dt>Technology</dt>
+<dd><ul class="first last simple">
+<li>Power - 24/7 operation requires a lot of energy and a lot of cooling and all the heat means you need a lot of space to house these devices in.</li>
+<li>Port density (physically how many people can connect) vs raw bandwidth</li>
+<li>Software reliability</li>
+<li>Hardware and software capability</li>
+</ul>
+</dd>
+<dt>Connectivity/Resiliency</dt>
+<dd><ul class="first last simple">
+<li>&#8220;All core routers connect to at least 2 other core routers&#8221;</li>
+<li>&#8220;All edge routers connect to at least 2 core routers&#8221;</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="router-configuration">
+<h3>Router Configuration<a class="headerlink" href="#router-configuration" title="Permalink to this headline">¶</a></h3>
+<p><strong>Initialisation</strong> - Name the router and setup the boot options and maybe any authentication options.</p>
+<p><strong>Configure Interfaces</strong> - Loopbacks, ethernet, fibre, ATM. Subnet masks, filters and static routes (fallback for BGP failure). Shutdown (or not), queueing options, full/half duplex.</p>
+<p><strong>Configure routing protocols</strong> such as OSPF, BGP, IS-IS. Process addresses to accept router from, networks to advertise on. Access lists, filters.</p>
+<p><strong>Route-maps</strong> are for matching <em>routes</em> rather than data traffic.</p>
+<p>There are other configuration aspects such: traps, syslog.</p>
+<p>And don&#8217;t forget switch configuration is about as painful as router configuration.</p>
+<p>You end up with lots of large, fragile text files. You may have thousands of routers and thousands of lines per config file. Errors are hard to find and have non-obvious results. Router configuration is also editable on-line cause further problems. On top of all that the order of commands matter.</p>
+<p>So it is hard to track of all these configuration files. Some places use naming schemes, directory trees, CVS, ssh upload and atomic commits in order to manage these files. Even database have been used to manage this stuff.</p>
+<p>The state of the art is pretty basic. There are not very many tools to check consistency or design goals. Generally people generate configurations from templates and have employ a human-intensive process to control access to running configs. This is a top of current research.</p>
+</div>
+</div>
+<div class="section" id="ip-network-management-protocols">
+<h2>IP Network Management Protocols<a class="headerlink" href="#ip-network-management-protocols" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="icmp">
+<h3>ICMP<a class="headerlink" href="#icmp" title="Permalink to this headline">¶</a></h3>
+<p>Internet Control Message Protocol is the the number 1 IP protocol. It supports a variety of message types such as echo and echo reply (ping), time exceeded (traceroute), destination unreachable, redirect, source quench.</p>
+</div>
+<div class="section" id="ping-packet-internet-groper">
+<h3>Ping (Packet INternet Groper)<a class="headerlink" href="#ping-packet-internet-groper" title="Permalink to this headline">¶</a></h3>
+<p>Ping is a test for liveness and is also used to measure (round-trip) latency. It sends an ICMP echo and a valid IP host <em>must</em> reply with an ICMP echo response.</p>
+</div>
+<div class="section" id="traceroute">
+<h3>Traceroute<a class="headerlink" href="#traceroute" title="Permalink to this headline">¶</a></h3>
+<p>In order to determine the route packets take to their destination you can send UDP packets with increasing time-to-live values. Compliant IP hosts must respond with an ICMP &#8220;time exceeded&#8221; and triggers each host along the path to respond in this way.</p>
+<p>It is not quite that simple as one router can have many IP addresses and routes can change.</p>
+</div>
+<div class="section" id="snmp">
+<h3>SNMP<a class="headerlink" href="#snmp" title="Permalink to this headline">¶</a></h3>
+<p>A protocol to manage information tables on devices. It provides <em>get</em>, <em>set</em>, <em>trap</em> and <em>notify</em> operations.</p>
+<p>Complexity is mostly in the MIB (management information base) design. There are some standard tables but many are vendor specific. MIBs are not critical so many end up populated incorrectly. There can be many tens of MIBs (thousands of lines each) per device, with different versions, different data and different semantics.</p>
+<p>This provides yet another configuration tracking problem thanks to the inter-relationships between MIBs.</p>
+</div>
+<div class="section" id="ipfix">
+<h3>IPFIX<a class="headerlink" href="#ipfix" title="Permalink to this headline">¶</a></h3>
+<p><em>...</em></p>
+</div>
+</div>
+<div class="section" id="pulling-it-all-together">
+<h2>Pulling it all Together<a class="headerlink" href="#pulling-it-all-together" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="a-hypothetical-nms">
+<h3>A Hypothetical NMS<a class="headerlink" href="#a-hypothetical-nms" title="Permalink to this headline">¶</a></h3>
+<p>A Network Management System is a GUI around ICMP (so it uses ping and traceroute, SNMP etc.). It can provide many features:</p>
+<ul class="simple">
+<li>Recursive host discovery</li>
+<li>Broadcast ping, ARP, default gateways</li>
+<li>Recursive SNMP queries for known hosts/connected networks.</li>
+<li>Ping known hosts to test liveness</li>
+<li>Iterate</li>
+</ul>
+<p>They can also display topology to allow people to <em>drill-down</em> to particular devices. Configuration and monitoring of known devices is also possible:</p>
+<ul class="simple">
+<li>Trap, Netflow, syslog message destinations</li>
+<li>Counter thresholds, CPU utilisation threshold, fault reporting</li>
+<li>Particular faults or fault patterns</li>
+</ul>
+<p>They can also provide interface statistics and graphs (MRTG).</p>
+<p>There are a lot of software engineering corner cases</p>
+<p><em>...</em></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">07 - IP Network Management</a><ul>
+<li><a class="reference internal" href="#what-is-network-management">What is Network Management?</a><ul>
+<li><a class="reference internal" href="#iso-fcaps-functional-separation">ISO FCAPS: Functional Separation</a></li>
+<li><a class="reference internal" href="#tmn-ems-administrative-separation">TMN EMS: Administrative Separation</a></li>
+<li><a class="reference internal" href="#network-management">Network Management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ip-network-components">IP Network Components</a><ul>
+<li><a class="reference internal" href="#multiple-router-flavours">Multiple Router Flavours</a></li>
+<li><a class="reference internal" href="#network-design">Network Design</a></li>
+<li><a class="reference internal" href="#router-configuration">Router Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ip-network-management-protocols">IP Network Management Protocols</a><ul>
+<li><a class="reference internal" href="#icmp">ICMP</a></li>
+<li><a class="reference internal" href="#ping-packet-internet-groper">Ping (Packet INternet Groper)</a></li>
+<li><a class="reference internal" href="#traceroute">Traceroute</a></li>
+<li><a class="reference internal" href="#snmp">SNMP</a></li>
+<li><a class="reference internal" href="#ipfix">IPFIX</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pulling-it-all-together">Pulling it all Together</a><ul>
+<li><a class="reference internal" href="#a-hypothetical-nms">A Hypothetical NMS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="06.html"
+                        title="previous chapter">06 - Applications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../../semester2/G52CFJ/index.html"
+                        title="next chapter">G52CFJ C/C++ for Java Programmers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/up/07.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="06.html" title="06 - Applications"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
