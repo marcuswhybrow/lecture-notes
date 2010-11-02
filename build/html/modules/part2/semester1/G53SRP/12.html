@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>12 - Designing Realtime Systems &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="11 - Real Time Threads in RTS" href="11.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="11.html" title="11 - Real Time Threads in RTS"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="designing-realtime-systems">
+<span id="g53srp12"></span><h1>12 - Designing Realtime Systems<a class="headerlink" href="#designing-realtime-systems" title="Permalink to this headline">¶</a></h1>
+<p>This course is mainly about programming aspects of real-time embedded systems but...</p>
+<p>Developing a consistent design that satisfies an authoritative specification of requirements is critical and happens first!</p>
+<p>Refer also to general texts on software engineering.</p>
+<div class="section" id="levels-of-notation">
+<h2>Levels of Notation<a class="headerlink" href="#levels-of-notation" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Information</dt>
+<dd>Natural language. Broadly understood, but ambiguous.</dd>
+<dt>Structured</dt>
+<dd>Constrained graphical representations. Well defined, but not open to analysis or manipulation.</dd>
+<dt>Formal</dt>
+<dd>Methods with a mathematical basis. Precise, open to analysis including verification. Requires specialise notations.</dd>
+</dl>
+<p>For realtime systems formal definitions of requirements are preferred since they are very important.</p>
+</div>
+<div class="section" id="requirements-specification-process">
+<h2>Requirements Specification Process<a class="headerlink" href="#requirements-specification-process" title="Permalink to this headline">¶</a></h2>
+<p>The process by which a specification is created is as follows:</p>
+<ol class="arabic">
+<li><p class="first">Initial informal description</p>
+</li>
+<li><dl class="first docutils">
+<dt>Extensive Analysis of Requirements</dt>
+<dd><ul class="first last simple">
+<li>Functionality defined</li>
+<li>Temporal behaviour defined</li>
+<li>Reliability requirements defined</li>
+<li>Responses to component failure defined</li>
+<li>Requires modelling of environment (maximum event rates, failure modes)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Authoritative Specification</p>
+</li>
+</ol>
+</div>
+<div class="section" id="requirements-specification-notations-and-techniques">
+<h2>Requirements Specification Notations and Techniques<a class="headerlink" href="#requirements-specification-notations-and-techniques" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Natural Language</dt>
+<dd>Especially common for final specification and semantics</dd>
+<dt>Structured Notations</dt>
+<dd>PSL, CORE, Object-oriented methods (e.g. UML)</dd>
+<dt>Formal Methods</dt>
+<dd>FOREST, ICARUS/ALBERT, VDM, Z</dd>
+</dl>
+</div>
+<div class="section" id="design-activities-methods">
+<h2>Design Activities &amp; Methods<a class="headerlink" href="#design-activities-methods" title="Permalink to this headline">¶</a></h2>
+<p>We have several techniques by which the design process can be made simpler:</p>
+<dl class="docutils">
+<dt>Decomposition</dt>
+<dd>Systematically breaking down complex systems into simpler and smaller parts (with appropriate descriptions at each level).</dd>
+<dt>Abstraction</dt>
+<dd>Deferring consideration of detail (especially during implementation)</dd>
+</dl>
+</div>
+<div class="section" id="encapsulation-and-decomposition">
+<h2>Encapsulation and Decomposition<a class="headerlink" href="#encapsulation-and-decomposition" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Encapsulation</dt>
+<dd>Internal details of a sub-unit do not affect its use (and are typically invisible in use). A combination of sub-units can be verified based on the separate verification of its subunits (known as compositional)</dd>
+</dl>
+</div>
+<div class="section" id="decomposition-heuristics-cohesion-and-coupling">
+<h2>Decomposition Heuristics: Cohesion and Coupling<a class="headerlink" href="#decomposition-heuristics-cohesion-and-coupling" title="Permalink to this headline">¶</a></h2>
+<p>Aim for strong cohesion within a unit. The following list is numbered and a higher number represents a stronger level of cohesion:</p>
+<ol class="arabic simple">
+<li>Coincidental - written in the same month</li>
+<li>Logical - output device drivers</li>
+<li>Temporal - start-up routines</li>
+<li>Procedural - all user interface components</li>
+<li>Communicational - work on the same data</li>
+<li>Functional - parts of the same system function</li>
+</ol>
+<p>Aim for low coupling between units. In the following list a low number represents a high coupling:</p>
+<ol class="arabic simple">
+<li>Passing control information</li>
+<li>...</li>
+<li>Pass only data</li>
+<li>No communication interaction</li>
+</ol>
+</div>
+<div class="section" id="design-methods">
+<h2>Design Methods<a class="headerlink" href="#design-methods" title="Permalink to this headline">¶</a></h2>
+<p>Formal methods have not yet been &#8220;tried and tested&#8221;. There are many realtime structured design methods (MASCOT&lt; JSD, Youdon, MOON, HRT-HOOD...) not yet being ideal.</p>
+<p>Note that non-realtime methods may be a problem. For example iterative refinement may not reveal actual performance problems until near the end of the process.</p>
+</div>
+<div class="section" id="proposed-ideal-realtime-design-method-objectives">
+<h2>Proposed Ideal Realtime Design Method Objectives<a class="headerlink" href="#proposed-ideal-realtime-design-method-objectives" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Structuring a system in concurrent tasks.</li>
+<li>Supporting the development of reusable components through information hiding.</li>
+<li>Defining behaviour aspects using finite-state machines (or some other formalism).</li>
+<li>Analysing the performance of a design to determine its realtime properties.</li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Programming language alternatives used in realtime systems are as follows:</p>
+<dl class="docutils">
+<dt>Assembly</dt>
+<dd>Machine oriented, machine dependent, tends to obscurity</dd>
+<dt>Sequential systems implementation languages</dt>
+<dd>For example C, weak in realtime control &amp; reliability</dd>
+<dt>High-Level concurrent programming languages</dt>
+<dd>For example Ada, realtime-Java, CHILL, Erlang. With support fro concurrency and embedded system development.</dd>
+</dl>
+</div>
+<div class="section" id="language-ideals">
+<h2>Language Ideals<a class="headerlink" href="#language-ideals" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Security - type-safety &amp; checking</li>
+<li>Readability</li>
+<li>Flexibility (or expressive power)</li>
+<li>Simplicity (or usability)</li>
+<li>Portability</li>
+<li>Efficiency</li>
+</ul>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Testing is complementary to formal design methods. It is required at all stages (such as modules and assemblies) and has a range of methods (for example use of simulators).</p>
+</div>
+<div class="section" id="prototyping">
+<h2>Prototyping<a class="headerlink" href="#prototyping" title="Permalink to this headline">¶</a></h2>
+<p>A cheap &#8220;mock-up&#8221; of the system early in the design process can clarify and refine the requirements and detect design problems early. Prototyping is contrary to the &#8220;waterfall&#8221; software development model due to its strict sequential development process.</p>
+</div>
+<div class="section" id="human-computer-interaction">
+<h2>Human-Computer Interaction<a class="headerlink" href="#human-computer-interaction" title="Permalink to this headline">¶</a></h2>
+<p>Human involvement is critical in many realtime systems (for example google the Three Mile Island nuclear incident).</p>
+<p>Careful design is a requirement and deals with such concepts as:</p>
+<ul class="simple">
+<li>Division of responsibility/control</li>
+<li>&#8220;Objects&#8221; passed between the system and humans.</li>
+<li>Presentation/form of these objects and dialog.</li>
+</ul>
+<p>User errors need to be considered in designing for reliability/fault tolerance.</p>
+</div>
+<div class="section" id="managing-design">
+<h2>Managing Design<a class="headerlink" href="#managing-design" title="Permalink to this headline">¶</a></h2>
+<p>Assuring good quality requires:</p>
+<ul class="simple">
+<li>Good staff - suitable training, support etc.</li>
+<li>Good tools, languages etc.</li>
+<li>Good processes - adequate verification and validation, good coordination.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">12 - Designing Realtime Systems</a><ul>
+<li><a class="reference internal" href="#levels-of-notation">Levels of Notation</a></li>
+<li><a class="reference internal" href="#requirements-specification-process">Requirements Specification Process</a></li>
+<li><a class="reference internal" href="#requirements-specification-notations-and-techniques">Requirements Specification Notations and Techniques</a></li>
+<li><a class="reference internal" href="#design-activities-methods">Design Activities &amp; Methods</a></li>
+<li><a class="reference internal" href="#encapsulation-and-decomposition">Encapsulation and Decomposition</a></li>
+<li><a class="reference internal" href="#decomposition-heuristics-cohesion-and-coupling">Decomposition Heuristics: Cohesion and Coupling</a></li>
+<li><a class="reference internal" href="#design-methods">Design Methods</a></li>
+<li><a class="reference internal" href="#proposed-ideal-realtime-design-method-objectives">Proposed Ideal Realtime Design Method Objectives</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#language-ideals">Language Ideals</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#prototyping">Prototyping</a></li>
+<li><a class="reference internal" href="#human-computer-interaction">Human-Computer Interaction</a></li>
+<li><a class="reference internal" href="#managing-design">Managing Design</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="11.html"
+                        title="previous chapter">11 - Real Time Threads in RTS</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/12.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="11.html" title="11 - Real Time Threads in RTS"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
