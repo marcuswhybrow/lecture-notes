@@ -155,6 +155,102 @@ P(H|F) = \frac{1}{2}" /></p>
 </ul>
 <p><em>...</em></p>
 </div>
+<div class="section" id="an-illustrating-example">
+<h2>An Illustrating Example<a class="headerlink" href="#an-illustrating-example" title="Permalink to this headline">¶</a></h2>
+<p>A patient takes a lab test and the result comes back positive. It is known that the test returns a correct positive result in only 98% of cases and a correct negative result in only 97% of cases. Furthermore, only 0.008% of the entire population has this disease.</p>
+<ol class="arabic simple">
+<li>What is the probability that this patient has cancer?</li>
+<li>What is the probability that he does not have cancer?</li>
+<li>What is the diagnosis?</li>
+</ol>
+<p>The available data has two possible outcomes, either positive represented by a <img class="math" src="../../../../images/math/77cf26be132ef93923e082ee4153b2cb0ef44a50.png" alt="+"/> symbol and negative represented by a <img class="math" src="../../../../images/math/add22d9bda21e86390bc74fa4dde17730a442da7.png" alt="-"/> symbol.</p>
+<p>The various probabilities are:</p>
+<div class="math">
+<p><img src="../../../../images/math/43762dbcf800c154cbbed068b4ab4a5026a15556.png" alt="P(cancer) = 0.008
+
+P(\sim cancer) = 0.992
+
+P(+ | cancer) = 0.98
+
+P(- | cancer) = 0.02
+
+P(+ | \sim cancer) = 0.03
+
+P(- | \sim cancer) = 0.97" /></p>
+</div><p>Now we have a new patient, whose test result is positive. Should we diagnose the patient as having cancer or not?</p>
+</div>
+<div class="section" id="choosing-hypotheses">
+<h2>Choosing Hypotheses<a class="headerlink" href="#choosing-hypotheses" title="Permalink to this headline">¶</a></h2>
+<p>Generally, we want the most probable hypothesis given the observed data. There are some terms people use in order to describe this process:</p>
+<p>MAP Hypothesis - Maximum A Posteriori Hypothesis</p>
+<p>ML Hypothesis - Maximum Likelihood Hypothesis</p>
+</div>
+<div class="section" id="maximum-a-posteriori-map">
+<h2>Maximum a Posteriori (MAP)<a class="headerlink" href="#maximum-a-posteriori-map" title="Permalink to this headline">¶</a></h2>
+<p>First remember we can use the Bayesian equation:</p>
+<div class="math">
+<p><img src="../../../../images/math/d6a21030058e712437bf9e6db03a523752c89876.png" alt="P(h|x) = \frac{P(x|h) P(h)}{P(x)}" /></p>
+</div><p>So we know this much:</p>
+<div class="math">
+<p><img src="../../../../images/math/44cfafad7717b9e8e0ba940bd16672ae9ed205a9.png" alt="h_{MAP} = arg \max_{h \epsilon H} P(h|x)" /></p>
+</div><p>Then we can replace the right hand side using the Bayesian equation:</p>
+<div class="math">
+<p><img src="../../../../images/math/b11acd7944d8e4e9f895cb687546707e02fcae5c.png" alt="h_{MAP} = arg \max_{h \epsilon H} \frac{P(x|h) P(h)}{P(x)}" /></p>
+</div><p>Then we can drop the denominator since <img class="math" src="../../../../images/math/6efaaf74e576202fad965134bc49c6a34aac4c30.png" alt="P(x)"/> is independent of <img class="math" src="../../../../images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/>, giving:</p>
+<div class="math">
+<p><img src="../../../../images/math/0bbffd133e3978c1546d47a86e2ac572652b2377.png" alt="h_{MAP} = arg \max_{h \epsilon H} P(x|h) P(h)" /></p>
+</div></div>
+<div class="section" id="maximum-likelihood-ml">
+<h2>Maximum Likelihood (ML)<a class="headerlink" href="#maximum-likelihood-ml" title="Permalink to this headline">¶</a></h2>
+<p>Assuming that each hypothesis in H (the hypothesis space) is equally probable (i.e. <img class="math" src="../../../../images/math/79f56e60eeeaf6d1566b24095135ff4907e6bf43.png" alt="P(h_i) = P(h_j)"/>), then for all <img class="math" src="../../../../images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> and <img class="math" src="../../../../images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/>, we can drop <img class="math" src="../../../../images/math/3e68730c936e4d6959516f6226ac7cc77be734ab.png" alt="P(h)"/> in MAP. <img class="math" src="../../../../images/math/0b98725fe4c1d5155482b01ecf88402e3217e1a6.png" alt="P(d|h)"/> is often called the likelihood of data <img class="math" src="../../../../images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/> given <img class="math" src="../../../../images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/>. Any hypothesis that maximises <img class="math" src="../../../../images/math/0b98725fe4c1d5155482b01ecf88402e3217e1a6.png" alt="P(d|h)"/> is called the maximum likelihood hypothesis:</p>
+<div class="math">
+<p><img src="../../../../images/math/d0767e43d8f39f7d12f2e478a4afa54771ee8c67.png" alt="h_{ML} = arg \max_{h \epsilon H} P(x|h)" /></p>
+</div></div>
+<div class="section" id="does-the-patient-have-cancer-or-not">
+<h2>Does the Patient Have Cancer or Not?<a class="headerlink" href="#does-the-patient-have-cancer-or-not" title="Permalink to this headline">¶</a></h2>
+<p>So now, how do we diagnose the patient:</p>
+<div class="math">
+<p><img src="../../../../images/math/496fdca2153cafa076fc7d7b9dd82241bc6e3e9f.png" alt="P(+|cancer) P(cancer) = 0.98 * 0.008 = 0.078
+
+P(+| \sim cancer) P (\sim cancer) = 0.03 * 0.992 = 0.298" /></p>
+</div><p>So the probability of not having cancer is the higher, so the diagnosis is <strong>not cancer</strong>.</p>
+</div>
+<div class="section" id="bayesian-classifier">
+<h2>Bayesian Classifier<a class="headerlink" href="#bayesian-classifier" title="Permalink to this headline">¶</a></h2>
+<p>For the following, we will be using this table of data:</p>
+<img alt="media/G53MLE/05/images/table.png" src="media/G53MLE/05/images/table.png" />
+<p>The Bayesian approach to classifying new instances of <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/> is to assign the class with the most probable target value <img class="math" src="../../../../images/math/ce58e4af225c93d08606c26554caaa5ae32edeba.png" alt="Y"/> (using a MAP classifier).</p>
+<div class="math">
+<p><img src="../../../../images/math/26c9c06f267da72ff153323ed88f905326a4c6bf.png" alt="Y = arg \max_{d_i \epsilon d} P(d_i | X)" /></p>
+</div><p>This means use the maximum probability of each of the classes given we know the input vector <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>. So as before we use the Bayesian formula to substitute different values:</p>
+<div class="math">
+<p><img src="../../../../images/math/ea99ef80b18a3c15c3c6250ff917e6544cc282fa.png" alt="Y = arg \max_{d_i \epsilon d} \frac{P(X|d_i) P(d_i)}{P(X)}" /></p>
+</div><p>And then we can drop the denominator as before:</p>
+<div class="math">
+<p><img src="../../../../images/math/b4d92baabee87efda787e86cc78283eb972fb11f.png" alt="Y = \max_{d_i \epsilon d} P(X|d_i) P(d_i)" /></p>
+</div><p>Luckily <img class="math" src="../../../../images/math/284d02dde7ed455e84c7b12fdadd0a10065bbf3a.png" alt="P(d_i)"/> is easy to calculate by simply counting how many times each target value <img class="math" src="../../../../images/math/f1544d77330dc5a289ad6a42beeb236b8dd70a9a.png" alt="d_i"/> occurs in the training set.</p>
+<p>Therefor we get the following probabilities for values of <img class="math" src="../../../../images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>:</p>
+<div class="math">
+<p><img src="../../../../images/math/33cd07107dd0130cc9e5e82cdcb8c511c5f1778e.png" alt="P(d = yes) = \frac{9}{14}
+
+P(d = no) = \frac{5}{14}" /></p>
+</div><p>The harder part is calculating <img class="math" src="../../../../images/math/4e74900bd1d9906a4212145bdb70b067bca9d7fb.png" alt="P(X|d_i)"/>. From the data we can see there are 5 columns (excluding the day column) the first and second with 3 values and the result with 2 values. Thus there are <img class="math" src="../../../../images/math/c7d5deb5ba5dbd8fc822d34ee593bb3ff29a94bb.png" alt="3 \times 3 \times 2 \times 2 \times 2 = 72"/> possible combinations.</p>
+<p>To obtain a reliable estimate of the probability here, we would need to see each combination many times. However we don&#8217;t even see each combination 1 time as we have less than 72 observed instances.</p>
+<p>Hence we need a very, very large training set, which in most cases is impossible to obtain.</p>
+</div>
+<div class="section" id="naive-bayes-classifier">
+<h2>Naïve Bayes Classifier<a class="headerlink" href="#naive-bayes-classifier" title="Permalink to this headline">¶</a></h2>
+<p>The Naïve Bayes classifier is based upon the simplifying assumptions that the attribute values are conditionally independent given the target value. The means we get the following:</p>
+<div class="math">
+<p><img src="../../../../images/math/6875abee82e055dddd5be3312d1af55b95ea8382.png" alt="P(X|d_i) = P(x_1, x_2, ..., x_n |d_i) = \prod_{k} P(x_k|d_i)" /></p>
+</div><p>So the Naïve Bayes Classifier is:</p>
+<div class="math">
+<p><img src="../../../../images/math/5fb3487fe14dcfc5f949ab3abe1a46c89c5da05f.png" alt="Y = arg \max_{d_i \epsilon d} P(d_i) \prod_{k=1}^4 P(x_k|d_i)" /></p>
+</div></div>
+<div class="section" id="back-to-the-example">
+<h2>Back to the Example<a class="headerlink" href="#back-to-the-example" title="Permalink to this headline">¶</a></h2>
+<p>So we can now classify new instances for the table using the Naïve Bayes Classifier.</p>
+</div>
 </div>
 
 
@@ -176,6 +272,14 @@ P(H|F) = \frac{1}{2}" /></p>
 <li><a class="reference internal" href="#probabilistic-inference">Probabilistic Inference</a></li>
 <li><a class="reference internal" href="#bayes-rule">Bayes Rule</a></li>
 <li><a class="reference internal" href="#id1">Bayesian Learning</a></li>
+<li><a class="reference internal" href="#an-illustrating-example">An Illustrating Example</a></li>
+<li><a class="reference internal" href="#choosing-hypotheses">Choosing Hypotheses</a></li>
+<li><a class="reference internal" href="#maximum-a-posteriori-map">Maximum a Posteriori (MAP)</a></li>
+<li><a class="reference internal" href="#maximum-likelihood-ml">Maximum Likelihood (ML)</a></li>
+<li><a class="reference internal" href="#does-the-patient-have-cancer-or-not">Does the Patient Have Cancer or Not?</a></li>
+<li><a class="reference internal" href="#bayesian-classifier">Bayesian Classifier</a></li>
+<li><a class="reference internal" href="#naive-bayes-classifier">Naïve Bayes Classifier</a></li>
+<li><a class="reference internal" href="#back-to-the-example">Back to the Example</a></li>
 </ul>
 </li>
 </ul>
