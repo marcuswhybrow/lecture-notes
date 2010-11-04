@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>13 - Reliability and Failure &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="12 - Designing Realtime Systems" href="12.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="12.html" title="12 - Designing Realtime Systems"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="reliability-and-failure">
+<span id="g53srp"></span><h1>13 - Reliability and Failure<a class="headerlink" href="#reliability-and-failure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="reliability">
+<h2>Reliability<a class="headerlink" href="#reliability" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+&#8220;a measure of the success with which the system conforms to some authoritative specification&#8221;.</blockquote>
+<p>From this we can define a definition of a failure:</p>
+<blockquote>
+&#8220;when the behaviour of a system deviates from that which is specified for it&#8221;.</blockquote>
+</div>
+<div class="section" id="safety">
+<h2>Safety<a class="headerlink" href="#safety" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+&#8220;freedom from those conditions that can cause death, injury, occupational illness, damage to (or loss of)  equipment (or property), or environmental harm&#8221;.</blockquote>
+<p>It is possible for systems to be reliable but safe, for example a military tank is design specifically to be unsafe to certain agents.</p>
+</div>
+<div class="section" id="dependability">
+<h2>Dependability<a class="headerlink" href="#dependability" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+&#8220;The dependability of a system is that property of the system which allows reliance to be justifiably places on the service it delivers&#8221;.</blockquote>
+<div class="section" id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Availability</dt>
+<dd>Readiness for correct service</dd>
+<dt>Reliability</dt>
+<dd>Continuity of correct service</dd>
+<dt>Safety</dt>
+<dd>(See above)</dd>
+<dt>Confidentiality</dt>
+<dd>Absence of unauthorised disclosure of information</dd>
+<dt>Integrity</dt>
+<dd>Absence of improper system alteration</dd>
+</dl>
+<p>Maintainability</p>
+</div>
+<div class="section" id="impairments">
+<h3>Impairments<a class="headerlink" href="#impairments" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Failures</dt>
+<dd>&#8220;When the behaviour of a system deviates from the which is specified for it&#8221; or &#8220;deviation from desired or intended state&#8221;.</dd>
+<dt>Errors</dt>
+<dd>Internal discrepancy between intended and actual behaviour, caused by a fault</dd>
+<dt>Faults</dt>
+<dd>A defect in the system...</dd>
+</dl>
+<div class="section" id="fault-types">
+<h4>Fault Types<a class="headerlink" href="#fault-types" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Transient</dt>
+<dd>Appears for a time and then disappears, for example electrical interference</dd>
+<dt>Permanent</dt>
+<dd>Appears at some time and remains, for example software design, broken wire.</dd>
+<dt>Intermittent</dt>
+<dd>Which recur from time to time, for example heat sensitivity.</dd>
+</dl>
+</div>
+<div class="section" id="fault-sources">
+<h4>Fault Sources<a class="headerlink" href="#fault-sources" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Inadequate specification</li>
+<li>Design errors in the software components</li>
+<li>Failures of the physical components</li>
+<li>Interference with communications</li>
+</ul>
+</div>
+<div class="section" id="fault-incidence-in-software">
+<h4>Fault Incidence in Software<a class="headerlink" href="#fault-incidence-in-software" title="Permalink to this headline">¶</a></h4>
+<p>On average 1 in every 50 lines of production code has a fault in it. That is 20,000 in 1 million lines of code.</p>
+<p>Testing removes 90% or 2,000 faults from 1 million lines of code, and the first year&#8217;s use of the software finds 10% (200) of the original faults.</p>
+<p>Maintenance removes those and adds the same number of new bugs (2000 per 1 million lines of code).</p>
+</div>
+<div class="section" id="failure-modes">
+<h4>Failure Modes<a class="headerlink" href="#failure-modes" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Value failure</dt>
+<dd>The value is in error.</dd>
+<dt>Time Failure</dt>
+<dd>Something happens too early, too late (known as a <em>performance error</em>) or infinitely late (known as an <em>omission failure</em>).</dd>
+</dl>
+</div>
+<div class="section" id="some-terms">
+<h4>Some Terms<a class="headerlink" href="#some-terms" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Fail uncontrolled</dt>
+<dd>Subject to arbitrary failures</dd>
+<dt>Fail late</dt>
+<dd>Correct value but may be late</dd>
+<dt>Fail silent</dt>
+<dd>Only subject to (final) omission failure</dd>
+<dt>Fail stop</dt>
+<dd>Like <em>fail silent</em>, but detected</dd>
+<dt>Fail controlled</dt>
+<dd>Only in a specified controlled manner</dd>
+<dt>Fail never</dt>
+<dd>Always correct in value and time</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="means">
+<h3>Means<a class="headerlink" href="#means" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fault prevention</li>
+<li>Fault removal</li>
+<li>Fault forecasting</li>
+<li>Fault tolerance</li>
+</ul>
+<div class="section" id="fault-prevention">
+<h4>Fault Prevention<a class="headerlink" href="#fault-prevention" title="Permalink to this headline">¶</a></h4>
+<p>This can be achieved using:</p>
+<ul class="simple">
+<li>rigorous (formal?) specifications</li>
+<li>Use proven design methodologies</li>
+<li>Use data abstraction</li>
+<li>Use a modular approach</li>
+<li>Use project support environments</li>
+</ul>
+</div>
+<div class="section" id="fault-removal">
+<h4>Fault Removal<a class="headerlink" href="#fault-removal" title="Permalink to this headline">¶</a></h4>
+<p>To remove a bug we must first identify it, this can be achieved during development:</p>
+<ul class="simple">
+<li>Design reviews</li>
+<li>Program verification</li>
+<li>Code inspection</li>
+<li>System testing</li>
+</ul>
+<p>or during use:</p>
+<ul class="simple">
+<li>Run-time checks</li>
+<li>Logs and audit trails</li>
+<li>Alerts and management interfaces</li>
+</ul>
+<p>There are some reservations regarding system testing. It is not exhaustive and cannot show absence of faults. Test conditions may not be realistic and specific errors may not be shown.</p>
+</div>
+<div class="section" id="fault-forecasting">
+<h4>Fault Forecasting<a class="headerlink" href="#fault-forecasting" title="Permalink to this headline">¶</a></h4>
+<p>We can predict likely faults so that they can be removed or anticipated and defended against.</p>
+</div>
+<div class="section" id="fault-tolerance">
+<h4>Fault Tolerance<a class="headerlink" href="#fault-tolerance" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+&#8220;the ability to operate correctly in the presence of faults&#8221;</blockquote>
+<p>However this might involve some degradation of function.</p>
+<p><strong>Full fault</strong> tolerance would mean that everything performs correctly within a limited time. <strong>Graceful
+degradation</strong> provides partial service and <strong>Fail-safe</strong> allows a program to remain safe while halting.</p>
+<p>Some faults (and their likelihood) can be anticipated based upon knowledge of the system. For example hardware failure, interference, external system failures.</p>
+<p>Other faults are <em>unanticipated</em> such as design errors and &#8220;real world&#8221; problems and are harder to tolerate.</p>
+<p>One way to deal with unanticipated errors is redundancy. For example RAID allows hard disks to fail whilst still continuing to work.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">13 - Reliability and Failure</a><ul>
+<li><a class="reference internal" href="#reliability">Reliability</a></li>
+<li><a class="reference internal" href="#safety">Safety</a></li>
+<li><a class="reference internal" href="#dependability">Dependability</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#impairments">Impairments</a><ul>
+<li><a class="reference internal" href="#fault-types">Fault Types</a></li>
+<li><a class="reference internal" href="#fault-sources">Fault Sources</a></li>
+<li><a class="reference internal" href="#fault-incidence-in-software">Fault Incidence in Software</a></li>
+<li><a class="reference internal" href="#failure-modes">Failure Modes</a></li>
+<li><a class="reference internal" href="#some-terms">Some Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#means">Means</a><ul>
+<li><a class="reference internal" href="#fault-prevention">Fault Prevention</a></li>
+<li><a class="reference internal" href="#fault-removal">Fault Removal</a></li>
+<li><a class="reference internal" href="#fault-forecasting">Fault Forecasting</a></li>
+<li><a class="reference internal" href="#fault-tolerance">Fault Tolerance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="12.html"
+                        title="previous chapter">12 - Designing Realtime Systems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/13.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="12.html" title="12 - Designing Realtime Systems"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

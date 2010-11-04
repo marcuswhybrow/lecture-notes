@@ -52,7 +52,28 @@
             
   <div class="section" id="data-clustering">
 <span id="g53mle07"></span><h1>07 - Data Clustering<a class="headerlink" href="#data-clustering" title="Permalink to this headline">¶</a></h1>
-<p>Neural network, K-nearest-neighbour and Bayesian learning algorithms are all &#8220;supervised&#8221; learning algorithms.</p>
+<p>Neural network, K-nearest-neighbour and Bayesian learning algorithms are all <strong>supervised</strong> learning algorithms. This means that the correct output is made known to the machine by what we might call a teacher.</p>
+<p>With <strong>unsupervised</strong> learning we cannot know whether an answer given is correct or incorrect. Instead we can achieve different goals such as, patterns, relations, and knowledge. This is called <strong>data mining</strong>.</p>
+<div class="section" id="motivating-problems">
+<h2>Motivating Problems<a class="headerlink" href="#motivating-problems" title="Permalink to this headline">¶</a></h2>
+<p>With a <em>true colour</em> image 24 bits are used per pixel (8 bits per channel) providing 1677216 possible colours. A <em>gif</em> image uses 8 bits per pixel giving a total of 256 possible colours.</p>
+<p>Gifs work by having a table of 256 entries each specifying a red, green and blue value. A reference for each pixel in the image can then be stored (to one of the colour entries in the table) instead of the actual RGB value.</p>
+<p>So the problem is how do we choose the pixels to be in the table...</p>
+<p>If we take the red, green and blue values of each pixel in the image and use those values as the dimensions in euclidean space we will begin to see groupings of similar colours in 3D space.</p>
+<p>Then we can replace gatherings of similar colours (points in euclidean space which are close to each other) with a single colour.</p>
+<p>Once the number of euclidean points have been reduced to 256 we can create the gif image.</p>
+</div>
+<div class="section" id="k-means">
+<h2>K-Means<a class="headerlink" href="#k-means" title="Permalink to this headline">¶</a></h2>
+<p>An algorithm for partitioning (or clustering) <img class="math" src="../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> data points into <img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> disjoint subsets <img class="math" src="../../../../images/math/f2471034924050fbf1b59048c09d74454ea66634.png" alt="S_j"/> containing <img class="math" src="../../../../images/math/66bde4246a122ecd20a6f260cbde9a0afe43a14e.png" alt="N_j"/> data points.</p>
+<p>Suppose that our data has <img class="math" src="../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> dimensions <img class="math" src="../../../../images/math/dd0b6d1fe22e237ced1c31c91efe985be1336b47.png" alt="[x_{i1}, x_{i2}, ..., x_{in}]"/> for <img class="math" src="../../../../images/math/c76a9db7f618921449643273dc61fd13655097eb.png" alt="i = 1, 2, ..., N"/> for <img class="math" src="../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> data points.</p>
+<p>We want to cluster these <img class="math" src="../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> points into <img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> subsets (clusters), where <img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is preset (<img class="math" src="../../../../images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> would be 256 in the gif example).</p>
+<p>For each cluster, we define a prototype point <img class="math" src="../../../../images/math/045fadfbf3f86e4e471cae1a9a3b888aeb5f33d3.png" alt="M_j = [m_{j1}, m_{j2}, ..., m_{jn}]"/> where <img class="math" src="../../../../images/math/f811c690cdf549781bd92cba866ca5abef4096aa.png" alt="j = 1, 2, ..., K"/>, which can be set randomly the first time.</p>
+<p>The distance between all euclidean points <img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/> and each cluster prototype <img class="math" src="../../../../images/math/b452578d1e7d735b1a75d7b4ad13b1713406fdd7.png" alt="M_j"/> is calculates as:</p>
+<div class="math">
+<p><img src="../../../../images/math/19801362358770991630830bcfb7ea55b30ec665.png" alt="D(x_i, M_j) = | x_i - M_j |^2 = \sum_{l=1}^n (x_{il} - m_jl)^2" /></p>
+</div><p>A euclidian point <img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/> is assigned to the jth cluster <img class="math" src="../../../../images/math/93655c05b798b5badfb3dceb08d20094ea4b77ac.png" alt="C_j"/> (meaning <img class="math" src="../../../../images/math/8368550557d04d8213a07e9dfb183f461c05e5c5.png" alt="x_i \epsilon C_j"/>) if the following condition holds:</p>
+</div>
 </div>
 
 
@@ -61,6 +82,15 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">07 - Data Clustering</a><ul>
+<li><a class="reference internal" href="#motivating-problems">Motivating Problems</a></li>
+<li><a class="reference internal" href="#k-means">K-Means</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="06.html"
                         title="previous chapter">06 - K-Nearest Neighbour Classifier</a></p>
