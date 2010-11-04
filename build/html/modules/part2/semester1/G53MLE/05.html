@@ -251,6 +251,20 @@ P(d = no) = \frac{5}{14}" /></p>
 <h2>Back to the Example<a class="headerlink" href="#back-to-the-example" title="Permalink to this headline">¶</a></h2>
 <p>So we can now classify new instances for the table using the Naïve Bayes Classifier.</p>
 </div>
+<div class="section" id="estimating-probabilities">
+<h2>Estimating Probabilities<a class="headerlink" href="#estimating-probabilities" title="Permalink to this headline">¶</a></h2>
+<p>So far, we can estimate the probabilities using the fraction of times the event is observed to occur over the entire observed opportunities.</p>
+<p>In the above example, we estimated:</p>
+<div class="math">
+<p><img src="../../../../images/math/4524e451913ada22a962dc07b8d14db69ae03029.png" alt="P(wind = strong | tennis = no) = \frac{N_c}{N}" /></p>
+</div><p>where <img class="math" src="../../../../images/math/c996acd51c78d9ece0ff3d8e78057e9a77fbbb6e.png" alt="N = 5"/> is the total number of training samples for which <img class="math" src="../../../../images/math/1e843799d11b6d19b0f7bb7cc64cee6f9dd095d7.png" alt="tennis = no"/>, and <img class="math" src="../../../../images/math/1f2701dd482bb477191a4d5b9e20d84d7e06647c.png" alt="Nc"/> is the number of these for which <img class="math" src="../../../../images/math/273c827aead084a27934e94c9d22960a963bba71.png" alt="wind = strong"/>.</p>
+<p>When <img class="math" src="../../../../images/math/38f90affde4558a00e3815a195c021eade94cb22.png" alt="N_c"/> is small, such approaches provide poor estimation. To avoid this difficulty, we can adopt the <strong>m-estimate</strong> of probability:</p>
+<div class="math">
+<p><img src="../../../../images/math/16db0e51785e7362200a0115446388003c4129ae.png" alt="\frac{N_c + mP}{N + m}" /></p>
+</div><p>where <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/> is the prior estimate of the probability we wish to estimate and <img class="math" src="../../../../images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is a constant (which you choose) called the equivalent sample size.</p>
+<p>A typical method for choosing <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/> in the absence of other information is to assume uniform priors: If an attribute has <img class="math" src="../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> possible values we set <img class="math" src="../../../../images/math/b353a8e69eea8509aa5b4a2e76cae1dfc128a5bf.png" alt="P = \frac{1}{k}"/>.</p>
+<p>For example, <img class="math" src="../../../../images/math/fc72cad06de27ea3d4c668bffae632a535edcc52.png" alt="P( wind = string | tennis = no)"/>, we note wind has two possible values, so the uniform priors means <img class="math" src="../../../../images/math/9e4711ca7ee56c4e68c21e3adaa0576e5e93cc35.png" alt="P = \frac{1}{2}"/>.</p>
+</div>
 </div>
 
 
@@ -280,6 +294,7 @@ P(d = no) = \frac{5}{14}" /></p>
 <li><a class="reference internal" href="#bayesian-classifier">Bayesian Classifier</a></li>
 <li><a class="reference internal" href="#naive-bayes-classifier">Naïve Bayes Classifier</a></li>
 <li><a class="reference internal" href="#back-to-the-example">Back to the Example</a></li>
+<li><a class="reference internal" href="#estimating-probabilities">Estimating Probabilities</a></li>
 </ul>
 </li>
 </ul>

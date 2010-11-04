@@ -244,3 +244,25 @@ Back to the Example
 ===================
 
 So we can now classify new instances for the table using the Naïve Bayes Classifier.
+
+Estimating Probabilities
+========================
+
+So far, we can estimate the probabilities using the fraction of times the event is observed to occur over the entire observed opportunities.
+
+In the above example, we estimated:
+
+.. math::
+    P(wind = strong | tennis = no) = \frac{N_c}{N}
+
+where :math:`N = 5` is the total number of training samples for which :math:`tennis = no`, and :math:`Nc` is the number of these for which :math:`wind = strong`.
+
+When :math:`N_c` is small, such approaches provide poor estimation. To avoid this difficulty, we can adopt the **m-estimate** of probability:
+
+.. math:: \frac{N_c + mP}{N + m}
+
+where :math:`P` is the prior estimate of the probability we wish to estimate and :math:`m` is a constant (which you choose) called the equivalent sample size.
+
+A typical method for choosing :math:`P` in the absence of other information is to assume uniform priors: If an attribute has :math:`k` possible values we set :math:`P = \frac{1}{k}`.
+
+For example, :math:`P( wind = string | tennis = no)`, we note wind has two possible values, so the uniform priors means :math:`P = \frac{1}{2}`.
