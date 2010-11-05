@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>05 - Ethernet &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="01 - IP and Up" href="../up/01.html" />
+    <link rel="prev" title="04 - Optical" href="04.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../up/01.html" title="01 - IP and Up"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Optical"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ethernet">
+<span id="g54acc05"></span><h1>05 - Ethernet<a class="headerlink" href="#ethernet" title="Permalink to this headline">¶</a></h1>
+<p>10Base5 and 10Base2 are simple coaxial systems and where <em>broadcast networks</em>.</p>
+<p>10BaseT (twisted pair) with hubs were the same, but just was simpler to create star topologies.</p>
+<p>The problem with broadcast networks was collisions so the <strong>CSMA-CD</strong> protocol was used:</p>
+<p>Each device senses the carrier, and starts transmitting if there is no carrier. If a collision is detected (more than one device starts transmitting at the same time) then a <em>binary exponential back-off</em> is started.</p>
+<div class="section" id="aloha-basic-technique">
+<h2>Aloha - Basic Technique<a class="headerlink" href="#aloha-basic-technique" title="Permalink to this headline">¶</a></h2>
+<p>First random MAC developed for radio-based communication in Hawaii (1970).</p>
+<p>The basic idea was that when a device is ready it transmits. The receiver sends an ACK for the data and a collision is assumed if the ACK timeouts. The device transmitting can recover from the collision by retransmitting after a random delay. If the delay is too short there can be a large number of collisions, if the delay is too long the network becomes under-utilised.</p>
+</div>
+<div class="section" id="slotted-aloha">
+<h2>Slotted ALOHA<a class="headerlink" href="#slotted-aloha" title="Permalink to this headline">¶</a></h2>
+<p>Time on the network is divided into equal sized slots (which are equal to the packet transmission time). A device with a packet transmits at the beginning of the next slot. If there is a collision each device retransmits their packet in some random future slot until transmission is successful.</p>
+<p>Every time there is a collision a time slot is wasted.</p>
+</div>
+<div class="section" id="pure-unslotted-aloha">
+<h2>Pure (Unslotted) ALOHA<a class="headerlink" href="#pure-unslotted-aloha" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+</div>
+<div class="section" id="slotted-aloha-efficiency">
+<h2>Slotted ALOHA Efficiency<a class="headerlink" href="#slotted-aloha-efficiency" title="Permalink to this headline">¶</a></h2>
+<p>We might as the question &#8220;what is the maximum fraction of slots which were used successfully&#8221;.</p>
+<p>Suppose <img class="math" src="../../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> stations have packets to send. Each transmits in a slot with probability <img class="math" src="../../../../../images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/>. The probability of successful transmission <img class="math" src="../../../../../images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> is for a single device:</p>
+<div class="math">
+<p><img src="../../../../../images/math/a288a40a38d11e25d4b186776be7ff669ab11497.png" alt="S = p(1 - p)^{N-1}" /></p>
+</div><p>and the probability that only one of <img class="math" src="../../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> transmits in a particular time slot is:</p>
+<div class="math">
+<p><img src="../../../../../images/math/9cca4721f78db500ebf795ff2abef775a382ff38.png" alt="S = N p (1-p)^{N-1}" /></p>
+</div><p>For a stable network <img class="math" src="../../../../../images/math/af4a970a954407101ae941bd5dca849692cd9d11.png" alt="p \leq \frac{1}{N}"/></p>
+<p>As the number of devices on a network (<img class="math" src="../../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>) tends to infinity <img class="math" src="../../../../../images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> becomes <img class="math" src="../../../../../images/math/dcaaf5a43761785f6fb552c0cae721965c8a25fa.png" alt="\frac{1}{e}"/> which is about <img class="math" src="../../../../../images/math/e17f6eedbcbf67c3c586f70ede247df579d45604.png" alt="0.37"/>. THis means the channel can be used for transmissions 37% of the time.</p>
+</div>
+<div class="section" id="pure-aloha">
+<h2>Pure ALOHA<a class="headerlink" href="#pure-aloha" title="Permalink to this headline">¶</a></h2>
+<p><em>...</em></p>
+</div>
+<div class="section" id="csma-cd">
+<h2>CSMA/CD<a class="headerlink" href="#csma-cd" title="Permalink to this headline">¶</a></h2>
+<p>Engineers wanted to learn from ALOHA (which didn&#8217;t provide a very good throughput). The key to good throughput is the binary exponential back-off in order to not create more collisions, but still get packets through.</p>
+<p>We can think of CSMA/CD as the ALOHA protocol with a slot size of <img class="math" src="../../../../../images/math/f65450756c44b33df63c304f031fdfc2751a0d56.png" alt="2t"/>. Collision windows in CSMA/CD are equivalent to ALOHA time slots. During a collision window a device is trying to reserve the wire for transmission.</p>
+<p>The collision window is <img class="math" src="../../../../../images/math/f65450756c44b33df63c304f031fdfc2751a0d56.png" alt="2t"/> if <img class="math" src="../../../../../images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> is the diameter of the network. Since thats the minimum time a device need in order to send a packet and receive a response.</p>
+<p>The interval <img class="math" src="../../../../../images/math/027f4a11d6090f9eac0ce2488df6384dad1263ea.png" alt="I"/> between successfully sent packets is:</p>
+<div class="math">
+<p><img src="../../../../../images/math/91b2fee88433df8fac55b0ed28adaf1770ff4b1e.png" alt="I = (e-1) 2t + T + t" /></p>
+</div><p>where <img class="math" src="../../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is number of bits in a packet, and <img class="math" src="../../../../../images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> is number of bits you can put onto the network before they have reached every devices on the network.</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="efficiency">
+<h2>Efficiency<a class="headerlink" href="#efficiency" title="Permalink to this headline">¶</a></h2>
+<p>The efficiency of CSMA/CD is:</p>
+<div class="math">
+<p><img src="../../../../../images/math/3ce4d3f1b09d5ed22697f15b5929909c648479a0.png" alt="E = \frac{T}{I} = \frac{T}{T = t(2e-1)}" /></p>
+</div><p>Say we have a 10Mbps network with a 500m diameter</p>
+<div class="math">
+<p><img src="../../../../../images/math/122d997a47281272e16770e2c370befce6fe3cf4.png" alt="T = 1000 bits = 10^{-4}s
+t = \frac{1000m}{signal speed} = 5 \times 10^{-6}s" /></p>
+</div><p>This makes the efficiency about <div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">E = 82%</tt>)</p>
+latex exited with error:
+[stderr]
+
+[stdout]
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009)
+entering extended mode
+(./math.tex
+LaTeX2e &lt;2009/09/24&gt;
+Babel &lt;v3.8l&gt; and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, german-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, ar
+abic, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danish, dutc
+h, esperanto, estonian, farsi, finnish, french, galician, german, ngerman, mono
+greek, greek, hungarian, icelandic, indonesian, interlingua, irish, italian, ku
+rmanji, latin, latvian, lithuanian, mongolian, mongolian2a, bokmal, nynorsk, po
+lish, portuguese, romanian, russian, sanskrit, serbian, slovak, slovenian, span
+ish, swedish, turkish, ukenglish, ukrainian, uppersorbian, welsh, loaded.
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/size12.clo))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/inputenc.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/ucs/utf8x.def))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/ucs/ucs.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/ucs/data/uni-global.def))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?&#8217; option.
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amscls/amsthm.sty)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/tools/bm.sty) (./math.aux)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/ucs/ucsencs.def)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/amsfonts/umsb.fd)
+! Missing $ inserted.
+&lt;inserted text&gt; 
+                $
+l.13 \end{document}
+                   
+[1] (./math.aux) )
+(see the transcript file for additional information)
+Output written on math.dvi (1 page, 260 bytes).
+Transcript written on math.log.
+</div>
+.</p>
+<p>When you increase the speed of the network to say 100Mbps we must also increase the packet size by 10 fold also, in order to maintain the same efficiency. Protocols don&#8217;t want to send such large packets and thus CSMA/CD has stopped being used because of this.</p>
+</div>
+<div class="section" id="bridges-to-switches">
+<h2>Bridges to Switches<a class="headerlink" href="#bridges-to-switches" title="Permalink to this headline">¶</a></h2>
+<p>So CSMA/CD works well for certain packet sizes, physical network sizes and has speed trade-offs. Network traffic at 100Mbps started to stress CSMA/CD in larger LAN deployments. There was a need to move away from pure CSMA/CD. This move started with <em>bridges</em> which could partition CSMA/CD into smaller segments. Bridges originally connected two CSMA/CD segments but then evolved into bridges with lots of ports (called switches.)</p>
+</div>
+<div class="section" id="buffering">
+<h2>Buffering<a class="headerlink" href="#buffering" title="Permalink to this headline">¶</a></h2>
+<p>You could attach a CSMA/CD based segment to a switch, or used point to point links from each host to the switch. The switch buffers incoming packets in simple FIFO (first in first out) queues. <em>Contention</em> is resolved by scheduling packets to output queues, and simple queuing is possible in software at lower speeds.</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="decoupling-rates">
+<h2>Decoupling Rates<a class="headerlink" href="#decoupling-rates" title="Permalink to this headline">¶</a></h2>
+<p>Once buffering was introduced it became possible to have different network speeds on each port, thus when a computer boots up it negotiates it speed with the switch port it is connected to.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">05 - Ethernet</a><ul>
+<li><a class="reference internal" href="#aloha-basic-technique">Aloha - Basic Technique</a></li>
+<li><a class="reference internal" href="#slotted-aloha">Slotted ALOHA</a></li>
+<li><a class="reference internal" href="#pure-unslotted-aloha">Pure (Unslotted) ALOHA</a></li>
+<li><a class="reference internal" href="#slotted-aloha-efficiency">Slotted ALOHA Efficiency</a></li>
+<li><a class="reference internal" href="#pure-aloha">Pure ALOHA</a></li>
+<li><a class="reference internal" href="#csma-cd">CSMA/CD</a></li>
+<li><a class="reference internal" href="#efficiency">Efficiency</a></li>
+<li><a class="reference internal" href="#bridges-to-switches">Bridges to Switches</a></li>
+<li><a class="reference internal" href="#buffering">Buffering</a></li>
+<li><a class="reference internal" href="#decoupling-rates">Decoupling Rates</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="04.html"
+                        title="previous chapter">04 - Optical</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../up/01.html"
+                        title="next chapter">01 - IP and Up</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/down/05.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../up/01.html" title="01 - IP and Up"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="04 - Optical"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
