@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>14 - Software Fault Tolerance Techniques &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="13 - Reliability and Failure" href="13.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="13.html" title="13 - Reliability and Failure"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="software-fault-tolerance-techniques">
+<span id="g53srp14"></span><h1>14 - Software Fault Tolerance Techniques<a class="headerlink" href="#software-fault-tolerance-techniques" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="redundancy">
+<h2>Redundancy<a class="headerlink" href="#redundancy" title="Permalink to this headline">¶</a></h2>
+<p>All fault tolerance relies on some form of redundancy. For example having more stuff than is absolutely required to make a working system (including hardware and software). If part of the system fails then the <em>spare</em> parts an be used instead (or at the same time in the hope that at least one will work) when a failure occurs.</p>
+</div>
+<div class="section" id="n-version-programming">
+<h2>N-Version Programming<a class="headerlink" href="#n-version-programming" title="Permalink to this headline">¶</a></h2>
+<p>N-version programming is a technique where multiple redundant modules run in parallel in order to calculate the same value. Each provide an answer and the majority answer is taken as the correct answer. This performs &#8220;error masking&#8221; since if one module breaks the others will still provide the correct answer.</p>
+</div>
+<div class="section" id="failure-modes">
+<h2>Failure Modes<a class="headerlink" href="#failure-modes" title="Permalink to this headline">¶</a></h2>
+<p>Hardware failures are different to bugs. For example two transistors (or wires, etc.) are likely to fail randomly and independently. So this is a good idea in hardware.</p>
+<p>With software bugs, two copies of the same (buggy) method will do exactly the same things (however consider cosmic radiation modifying bits in memory).</p>
+<p>So full software redundancy requires:</p>
+<ul class="simple">
+<li>Different languages</li>
+<li>Different compilers</li>
+<li>Different algorithms</li>
+<li>Limited/no sharing between teams (so as not to share incorrect assumptions)</li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Lets imagine we have multiple versions of the same program written in different languages. There needs to be some sort of <em>driver</em> which invokes the different versions of the programs, waits for, and then compares the outputs, and then calculates an outcome.</p>
+</div>
+<div class="section" id="vote-comparison">
+<h2>Vote Comparison<a class="headerlink" href="#vote-comparison" title="Permalink to this headline">¶</a></h2>
+<p>A way to create a final output (based upon the multiple outputs from the different software versions) is to compare the outputs. A <strong>comparison vector</strong> would contain the multiple outputs from each version of the program. Comparison points must be consistent amount the different outputs such that they are compared fairly.</p>
+<p>There are some problems. Floating point numbers and floating point arithmetic is handled differently in different computer architectures, this could cause inexact voting. This could mean there are sensitive regions where data can be subtly different. This in turn could mean there are multiple correct solutions.</p>
+</div>
+<div class="section" id="other-issues">
+<h2>Other Issues<a class="headerlink" href="#other-issues" title="Permalink to this headline">¶</a></h2>
+<p>There could be problems in the program specification which the different versions of the program are based upon. In addition there could be different ways in which the different version fail, and developing different versions of the same software can become expensive.</p>
+</div>
+<div class="section" id="software-dynamic-redundancy">
+<h2>Software Dynamic Redundancy<a class="headerlink" href="#software-dynamic-redundancy" title="Permalink to this headline">¶</a></h2>
+<p>There are four stages in fault tolerance:</p>
+<ol class="arabic simple">
+<li>Error Detection</li>
+<li>Damage confinement and assessment</li>
+<li>Error recovery</li>
+<li>Fault treatment and continued service</li>
+</ol>
+<div class="section" id="error-detection">
+<h3>Error Detection<a class="headerlink" href="#error-detection" title="Permalink to this headline">¶</a></h3>
+<p>How do we know (in software) that something has gone wrong. There are lots of ways we might detect that something is aerie:</p>
+<p>Environmental - or things that the language itself could check:</p>
+<ul class="simple">
+<li>Division by zero</li>
+<li>Array bounds</li>
+</ul>
+<p>Application - code you write to check for problems:</p>
+<ul>
+<li><p class="first">Replication checks</p>
+</li>
+<li><p class="first">Timing checks</p>
+</li>
+<li><dl class="first docutils">
+<dt>Reversal checks</dt>
+<dd><p class="first last">For example to square a number you just square rooted to check you did it correctly.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Coding checks</p>
+</li>
+<li><dl class="first docutils">
+<dt>Reasonableness checks</dt>
+<dd><p class="first last">Checks the answer of an algorithm to ensure that it is plausible.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Structural Checks</dt>
+<dd><p class="first last">Check that a linked-list is still correctly linked etc.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Dynamic reasonableness checks</p>
+</li>
+</ul>
+</div>
+<div class="section" id="damage-confinement-and-assessment">
+<h3>Damage Confinement and Assessment<a class="headerlink" href="#damage-confinement-and-assessment" title="Permalink to this headline">¶</a></h3>
+<p>If nothing is done when an error is detected, that error can spread since the program will assume it to be correct. We need to stop this from happening. This confinement process is also known as firewalling.</p>
+<p>There are several techniques:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Modular Decomposition</dt>
+<dd><p class="first last">Detect errors before they leave a module, and enter another (loosely-coupled module).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Atomic actions</p>
+</li>
+</ul>
+<p>Firwalling is also helped by protection mechanisms such as OS or hardware-supported access control.</p>
+</div>
+<div class="section" id="error-recovery">
+<h3>Error Recovery<a class="headerlink" href="#error-recovery" title="Permalink to this headline">¶</a></h3>
+<p>Now we now there is a problem. In some situations we can recover from that error:</p>
+<p><strong>Backward Recovery</strong> is a technique which records the state of the program and specific boundaries. At certain points a check is conducted (a recovery point) and we can rollback if necessary. This works well with database transactions.</p>
+<p><strong>Forward Recovery</strong>. In an aeroplane you cannot rollback the state of the planes control surfaces, you have already moved them. In these cases you must calculate a new state based upon the fact that you have made an error.</p>
+<p><strong>Error Masking</strong> uses a fail-over technique in order to mask the error you are getting.</p>
+</div>
+<div class="section" id="fault-treatment-and-continued-service">
+<h3>Fault Treatment and Continued Service<a class="headerlink" href="#fault-treatment-and-continued-service" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have recovered from the error, we might to to resolve the underlying cause of the fault. For example fixing the program bug or replacing the failed part.</p>
+<p>This requires monitoring and reporting and should be supported by mechanisms for in-place maintenance.</p>
+</div>
+</div>
+<div class="section" id="example-recovery-blocks">
+<h2>Example: Recovery blocks<a class="headerlink" href="#example-recovery-blocks" title="Permalink to this headline">¶</a></h2>
+<p>The recovery blocks technique starts with an acceptance test and tries multile algorithms until the test is met. If no algorithm works correctly a failure contingency is implemented.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">14 - Software Fault Tolerance Techniques</a><ul>
+<li><a class="reference internal" href="#redundancy">Redundancy</a></li>
+<li><a class="reference internal" href="#n-version-programming">N-Version Programming</a></li>
+<li><a class="reference internal" href="#failure-modes">Failure Modes</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#vote-comparison">Vote Comparison</a></li>
+<li><a class="reference internal" href="#other-issues">Other Issues</a></li>
+<li><a class="reference internal" href="#software-dynamic-redundancy">Software Dynamic Redundancy</a><ul>
+<li><a class="reference internal" href="#error-detection">Error Detection</a></li>
+<li><a class="reference internal" href="#damage-confinement-and-assessment">Damage Confinement and Assessment</a></li>
+<li><a class="reference internal" href="#error-recovery">Error Recovery</a></li>
+<li><a class="reference internal" href="#fault-treatment-and-continued-service">Fault Treatment and Continued Service</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-recovery-blocks">Example: Recovery blocks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="13.html"
+                        title="previous chapter">13 - Reliability and Failure</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/14.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="13.html" title="13 - Reliability and Failure"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
