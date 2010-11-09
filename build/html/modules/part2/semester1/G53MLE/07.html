@@ -73,6 +73,108 @@
 <div class="math">
 <p><img src="../../../../images/math/19801362358770991630830bcfb7ea55b30ec665.png" alt="D(x_i, M_j) = | x_i - M_j |^2 = \sum_{l=1}^n (x_{il} - m_jl)^2" /></p>
 </div><p>A euclidian point <img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/> is assigned to the jth cluster <img class="math" src="../../../../images/math/93655c05b798b5badfb3dceb08d20094ea4b77ac.png" alt="C_j"/> (meaning <img class="math" src="../../../../images/math/8368550557d04d8213a07e9dfb183f461c05e5c5.png" alt="x_i \epsilon C_j"/>) if the following condition holds:</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="j-means-algorithm">
+<h2>J-Means Algorithm<a class="headerlink" href="#j-means-algorithm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1">
+<h3>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h3>
+<p>Arbitrarily choose from the given sample set <img class="math" src="../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>, some initial cluster centres.</p>
+<div class="math">
+<p><img src="../../../../images/math/ae6a726c51bd59d470c5c459c241b8ce1529fef3.png" alt="m_{0j} = [m^0_{j1}, m^0_{j2}, ..., m^0_{jn} j = 1, 2, ..., k]" /></p>
+</div><p>There are no known best ways to decide the sample set, but <img class="math" src="../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> could be the first <img class="math" src="../../../../images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> samples of the sample set or be generated randomly.</p>
+<p>We then say that <img class="math" src="../../../../images/math/288e2a39b58d673182c57dc6214b702a448341ea.png" alt="t = 0"/> where <img class="math" src="../../../../images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> is the <em>iteration index</em>.</p>
+</div>
+<div class="section" id="step-2">
+<h3>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h3>
+<p>Assign each of the samples (<img class="math" src="../../../../images/math/b431d86c6212db9f58f6196ca3d0e2b8d3eafe26.png" alt="x_i = [x_{i1}, x_{i2}, ..., x_{in}] i = 1,2,...,N"/>) to one of the clusters according to the distance between each sample and the centre of each cluster.</p>
+<div class="math">
+<p><img src="../../../../images/math/6c00d02c588939db9202b53460ed29e484104b11.png" alt="x_i \epsilon C^t_j
+
+if D(x_i, M^t_j) \leq D(x_i, M^t_l)
+
+for all l = 1,2,...,k" /></p>
+</div></div>
+<div class="section" id="step-3">
+<h3>Step 3<a class="headerlink" href="#step-3" title="Permalink to this headline">¶</a></h3>
+<p>Update the cluster centres to get:</p>
+<div class="math">
+<p><img src="../../../../images/math/e75f50ef3a2c248f461f4e565387f6c839439408.png" alt="M^{t+1}_j = [m^{t+1}_{j1}, m^{t+1}_{j2}, ..., m^{t+1}_{jn}] j = 1,2,...,K" /></p>
+</div><p>according to</p>
+<div class="math">
+<p><img src="../../../../images/math/a3de5555eb48fba187ff06aaed221b0a34163667.png" alt="M^{t+1}_j = \frac{1}{N^t_j} \sum_{x_i \epsilon C^t_j} x_i" /></p>
+</div><p>where <img class="math" src="../../../../images/math/19434f3ae037fba7ea02f0bd24f1b5b122825389.png" alt="N^t_j"/> is the number of samples in <img class="math" src="../../../../images/math/8017ff167f58f50090fc5508f28d0f9fd3d712d4.png" alt="C^t_j"/></p>
+</div>
+<div class="section" id="step-4">
+<h3>Step 4<a class="headerlink" href="#step-4" title="Permalink to this headline">¶</a></h3>
+<p>Calculate the error of approximation:</p>
+<div class="math">
+<p><img src="../../../../images/math/e2cec3ccc0ad9c24899cfc65af4644c42f171658.png" alt="E_t = \frac{1}{2} \sum^K_{j=1} \sum_{x_i \epsilon C^t_j} | x_i - M^t_j |^2" /></p>
+</div></div>
+<div class="section" id="step-5">
+<h3>Step 5<a class="headerlink" href="#step-5" title="Permalink to this headline">¶</a></h3>
+<p>If the terminating criterion is met, then stop. Otherwise <img class="math" src="../../../../images/math/0c4cc7a4423c0bab0ee3e60df22c10cbfeb3475e.png" alt="t = t+1"/> and go back to <em>step 2</em>.</p>
+<p><strong>Stopping Criterions</strong></p>
+<p>The K-means algorithm can be stopped based upon the following criterions:</p>
+<ol class="arabic">
+<li><p class="first">The errors do not change significantly in two consecutive epochs</p>
+<blockquote>
+<p>For example <img class="math" src="../../../../images/math/f7f2c5fc0d671b853a9cd194949e8c65c08edaaf.png" alt="|E_t - E_{t-1} | \le \sigma"/> where <img class="math" src="../../../../images/math/fa35d9fc104207e09a712110ac81612c5b279a6c.png" alt="\sigma"/> is some preset small value.</p>
+</blockquote>
+</li>
+<li><p class="first">No further change in the assignment of the data points to clusters in two consecutive epochs</p>
+</li>
+<li><p class="first">Stop after fixed number of epochs regardless of the error.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="what-does-k-means-do">
+<h2>What Does K-Means Do?<a class="headerlink" href="#what-does-k-means-do" title="Permalink to this headline">¶</a></h2>
+<p>It tries to find the centre vectors <img class="math" src="../../../../images/math/b452578d1e7d735b1a75d7b4ad13b1713406fdd7.png" alt="M_j"/>&#8216;s that optimise the following cost function:</p>
+<div class="math">
+<p><img src="../../../../images/math/e2cec3ccc0ad9c24899cfc65af4644c42f171658.png" alt="E_t = \frac{1}{2} \sum^K_{j=1} \sum_{x_i \epsilon C^t_j} | x_i - M^t_j |^2" /></p>
+</div></div>
+<div class="section" id="some-remarks">
+<h2>Some Remarks<a class="headerlink" href="#some-remarks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>K-Means is a gradient descent algorithm, trying to minimise a cost function <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/>.</li>
+<li>In general, the algorithm does not achieve a global minimum of <img class="math" src="../../../../images/math/fa2fa899f0afb05d6837885523503a2d4df434f9.png" alt="E"/> over the assignments.</li>
+<li>It is sensitive to the initial choice of cluster centres. Different starting cluster centroids may lead to different solutions.</li>
+<li>It is a popular method, many more advanced methods have been derived from this simple algorithm.</li>
+</ul>
+</div>
+<div class="section" id="competitive-learning-neural-networks">
+<h2>Competitive Learning Neural Networks<a class="headerlink" href="#competitive-learning-neural-networks" title="Permalink to this headline">¶</a></h2>
+<p>This type of network usually has one layer of fan-out units and one layer of processing units:</p>
+<img alt="../../../../images/neuralnetwork.png" src="../../../../images/neuralnetwork.png" />
+<p>The processing layer consists of <img class="math" src="../../../../images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/> processing units, each receiving <img class="math" src="../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> input signals from the fan-out units. The <img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/> input for processing unit <img class="math" src="../../../../images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> has weight <img class="math" src="../../../../images/math/1815c71b45e202f4044d4148157d376f614e3595.png" alt="w_{ij}"/> assigned to it.</p>
+<p>The output of the processing units compete on the basis of which of them has its weight vector <img class="math" src="../../../../images/math/6615efa4aaf6071e787b12ac05b0f58978297809.png" alt="W_j = [w_{j1}, w_{j2}, ..., w_{jN}]"/> for all <img class="math" src="../../../../images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/>, closest to the input vector <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/> (as measured by a distance function D).</p>
+<p>The winning unit generates an output signal of 1; all the other units having outputs of 0.</p>
+<p>Each processing units calculates the distance between the input vector and the weight vector connecting the input to it, the activation of the ith processing unit is:</p>
+<div class="math">
+<p><img src="../../../../images/math/691dd37c6ebf8499cba7a2d999d10e28b836452b.png" alt="a_i = D(W_i, X) i = 1,2,...,M" /></p>
+</div><p><img class="math" src="../../../../images/math/57bb5b7b230677d917145cf541d082f9a70e3576.png" alt="D(W_i, X)"/> is a distance measurement function. The most common choice for this is the euclidean distance.</p>
+<p>Once each processing unit has calculated its activation, a competition takes place to see which output unit has the smallest activate value.</p>
+<p>This implies finding the unit which has its associated weight vector closest to the input vector <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>. THe unit with the smallest activation value is declared as the winner, all other units are losers.</p>
+<ul class="simple">
+<li>The aim of such a network is to cluster the input data.</li>
+<li>Simpler inputs should be classified as being in the same cluster</li>
+<li>There is no know desired outputs</li>
+<li>The outputs are found by the network itself from the correlation of the input data</li>
+<li>Such a network is also called a <strong>self-organising</strong> or an <strong>un-supervising</strong> neural network.</li>
+<li>This is unsupervised competitive learning</li>
+</ul>
+</div>
+<div class="section" id="competitive-learning-algorithms">
+<h2>Competitive Learning Algorithms<a class="headerlink" href="#competitive-learning-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>The task is to classify objects in the feature space into clusters.</p>
+<p><em>...</em></p>
+<div class="section" id="competitive-learning">
+<h3>Competitive Learning<a class="headerlink" href="#competitive-learning" title="Permalink to this headline">¶</a></h3>
+<p>For a given training instance, the distance to all clusters is calculated. The closest cluster vector is chosen, and its weights <strong>only</strong> are updated.</p>
+<p><em>...</em></p>
+</div>
 </div>
 </div>
 
@@ -87,6 +189,21 @@
 <li><a class="reference internal" href="#">07 - Data Clustering</a><ul>
 <li><a class="reference internal" href="#motivating-problems">Motivating Problems</a></li>
 <li><a class="reference internal" href="#k-means">K-Means</a></li>
+<li><a class="reference internal" href="#j-means-algorithm">J-Means Algorithm</a><ul>
+<li><a class="reference internal" href="#step-1">Step 1</a></li>
+<li><a class="reference internal" href="#step-2">Step 2</a></li>
+<li><a class="reference internal" href="#step-3">Step 3</a></li>
+<li><a class="reference internal" href="#step-4">Step 4</a></li>
+<li><a class="reference internal" href="#step-5">Step 5</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-does-k-means-do">What Does K-Means Do?</a></li>
+<li><a class="reference internal" href="#some-remarks">Some Remarks</a></li>
+<li><a class="reference internal" href="#competitive-learning-neural-networks">Competitive Learning Neural Networks</a></li>
+<li><a class="reference internal" href="#competitive-learning-algorithms">Competitive Learning Algorithms</a><ul>
+<li><a class="reference internal" href="#competitive-learning">Competitive Learning</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
