@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>08 - Data Processing and Representation Principal Component Analysis (PCA) &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53MLE Machine Learning" href="index.html" />
+    <link rel="next" title="G53SRP Systems and Real-Time Programming" href="../G53SRP/index.html" />
+    <link rel="prev" title="07 - Data Clustering" href="07.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="07.html" title="07 - Data Clustering"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="data-processing-and-representation-principal-component-analysis-pca">
+<span id="g53mle08"></span><h1>08 - Data Processing and Representation Principal Component Analysis (PCA)<a class="headerlink" href="#data-processing-and-representation-principal-component-analysis-pca" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="processing-methods">
+<h2>Processing Methods<a class="headerlink" href="#processing-methods" title="Permalink to this headline">¶</a></h2>
+<p>In face recognition windows of varying sizes are passed over the image at every point and each separate window size and position is assessed for the presence of a face.</p>
+<p>The windows with faces represent are recorded. However each window consists of many pixels. Since there are so many pixels in a window it would mean storing a lot of data if we captured it all. This problem is amplified when more dimensions are added.</p>
+<p>So in order to cut down on the amount of space needed to represent the data we undergo a <strong>feature extraction</strong> process which reduces the dimensionality of the data.</p>
+<p>For this representation we can then classify the input.</p>
+</div>
+<div class="section" id="feature-extraction-dimensionality-reduction">
+<h2>Feature Extraction/Dimensionality Reduction<a class="headerlink" href="#feature-extraction-dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
+<p>It is impossible to process raw image data (pixels) directly. There would be too many of them or the dimensionality could be too high. Also the the curse of dimensionality means that calculations take far longer as the number of dimensions increase.</p>
+<p>The raw pixel data is processed to produce a smaller set of numbers which will capture the most information contained in the original <em>raw</em> data. This is often called a feature vector.</p>
+<p>The basic principle is that from raw data (a vector) <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/> of <img class="math" src="../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> dimensions to a new vector <img class="math" src="../../../../images/math/ce58e4af225c93d08606c26554caaa5ae32edeba.png" alt="Y"/> of <img class="math" src="../../../../images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> dimensions (where <img class="math" src="../../../../images/math/c25ccafdde8243b79760f073e3d4dac937bac34f.png" alt="n \le N"/>) via a transformation matrix <img class="math" src="../../../../images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> such that <img class="math" src="../../../../images/math/ce58e4af225c93d08606c26554caaa5ae32edeba.png" alt="Y"/> will capture the information in <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+</div>
+<div class="section" id="principal-component-analysis-pca">
+<h2>Principal Component Analysis (PCA)<a class="headerlink" href="#principal-component-analysis-pca" title="Permalink to this headline">¶</a></h2>
+<p>PCA is one of the most often used dimensionality reduction techniques.</p>
+</div>
+<div class="section" id="principal-components">
+<h2>Principal Components<a class="headerlink" href="#principal-components" title="Permalink to this headline">¶</a></h2>
+<p>All principal components (PCs) start at the origin of the ordinate axes. The first PC is in the direction of the <em>maximum variance</em> from the origin and subsequent PCs are orthogonal to the 1st PC and describe the maximum residual variance.</p>
+</div>
+<div class="section" id="pca-goal">
+<h2>PCA Goal<a class="headerlink" href="#pca-goal" title="Permalink to this headline">¶</a></h2>
+<p>We wish to explain/summarise the underlying variance-covariance structure of a large set of variables through a few linear combinations of these variables.</p>
+</div>
+<div class="section" id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Data Visualisation</li>
+<li>Data Reduction</li>
+<li>Data Classification</li>
+<li>Trend Analysis</li>
+<li>Factor Analysis</li>
+<li>Noise Reduction</li>
+</ul>
+</div>
+<div class="section" id="an-example">
+<h2>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h2>
+<p>Imagine a spring which is fixed to a point at one end and has a visually identifiable ball on the other end. The spring is compressing and expanding in 3D space (xyz) along the x axis only (i.e. it does not move in the y or z axes).</p>
+<p>However suppose we do not know that we only need to record information about 1 dimension (the x axis) and instead place 3 cameras at different angles looking at the spring.</p>
+<p>Each of the cameras record a 2D projection of the ball&#8217;s position, and we record this information 200 times a second (200Hz) for 2 minutes.</p>
+<p>We now have 12,000 sets of 6 dimensional data. Now the task is to determine if the movement is only along the x axis and not the test. This is the job of principal component analysis.</p>
+</div>
+<div class="section" id="redundancy">
+<h2>Redundancy<a class="headerlink" href="#redundancy" title="Permalink to this headline">¶</a></h2>
+<p>If you project the data gathered from a particular camera onto a feature space, and their is a strong correlation between the x and y axis, thats means we can say that given I know x I can predict y to a certain degree. The feature space for such a camera would look like a definite line.</p>
+<p>If the feature space did not create a recognisable line the x and y dimensions have no correlation and thus we cannot predict y given x.</p>
+<p>Where a high correlation is found it is said that we have a high redundancy, since given one dimension we can predict the other (or guess it very accurately). It is in these cases that multiple dimensions can be condensed into less dimensions since there is redundancy in the raw data.</p>
+</div>
+<div class="section" id="covariance-matrix">
+<h2>Covariance Matrix<a class="headerlink" href="#covariance-matrix" title="Permalink to this headline">¶</a></h2>
+<p>A covariance matrix is as high as the amount of dimensions captured in the raw data and as wide as the amount of measurements taken. So in the spring example case it would be 6 high and 12,000 wide.</p>
+<p><em>...</em></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">08 - Data Processing and Representation Principal Component Analysis (PCA)</a><ul>
+<li><a class="reference internal" href="#processing-methods">Processing Methods</a></li>
+<li><a class="reference internal" href="#feature-extraction-dimensionality-reduction">Feature Extraction/Dimensionality Reduction</a></li>
+<li><a class="reference internal" href="#principal-component-analysis-pca">Principal Component Analysis (PCA)</a></li>
+<li><a class="reference internal" href="#principal-components">Principal Components</a></li>
+<li><a class="reference internal" href="#pca-goal">PCA Goal</a></li>
+<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#an-example">An Example</a></li>
+<li><a class="reference internal" href="#redundancy">Redundancy</a></li>
+<li><a class="reference internal" href="#covariance-matrix">Covariance Matrix</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="07.html"
+                        title="previous chapter">07 - Data Clustering</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G53SRP/index.html"
+                        title="next chapter">G53SRP Systems and Real-Time Programming</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53MLE/08.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G53SRP/index.html" title="G53SRP Systems and Real-Time Programming"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="07.html" title="07 - Data Clustering"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53MLE Machine Learning</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
