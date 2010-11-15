@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>09 - Security &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="&lt;no title&gt;" href="10.html" />
+    <link rel="prev" title="08 - Programming" href="08.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="10.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="08.html" title="08 - Programming"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="security">
+<span id="g54acc09"></span><h1>09 - Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="common-requirements">
+<h2>Common Requirements<a class="headerlink" href="#common-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Regardless of the implementation, security requires the same things:</p>
+<dl class="docutils">
+<dt>Identification</dt>
+<dd>Naming a principal</dd>
+<dt>Authentication</dt>
+<dd>Proving your identity. Multi-factor authentication requires multiple forms of authentications such as a chip and PIN, retina/fingerprint scan etc.</dd>
+<dt>Authorisation</dt>
+<dd>Proving you&#8217;re allowed</dd>
+<dt>Confidentiality</dt>
+<dd>Hiding what you&#8217;re doing</dd>
+<dt>Defence in Depth</dt>
+<dd>Mitigation at all levels, perfect security is generally too expensive.</dd>
+</dl>
+<div class="section" id="techniques">
+<h3>Techniques<a class="headerlink" href="#techniques" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Encryption</dt>
+<dd>One time pages, public and private keys can be used to encrypt and decrypt data.</dd>
+<dt>Hashing</dt>
+<dd>The result of a one-way function, a hash is unique based upon the input and irreversible.</dd>
+<dt>Traffic Analysis</dt>
+<dd>Communication patterns may give malicious use away. For example hacked hosts often start using the network oddly.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="ssl-tls-https">
+<h2>SSL/TLS/HTTPS<a class="headerlink" href="#ssl-tls-https" title="Permalink to this headline">¶</a></h2>
+<p>TLS (Transport Layer Security) grew out of SSL (Secure Sockets Layer) under Netscape. It is incredibly complex, hard to get right and widely used.</p>
+<p>HTTPS uses TLS/SSL in order to provide a secure channel over an insecure network. It verifies the identity of the server you are connecting to and can verify the identity of the client if necessary.</p>
+<div class="section" id="using-https">
+<h3>Using HTTPS<a class="headerlink" href="#using-https" title="Permalink to this headline">¶</a></h3>
+<p><em>...</em></p>
+</div>
+</div>
+<div class="section" id="application-security-openid-vs-oauth">
+<h2>Application Security - OpenID vs OAuth<a class="headerlink" href="#application-security-openid-vs-oauth" title="Permalink to this headline">¶</a></h2>
+<p>OpenID allows people to prove that you own or are identified with a URL. It allows you to use one identity with many sites. This is not the same as the <em>single sign-on</em> principal.</p>
+<p>OAuth authenticates third-party access to your data using cryptographically generated tokens.</p>
+</div>
+<div class="section" id="openid">
+<h2>OpenID<a class="headerlink" href="#openid" title="Permalink to this headline">¶</a></h2>
+<p>OpenID is about verifying identity but nothing about authorisation or trust, enabling a site to use a third-party to verify the identity of a user.</p>
+<p>OpenID has two modes <strong>dumb</strong> (stateless) and <strong>smart</strong> (stateful). Dumb mode allows for simpler code on the consumer side, whereas smart mode is more computationally intensive.</p>
+<div class="section" id="dumb-mode">
+<h3>Dumb Mode<a class="headerlink" href="#dumb-mode" title="Permalink to this headline">¶</a></h3>
+<p>In order to explain this we shall asuume three actors <strong>Alice</strong> (you), <strong>Bob</strong> (website) and <strong>Carol</strong> (OpenID service provider).</p>
+<p>Phase 1:</p>
+<ul class="simple">
+<li>Alice types in her identity URL with Carol to Bob&#8217;s site.</li>
+<li>Bob GETs Carol&#8217;s server URL from that page</li>
+<li>Bob redirects Alice to Carol&#8217;s URL adding parameters such as <tt class="docutils literal"><span class="pre">identity</span></tt>, <tt class="docutils literal"><span class="pre">return_to</span></tt> or <tt class="docutils literal"><span class="pre">nonce</span></tt>.</li>
+</ul>
+<p>Phase 2:</p>
+<ul class="simple">
+<li>Carol verifies Alice <em>is</em> Alice somehow.</li>
+<li>Carol sends ALice back adding more parameters such as <tt class="docutils literal"><span class="pre">assoc_handle</span></tt> and <tt class="docutils literal"><span class="pre">sig</span></tt>.</li>
+</ul>
+<p>Phase 3:</p>
+<ul class="simple">
+<li>Bob contacts Carol POSTing all the parameters so far.</li>
+<li>Carol computers <tt class="docutils literal"><span class="pre">sig'</span></tt> using the secret pointed oto by <tt class="docutils literal"><span class="pre">assoc_handle</span></tt>.</li>
+<li>If <tt class="docutils literal"><span class="pre">sig'</span> <span class="pre">==</span> <span class="pre">sig</span></tt> then tell Bob that Alice <em>is</em> the Alice Carol thinks she is. Else fail.</li>
+</ul>
+</div>
+<div class="section" id="smart-mode">
+<h3>Smart Mode<a class="headerlink" href="#smart-mode" title="Permalink to this headline">¶</a></h3>
+<p>Smart mode is the same as <em>dumb mode</em> except:</p>
+<ul class="simple">
+<li>Upon the first invocation, Bob and Carol setup a <em>shared secret</em>.</li>
+<li>In phase 2, Carol uses the shared secret as before</li>
+<li>In phase 3, Bob can do the check himself</li>
+</ul>
+<p>Smart mode reduces network latencies and the work done by Carol. However shared secretes usually have a limited lifetime.</p>
+</div>
+</div>
+<div class="section" id="oauth">
+<h2>OAuth<a class="headerlink" href="#oauth" title="Permalink to this headline">¶</a></h2>
+<p>On the surface it may appear to be similar to OpenID. In fact it (largely) grew out of that community, but it serves a quite different purpose.</p>
+<p>OAuth is in fact concerned with <em>delegating access to resources</em>. FOr example allowing a third-party app to use your Flickr or Twitter account, without giving them access to your account credentials.</p>
+<div class="section" id="oauth-1-0a">
+<h3>OAuth 1.0a<a class="headerlink" href="#oauth-1-0a" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Actors</dt>
+<dd>Client (third-party service), Server (twitter), resource owner (you)</dd>
+<dt>Credentials</dt>
+<dd>Temporary credentials (request token). Token credentials (access token)</dd>
+<dt>Basic Technique (HMAC-SHA1)</dt>
+<dd>Hashing incorporating a shared secret, prevents the need to throw the password around.</dd>
+</dl>
+<p>Additional Protection via a nonce (number-used-once) (but becomes expensive to track) and a timestamp (which enables old request to be dropped).</p>
+</div>
+<div class="section" id="oauth-2-0">
+<h3>OAuth 2.0<a class="headerlink" href="#oauth-2-0" title="Permalink to this headline">¶</a></h3>
+<p>OAuth 2.0 is still undergoing ratification. It attempts to fix problems such as:</p>
+<ul class="simple">
+<li>Performance at scale</li>
+<li>Absence of cryptography-free options</li>
+<li>Lifetime of tokens vs authorisation</li>
+<li>Limited number of <em>flows</em></li>
+</ul>
+<p>Additionally it adds influence from <strong>Facebook Connect</strong> to the original Flickr API Aith and Google AuthSub.</p>
+</div>
+</div>
+<div class="section" id="network-security">
+<h2>Network Security<a class="headerlink" href="#network-security" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Identification</dt>
+<dd>Remote party states who they are</dd>
+<dt>Authentication</dt>
+<dd>Prove remote parties identity</dd>
+<dt>Authorisation</dt>
+<dd>Control (authenticated) access to a service</dd>
+<dt>Integrity</dt>
+<dd>Prove a message has not been tampered with</dd>
+<dt>Confidentiality</dt>
+<dd>Prevent a third-party observation of sensitive data</dd>
+</dl>
+</div>
+<div class="section" id="security-of-the-network">
+<h2>Security of the Network<a class="headerlink" href="#security-of-the-network" title="Permalink to this headline">¶</a></h2>
+<p>Controlling the use of your network and authorising anonymous users are conflicting points.</p>
+<p>Intrusion detection is the process of detecting if a host has been hacked</p>
+<p>DDOS (Distributed Denial Of Service) and BotNets handle many hacked hosts which are used to overload a service. There is a need to distinguish attacks such as these from transient popularity.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">09 - Security</a><ul>
+<li><a class="reference internal" href="#common-requirements">Common Requirements</a><ul>
+<li><a class="reference internal" href="#techniques">Techniques</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ssl-tls-https">SSL/TLS/HTTPS</a><ul>
+<li><a class="reference internal" href="#using-https">Using HTTPS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#application-security-openid-vs-oauth">Application Security - OpenID vs OAuth</a></li>
+<li><a class="reference internal" href="#openid">OpenID</a><ul>
+<li><a class="reference internal" href="#dumb-mode">Dumb Mode</a></li>
+<li><a class="reference internal" href="#smart-mode">Smart Mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#oauth">OAuth</a><ul>
+<li><a class="reference internal" href="#oauth-1-0a">OAuth 1.0a</a></li>
+<li><a class="reference internal" href="#oauth-2-0">OAuth 2.0</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#network-security">Network Security</a></li>
+<li><a class="reference internal" href="#security-of-the-network">Security of the Network</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="08.html"
+                        title="previous chapter">08 - Programming</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="10.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/up/09.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="10.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="08.html" title="08 - Programming"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

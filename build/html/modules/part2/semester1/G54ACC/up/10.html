@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>10 - Abstractions &amp; 3D Evolution &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="G54ACC Advanced Computer Communications" href="../index.html" />
+    <link rel="next" title="G52CFJ C/C++ for Java Programmers" href="../../../semester2/G52CFJ/index.html" />
+    <link rel="prev" title="09 - Security" href="09.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="09.html" title="09 - Security"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="abstractions-3d-evolution">
+<span id="g54acc10"></span><h1>10 - Abstractions &amp; 3D Evolution<a class="headerlink" href="#abstractions-3d-evolution" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="system-design">
+<h2>System Design<a class="headerlink" href="#system-design" title="Permalink to this headline">¶</a></h2>
+<p>The art and science of extracting what you can from what you have. This is difficult since goals are often not well-formed (scalability, modularity, extensibility, elegance).</p>
+<p>Resources are a multiplicity of:</p>
+<ul class="simple">
+<li>Computation</li>
+<li>Storage</li>
+<li>Communications</li>
+<li>Power</li>
+<li>(sometimes people?)</li>
+</ul>
+<div class="section" id="system-constraints">
+<h3>System Constraints<a class="headerlink" href="#system-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Design</p>
+<ul class="simple">
+<li>Bottleneck resource (the most constrained element)</li>
+<li>Scaling (to infinity and beyond)</li>
+</ul>
+<p>Resources</p>
+<ul class="simple">
+<li>Latency (the speed of light is a hard limit)</li>
+<li>Throughput capacity</li>
+<li>Money</li>
+</ul>
+</div>
+<div class="section" id="social-constraints">
+<h3>Social Constraints<a class="headerlink" href="#social-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Standards compliance</p>
+<ul class="simple">
+<li>Legal implications</li>
+</ul>
+<p>Market conditions</p>
+<ul class="simple">
+<li>(Economic) sustainability</li>
+</ul>
+<p>Labour availability</p>
+<ul class="simple">
+<li>Otherwise nothing gets built</li>
+</ul>
+<p>Future proofing</p>
+<ul class="simple">
+<li>Times change</li>
+</ul>
+</div>
+</div>
+<div class="section" id="common-techniques">
+<h2>Common Techniques<a class="headerlink" href="#common-techniques" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="layering-tunnelling">
+<h3>Layering &amp; Tunnelling<a class="headerlink" href="#layering-tunnelling" title="Permalink to this headline">¶</a></h3>
+<p>Control complexity by restricting component interactions.</p>
+<ul class="simple">
+<li>Simplicity at the cost of performance</li>
+<li>Often benefit from (restricted) layer violation</li>
+</ul>
+<p>Need not always be strictly layered</p>
+<ul class="simple">
+<li>Protocol heaps [HOTNETS&#8216;02]</li>
+</ul>
+</div>
+<div class="section" id="extensibility">
+<h3>Extensibility<a class="headerlink" href="#extensibility" title="Permalink to this headline">¶</a></h3>
+<p>&#8220;Prediction is very difficult, especially about the future&#8221; (Niels Bohr). You don&#8217;t know how things will be used, or in what circumstances.</p>
+<p>You must allow for future growth and upgrades:</p>
+<ul class="simple">
+<li>&#8220;Ships in the night&#8221; (each protocol doesn&#8217;t know of the other) vs integrated operation.</li>
+<li>Tunnelling as a workaround</li>
+</ul>
+<p>For example version fields, negotiation or explicit state.</p>
+</div>
+<div class="section" id="hierarchy">
+<h3>Hierarchy<a class="headerlink" href="#hierarchy" title="Permalink to this headline">¶</a></h3>
+<p>Recursive decomposition into smaller pieces where each typically depends on a parent.</p>
+<p>No single point of control (though potential single point of failure).</p>
+<p><em>...</em></p>
+</div>
+<div class="section" id="binding-indirection">
+<h3>Binding &amp; Indirection<a class="headerlink" href="#binding-indirection" title="Permalink to this headline">¶</a></h3>
+<p>Need to translate from an abstraction to an instance:</p>
+<ul class="simple">
+<li>Computation vs lookup</li>
+<li>Distributed vs centralised control</li>
+</ul>
+<p>If well-known, then you could translate (bind) automatically. If so the choice is when: late vs early binding.</p>
+<p>For example DNS service lookup.</p>
+<p>Combining with multiplexing.</p>
+</div>
+<div class="section" id="state-management">
+<h3>State Management<a class="headerlink" href="#state-management" title="Permalink to this headline">¶</a></h3>
+<p>Soft state:</p>
+<ul class="simple">
+<li>Requires refreshing else deleted on timer.</li>
+<li>Increased bandwidth for automatic clean up after failure.</li>
+</ul>
+<p>Explicit state:</p>
+<ul class="simple">
+<li>Easier to interpret, manage, error-protect</li>
+</ul>
+<p>For example link state vs distance vector routing.</p>
+</div>
+<div class="section" id="randomisation">
+<h3>Randomisation<a class="headerlink" href="#randomisation" title="Permalink to this headline">¶</a></h3>
+<p>A powerful tool for tie-breaking and security. It is used up and down the stack (for example ethernet collisions, nonces, router election etc.)</p>
+</div>
+<div class="section" id="damping-hysteresis">
+<h3>Damping &amp; Hysteresis<a class="headerlink" href="#damping-hysteresis" title="Permalink to this headline">¶</a></h3>
+<p>Reducing amplitude vs adding memory&gt;</p>
+<p>System state changes based on thresholds so may fluctuate if near a threshold.</p>
+<p>Such fluctuations, if rapid, are usually bad:</p>
+<ul class="simple">
+<li>Bandwidth overheads</li>
+<li>Reduced performance</li>
+<li>Increased likelihood of inconsistency</li>
+</ul>
+<p>Make thresholds <em>state-dependent</em>.</p>
+<p>For example TCP congestion control/RTT estimation; however BGP flap damping is also problematic.</p>
+</div>
+<div class="section" id="operating-timescales">
+<h3>Operating Timescales<a class="headerlink" href="#operating-timescales" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Not all operations need to be equally fast</li>
+<li>Not all operations have the same granularity, for example once per packet vs once per communication</li>
+<li>Data vs control vs management</li>
+</ul>
+<p>For example connection setup, QoS for packets vs flows vs aggregates.</p>
+</div>
+</div>
+<div class="section" id="d-data-network-evolution">
+<h2>3D Data Network Evolution<a class="headerlink" href="#d-data-network-evolution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="enhanced-packet-core-epc-data-networks">
+<h3>Enhanced Packet Core (EPC) Data Networks<a class="headerlink" href="#enhanced-packet-core-epc-data-networks" title="Permalink to this headline">¶</a></h3>
+<p>THe vision is to provide continuous IP connectivity on resource constrained devices (sincle radio, battery powered) while mobile (geographically at speed, logically between network types, 2G, 3G, WLAN) with detailed <em>...</em></p>
+</div>
+<div class="section" id="basic-lte-operation">
+<h3>Basic LTE Operation<a class="headerlink" href="#basic-lte-operation" title="Permalink to this headline">¶</a></h3>
+<p>Tx:</p>
+<ul class="simple">
+<li>UE registers with MME</li>
+<li>Obtains configuration (address, Server GW etc.)</li>
+<li>Network signals bearers (tunnels) to be set up.</li>
+</ul>
+<p>Rx:</p>
+<ul class="simple">
+<li>MME pages Serv GW for UE</li>
+<li>UE responds, setting up bearers via Serv GW - PDN GW.</li>
+</ul>
+</div>
+<div class="section" id="a-different-style">
+<h3>A Different Style<a class="headerlink" href="#a-different-style" title="Permalink to this headline">¶</a></h3>
+<p>It&#8217;s the netowrk, stupid! Not the stupid network. Dramatically more complex accounting required.</p>
+<p>For example:</p>
+<ul class="simple">
+<li>PCRF, OFCS, OCS apply complex connectivity and charging polices</li>
+<li>EIR deny connectivity to stolen devices</li>
+<li>ETWS Earthquake and Tsunami Warning Service, to be replaced by Public Warning Service, to benefit US/EU.</li>
+</ul>
+</div>
+<div class="section" id="signal-measurement">
+<h3>Signal Measurement<a class="headerlink" href="#signal-measurement" title="Permalink to this headline">¶</a></h3>
+<p>eNodeBs (base stations, eNBs) may overlap. Which should I pick and how?</p>
+<p>eNB creates idle slots to enable UEs to measure signal strength:</p>
+<ul class="simple">
+<li>Only rely on a single radio</li>
+<li>Can&#8217;t do simultaneous Rx and Tx</li>
+<li>Can&#8217;t be simultaneously on different RANs</li>
+</ul>
+<p>UR switches as desired.</p>
+</div>
+<div class="section" id="idle-mode">
+<h3>Idle Mode<a class="headerlink" href="#idle-mode" title="Permalink to this headline">¶</a></h3>
+<p>UE can go into idle mode to save power:</p>
+<ul class="simple">
+<li>Less background transmission to network</li>
+<li>However the network need to track your location in order to deliver incoming packets</li>
+</ul>
+<p>Requires support for paging by MME, at the request of server GW, while it buffers packets.</p>
+<p>Periodic updates support vanished terminals, else might keep paging forever</p>
+<p>There is a trade-off paging overheads vs UE battery.</p>
+</div>
+<div class="section" id="tracking-areas">
+<h3>Tracking Areas<a class="headerlink" href="#tracking-areas" title="Permalink to this headline">¶</a></h3>
+<p>To where should the page be sent?</p>
+<ul class="simple">
+<li>each UE gets a list of eNBs defining TA</li>
+<li>UE notifies the network if it changes TA</li>
+</ul>
+<p>What about trains though?</p>
+<ul class="simple">
+<li>Massive synchronised movement between TAs</li>
+<li>For example bearer setup/teardown</li>
+</ul>
+<p>Solve by giving out different TA lists (spreads out the load)</p>
+<p>Further optimise using movement prediction.</p>
+</div>
+<div class="section" id="pooling">
+<h3>Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h3>
+<p>How to dimension the capacity?</p>
+<ul class="simple">
+<li>2G, 3G used hierarchical core</li>
+<li>UE in a cell connects to 1 base station (etc.)</li>
+</ul>
+<p>Region in EPC has a <em>pool</em> of weighted MMEs when enables eNBs to distribute load across MMEs.</p>
+<p>More efficient use of statistical multiplexing.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">10 - Abstractions &amp; 3D Evolution</a><ul>
+<li><a class="reference internal" href="#system-design">System Design</a><ul>
+<li><a class="reference internal" href="#system-constraints">System Constraints</a></li>
+<li><a class="reference internal" href="#social-constraints">Social Constraints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#common-techniques">Common Techniques</a><ul>
+<li><a class="reference internal" href="#layering-tunnelling">Layering &amp; Tunnelling</a></li>
+<li><a class="reference internal" href="#extensibility">Extensibility</a></li>
+<li><a class="reference internal" href="#hierarchy">Hierarchy</a></li>
+<li><a class="reference internal" href="#binding-indirection">Binding &amp; Indirection</a></li>
+<li><a class="reference internal" href="#state-management">State Management</a></li>
+<li><a class="reference internal" href="#randomisation">Randomisation</a></li>
+<li><a class="reference internal" href="#damping-hysteresis">Damping &amp; Hysteresis</a></li>
+<li><a class="reference internal" href="#operating-timescales">Operating Timescales</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#d-data-network-evolution">3D Data Network Evolution</a><ul>
+<li><a class="reference internal" href="#enhanced-packet-core-epc-data-networks">Enhanced Packet Core (EPC) Data Networks</a></li>
+<li><a class="reference internal" href="#basic-lte-operation">Basic LTE Operation</a></li>
+<li><a class="reference internal" href="#a-different-style">A Different Style</a></li>
+<li><a class="reference internal" href="#signal-measurement">Signal Measurement</a></li>
+<li><a class="reference internal" href="#idle-mode">Idle Mode</a></li>
+<li><a class="reference internal" href="#tracking-areas">Tracking Areas</a></li>
+<li><a class="reference internal" href="#pooling">Pooling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="09.html"
+                        title="previous chapter">09 - Security</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../../semester2/G52CFJ/index.html"
+                        title="next chapter">G52CFJ C/C++ for Java Programmers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../sources/modules/part2/semester1/G54ACC/up/10.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../semester2/G52CFJ/index.html" title="G52CFJ C/C++ for Java Programmers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="09.html" title="09 - Security"
+             >previous</a> |</li>
+        <li><a href="../../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >G54ACC Advanced Computer Communications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
