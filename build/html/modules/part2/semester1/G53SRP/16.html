@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>16 - Feasibility Analysis &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="14 - Software Fault Tolerance Techniques" href="14.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="14.html" title="14 - Software Fault Tolerance Techniques"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="feasibility-analysis">
+<span id="g53srp16"></span><h1>16 - Feasibility Analysis<a class="headerlink" href="#feasibility-analysis" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>Feasibility</dt>
+<dd>Wether a <strong>set of processes</strong>, if scheduled correctly, will meet their deadlines.</dd>
+</dl>
+<p>In RTSJ all activate <a href="#id1"><span class="problematic" id="id2">``</span></a>RealtimeThread``s and <a href="#id3"><span class="problematic" id="id4">``</span></a>AsyncEventHandler``s (i.e. <a href="#id5"><span class="problematic" id="id6">``</span></a>Schedulable``s)</p>
+<p>This is also known as &#8220;schedulability&#8221; and can be determined analytically given enough information about the system.</p>
+<div class="section" id="process-and-scheduling-model">
+<h2>Process and Scheduling Model<a class="headerlink" href="#process-and-scheduling-model" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed set of process</li>
+<li>Known worst-case execution times</li>
+<li>Independent processes</li>
+<li>Period (known deadlines)</li>
+<li>Zero time context switch</li>
+<li>Correctness (meet deadlines)</li>
+<li>Priority-based scheduling (pre-emptive, no time-slicing).</li>
+</ul>
+</div>
+<div class="section" id="process-parameters">
+<h2>Process Parameters<a class="headerlink" href="#process-parameters" title="Permalink to this headline">¶</a></h2>
+<p>We will call <img class="math" src="../../../../images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> the deadline which is a time period, in RTSF this is <tt class="docutils literal"><span class="pre">ReleaseParameters</span> <span class="pre">deadline</span></tt>.</p>
+<p><img class="math" src="../../../../images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the period of the period process (<tt class="docutils literal"><span class="pre">PeriodicParameters</span> <span class="pre">period</span></tt> in RTSJ). Feasibility analysis is not possible for aperiodic processes (i.e. no process set with an aperiodic process is feasible).</p>
+<p><img class="math" src="../../../../images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/> is the worst case execution time (<tt class="docutils literal"><span class="pre">ReleaseParameters</span> <span class="pre">cost</span></tt> in RTSJ).</p>
+</div>
+<div class="section" id="scheduling-approach">
+<h2>Scheduling Approach<a class="headerlink" href="#scheduling-approach" title="Permalink to this headline">¶</a></h2>
+<p>Fixed Priority Scheduling (FPS):</p>
+<ul class="simple">
+<li>RTSJ: <tt class="docutils literal"><span class="pre">PriorityScheduler</span></tt></li>
+<li>Single fixed priority allocated in advance for each process.</li>
+<li>Runnable processes executed in order of priority</li>
+</ul>
+<p>Deadline Monotonic Priority Order (DMPO):</p>
+<ul class="simple">
+<li>Allocate highest priority to the shortest deadline.</li>
+<li>Provably optimal for FPS</li>
+<li>RTSJ: Priorities specified by a programmer via <tt class="docutils literal"><span class="pre">SchedulerParameters</span></tt></li>
+</ul>
+</div>
+<div class="section" id="schedulability-utilisation-tests">
+<h2>Schedulability: Utilisation Tests<a class="headerlink" href="#schedulability-utilisation-tests" title="Permalink to this headline">¶</a></h2>
+<p>Is there enough CPU capacity?</p>
+<p>The sum of the fraction for CPU used by a process (<img class="math" src="../../../../images/math/c117e8403b3b9cf74d2f63f6627aa17c1995e3bc.png" alt="C_i"/>) divided by the total number of CPUs (<img class="math" src="../../../../images/math/522e993eb314346e5a4bffbff12cf0dddf85f1f8.png" alt="T_i"/>) should be less than 1:</p>
+<div class="math">
+<p><img src="../../../../images/math/1521d01bb73157a400c0d8259610aad94eeb5159.png" alt="sum(\frac{C_i}{T_i}) \leq 1" /></p>
+</div></div>
+<div class="section" id="schedulability-utilisation-bound-test">
+<h2>Schedulability: Utilisation Bound Test<a class="headerlink" href="#schedulability-utilisation-bound-test" title="Permalink to this headline">¶</a></h2>
+<p>Is there enough CPU capacity?</p>
+<div class="math">
+<p><img src="../../../../images/math/30bba2aae2f5184300e681f57a4a83c551d79a9e.png" alt="sum(\frac{C_i}{T_i}) \leq N(2^{\frac{1}{N}} - 1)" /></p>
+</div><p>where <img class="math" src="../../../../images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> is the number of processes running on the CPU. That is a clever formula worked out be Liu &amp; Leyland.</p>
+</div>
+<div class="section" id="schedulability-response-time-analysis">
+<h2>Schedulability: Response Time Analysis<a class="headerlink" href="#schedulability-response-time-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Consider a worst-case scenario:</p>
+<ul class="simple">
+<li>Every process is released at the same moment</li>
+<li>Will they all meet their deadlines?</li>
+</ul>
+<p>For example is the worst-case response time (completion time) for each process, do they still meet there deadlines?</p>
+</div>
+<div class="section" id="response-time-analysis">
+<h2>Response Time Analysis<a class="headerlink" href="#response-time-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Response time analysis is necessary and sufficient. If it passes the test a system is schedulable and is not if it fails.</p>
+<p>The response time for process is its worst case time plus any interference from other processes:</p>
+<div class="math">
+<p><img src="../../../../images/math/5501bd8b7bd09cb1868c1e28803d1a5aac15a1c4.png" alt="R_i = C_i + I_i" /></p>
+</div><div class="math">
+<p><img src="../../../../images/math/ae1b23010b9647c3b7433ee6ed4aa7df88f80d82.png" alt="R_i = C_i + SUM_j (ceil\left(\frac{R_i}{T_j}\right) \times C_j)" /></p>
+</div><p>where <img class="math" src="../../../../images/math/6c97cf819b57ed3c9624dce2706f7ae76bd3931a.png" alt="j = P_j &gt; P_i"/>.</p>
+<p>Not that <img class="math" src="../../../../images/math/2a9ce49397e755f7a68814d228b74eb4de5a5dda.png" alt="ceil\left(\frac{R_i}{T_j}\right)"/> is the maximum number of times that process j is released in the time during i.</p>
+<p>So we have this equation and we need to find the value of <img class="math" src="../../../../images/math/1ef7ab23d6fc7d336379d457f66aa6ed57d72ec9.png" alt="R_i"/> which satisfies it:</p>
+<div class="math">
+<p><img src="../../../../images/math/900f2f7c110c8245440a04d8c1393fe624315716.png" alt="w_i^0 = C_i
+
+w_i^{n+1} = C_i + SUM_j (ceil\left(\frac{w_i^n}{T_j}\right) \times C_j)" /></p>
+</div><p>We can do this iteratively on all processes from the highest priority to the lowest using this process until it converges .</p>
+<p>The system is schedulable if and only if (for all i):</p>
+<div class="math">
+<p><img src="../../../../images/math/6034c5f4740589ca76d336a9e942d6d7727e190d.png" alt="r_i \leq D_i" /></p>
+</div></div>
+<div class="section" id="run-time-feasibility-testing-in-rtsj">
+<h2>Run-time Feasibility Testing in RTSJ<a class="headerlink" href="#run-time-feasibility-testing-in-rtsj" title="Permalink to this headline">¶</a></h2>
+<p>The RTSJ Scheduler may implement tun-time feasibility checking. The default, <tt class="docutils literal"><span class="pre">PriorityScheduler</span></tt> just assumes any process set without an aperiodic process is feasible.</p>
+<p>The <tt class="docutils literal"><span class="pre">scheduler</span></tt> manages a &#8220;feasibility set&#8221; of <tt class="docutils literal"><span class="pre">Schedulable``s.</span>&nbsp; <span class="pre">The</span> <span class="pre">``Scheduler</span></tt> abstract class and <tt class="docutils literal"><span class="pre">Schedulable</span></tt> interface includes various methods for checking feasibility and conditionally changing parameters.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">16 - Feasibility Analysis</a><ul>
+<li><a class="reference internal" href="#process-and-scheduling-model">Process and Scheduling Model</a></li>
+<li><a class="reference internal" href="#process-parameters">Process Parameters</a></li>
+<li><a class="reference internal" href="#scheduling-approach">Scheduling Approach</a></li>
+<li><a class="reference internal" href="#schedulability-utilisation-tests">Schedulability: Utilisation Tests</a></li>
+<li><a class="reference internal" href="#schedulability-utilisation-bound-test">Schedulability: Utilisation Bound Test</a></li>
+<li><a class="reference internal" href="#schedulability-response-time-analysis">Schedulability: Response Time Analysis</a></li>
+<li><a class="reference internal" href="#response-time-analysis">Response Time Analysis</a></li>
+<li><a class="reference internal" href="#run-time-feasibility-testing-in-rtsj">Run-time Feasibility Testing in RTSJ</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="14.html"
+                        title="previous chapter">14 - Software Fault Tolerance Techniques</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/16.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="14.html" title="14 - Software Fault Tolerance Techniques"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

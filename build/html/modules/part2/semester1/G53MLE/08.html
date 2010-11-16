@@ -106,6 +106,44 @@
 <p>A covariance matrix is as high as the amount of dimensions captured in the raw data and as wide as the amount of measurements taken. So in the spring example case it would be 6 high and 12,000 wide.</p>
 <p><em>...</em></p>
 </div>
+<div class="section" id="id1">
+<h2>Feature Extraction/Dimensionality Reduction<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><em>???</em></p>
+</div>
+<div class="section" id="solving-pca-diagonalising-the-covariance-matrix">
+<h2>Solving PCA: Diagonalising the Covariance Matrix<a class="headerlink" href="#solving-pca-diagonalising-the-covariance-matrix" title="Permalink to this headline">¶</a></h2>
+<p>There are many ways  of diagonalizing</p>
+<div class="math">
+<p><img src="../../../../images/math/5166013db0554dcffe30e9ab697811b3b148a25e.png" alt="p_i = [p_{i1}, p_{i2}, ..., p_{im}]
+
+p_i P_j^T = \delta_{ij}" /></p>
+</div><p><em>...</em></p>
+<p>PCA works as follows:</p>
+<ul class="simple">
+<li>PCA first selects a normalised direction in m-dimensional space, along which the variance of X is maximised - it saves the direction as <img class="math" src="../../../../images/math/e01486dcc7cb25518b89692706b17389dc67c92b.png" alt="p_1"/>.</li>
+<li>It then finds another direction, along which the variance is maximised subject ot the orthonormal condition - it restricts its search to all directions perpendicular to all previous selcted directions.</li>
+<li>The process could continue until m directions are found. The resulting <em>ordered</em> set of p&#8217;s are the <strong>principal components</strong>.</li>
+<li>The variances associated with each direction <img class="math" src="../../../../images/math/245a5501248a6ea24f520f76d4140cedf08e1674.png" alt="p_i"/> quantify how each principal (important) each direction is thus rank0ordering rach basis according tot he corresponding variance.</li>
+</ul>
+</div>
+<div class="section" id="solving-pca-eigenvectors-of-covariance">
+<h2>Solving PCA Eigenvectors of Covariance<a class="headerlink" href="#solving-pca-eigenvectors-of-covariance" title="Permalink to this headline">¶</a></h2>
+<p>we want to find a transformation vector <img class="math" src="../../../../images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/> to transform input <img class="math" src="../../../../images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/> to get output <img class="math" src="../../../../images/math/ce58e4af225c93d08606c26554caaa5ae32edeba.png" alt="Y"/></p>
+<div class="math">
+<p><img src="../../../../images/math/df2a81cb8cf5c5ce4a340c5f6d39f37deb367a5f.png" alt="Y = PX
+
+S_y = \frac{1}{n - 1} YY^T" /></p>
+</div><p><em>...</em></p>
+</div>
+<div class="section" id="pca-procedures">
+<h2>PCA Procedures<a class="headerlink" href="#pca-procedures" title="Permalink to this headline">¶</a></h2>
+<p>Get data</p>
+<ol class="arabic simple">
+<li>Subtract the mean</li>
+<li>Calculate the covariance matrix</li>
+<li>Calculate the eigenvectors and eigenvalues o the covariance matrix</li>
+</ol>
+</div>
 </div>
 
 
@@ -126,6 +164,10 @@
 <li><a class="reference internal" href="#an-example">An Example</a></li>
 <li><a class="reference internal" href="#redundancy">Redundancy</a></li>
 <li><a class="reference internal" href="#covariance-matrix">Covariance Matrix</a></li>
+<li><a class="reference internal" href="#id1">Feature Extraction/Dimensionality Reduction</a></li>
+<li><a class="reference internal" href="#solving-pca-diagonalising-the-covariance-matrix">Solving PCA: Diagonalising the Covariance Matrix</a></li>
+<li><a class="reference internal" href="#solving-pca-eigenvectors-of-covariance">Solving PCA Eigenvectors of Covariance</a></li>
+<li><a class="reference internal" href="#pca-procedures">PCA Procedures</a></li>
 </ul>
 </li>
 </ul>

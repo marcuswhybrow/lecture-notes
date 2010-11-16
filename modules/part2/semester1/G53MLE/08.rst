@@ -75,3 +75,49 @@ Covariance Matrix
 A covariance matrix is as high as the amount of dimensions captured in the raw data and as wide as the amount of measurements taken. So in the spring example case it would be 6 high and 12,000 wide.
 
 *...*
+
+Feature Extraction/Dimensionality Reduction
+===========================================
+
+*???*
+
+Solving PCA: Diagonalising the Covariance Matrix
+================================================
+
+There are many ways  of diagonalizing
+
+.. math::
+
+    p_i = [p_{i1}, p_{i2}, ..., p_{im}]
+    
+    p_i P_j^T = \delta_{ij}
+
+*...*
+
+PCA works as follows:
+
+* PCA first selects a normalised direction in m-dimensional space, along which the variance of X is maximised - it saves the direction as :math:`p_1`.
+* It then finds another direction, along which the variance is maximised subject ot the orthonormal condition - it restricts its search to all directions perpendicular to all previous selcted directions.
+* The process could continue until m directions are found. The resulting *ordered* set of p's are the **principal components**.
+* The variances associated with each direction :math:`p_i` quantify how each principal (important) each direction is thus rank0ordering rach basis according tot he corresponding variance.
+
+Solving PCA Eigenvectors of Covariance
+======================================
+
+we want to find a transformation vector :math:`P` to transform input :math:`X` to get output :math:`Y`
+
+.. math::
+    Y = PX
+    
+    S_y = \frac{1}{n - 1} YY^T
+
+*...*
+
+PCA Procedures
+==============
+
+Get data
+
+#. Subtract the mean
+#. Calculate the covariance matrix
+#. Calculate the eigenvectors and eigenvalues o the covariance matrix
