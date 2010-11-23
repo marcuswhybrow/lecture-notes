@@ -80,6 +80,51 @@
 <p>What happens if the training set is not linearly separable?</p>
 <p><em>Slack variables</em> can be added to allow misclassification of difficult or noisy examples, resulting in a so called <strong>soft margin</strong>.</p>
 </div>
+<div class="section" id="linear-svms-overview">
+<h2>Linear SVMs: Overview<a class="headerlink" href="#linear-svms-overview" title="Permalink to this headline">¶</a></h2>
+<p>This classifier (SVM, Support Vector Machines) is a <em>separating hyperplane</em>. The most &#8220;important&#8221; training points are support vectors; they define the hyperplane.</p>
+<p>Quadratic optimisation algorithms can identify which training points <img class="math" src="../../../../images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/> are support vectors with non-zero Lagrangian multipliers <img class="math" src="../../../../images/math/412787c048e28774dc63fc27db42dc52ca858de7.png" alt="a_i"/>.</p>
+<p>Both in the dual formulation of the problem and in the solution training points appear only inside inner products.</p>
+</div>
+<div class="section" id="non-linear-svms">
+<h2>Non-Linear SVMs<a class="headerlink" href="#non-linear-svms" title="Permalink to this headline">¶</a></h2>
+<p>Datasets that are linearly separable with some noise work out great:</p>
+<img alt="../../../../images/linearly-separable-svm.png" src="../../../../images/linearly-separable-svm.png" />
+<p>If the data is not linearly separable like this:</p>
+<img alt="../../../../images/not-linearly-separable-svm.png" src="../../../../images/not-linearly-separable-svm.png" />
+<p>We can map the data to a higher-dimensional space:</p>
+<img alt="../../../../images/mapped-to-higher-dimension.png" src="../../../../images/mapped-to-higher-dimension.png" />
+<p>In this form we <strong>can</strong> linearly separate the different classes.</p>
+</div>
+<div class="section" id="non-linear-svms-feature-spaces">
+<h2>Non-Linear SVMs: Feature Spaces<a class="headerlink" href="#non-linear-svms-feature-spaces" title="Permalink to this headline">¶</a></h2>
+<p>The general idea is that the original feature space can always be mapped to some higher dimensional feature space where the training set is separable</p>
+</div>
+<div class="section" id="the-kernel-trick">
+<h2>The &#8220;Kernel Trick&#8221;<a class="headerlink" href="#the-kernel-trick" title="Permalink to this headline">¶</a></h2>
+<p>The linear classifier relies on the inner product between vectors <img class="math" src="../../../../images/math/6acb2d6fbeaa8b4138a60c4e51cfd5d51a3cd9bc.png" alt="K(x_i, x_j) = x_i^T x_j"/>.</p>
+<p>If every datapoint is mapped into high-dimensional space via some transformation <img class="math" src="../../../../images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/> such that <img class="math" src="../../../../images/math/b4d11daa57c1328a205939def10291754edbb3ce.png" alt="x \rightarrow \phi (x)"/>, the inner product becomes:</p>
+<div class="math">
+<p><img src="../../../../images/math/94349697194e5b7d91364297a4226ac2e2b05d2c.png" alt="K(x_i, x_j) = \phi (x_i)^T \phi(x_j)" /></p>
+</div><p>A <em>kernel function</em> is a function that is equivalent to an inner product in some feature space. A kernel function <em>implicitly</em> maps data to a high-dimensional space (without the need to compute each <img class="math" src="../../../../images/math/42c0bd264b62986d6b2a935c5775170a4ed6e9fd.png" alt="\phi (x)"/> explicitly).</p>
+</div>
+<div class="section" id="what-functions-are-kernels">
+<h2>What Functions are Kernels?<a class="headerlink" href="#what-functions-are-kernels" title="Permalink to this headline">¶</a></h2>
+<p>For some functions <img class="math" src="../../../../images/math/a159a2aa1f9fedff90eae2cac7190ea20327570b.png" alt="K(x_i, x_j)"/> checking that <img class="math" src="../../../../images/math/cc6b0ffecbde4830fde1790301d2e44904d701ff.png" alt="K(x_i, x_j) = \phi (x_i)^T \phi(x_j)"/> can be cumbersome.</p>
+<p>Mercer&#8217;s theorem says:</p>
+<blockquote>
+&#8220;Every semi-positive definite symmetric function is a kernel&#8221;</blockquote>
+</div>
+<div class="section" id="unique-feature-of-svm-s-and-kernel-methods">
+<h2>Unique Feature of SVM&#8217;s and Kernel Methods<a class="headerlink" href="#unique-feature-of-svm-s-and-kernel-methods" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Are explicitly based on a theoretical model of learning</li>
+<li>Come with theoretical guarantees about their performance</li>
+<li>Have a modular design that allows one to separately implement and design their components</li>
+<li>Are not affected by local minima</li>
+<li>Do not suffer from the curse of dimensionality</li>
+</ul>
+</div>
 </div>
 
 
@@ -96,6 +141,12 @@
 <li><a class="reference internal" href="#maximum-margin-classification">Maximum Margin Classification</a></li>
 <li><a class="reference internal" href="#the-optimisation-problem-solution">The Optimisation Problem Solution</a></li>
 <li><a class="reference internal" href="#soft-margin-classification">Soft Margin Classification</a></li>
+<li><a class="reference internal" href="#linear-svms-overview">Linear SVMs: Overview</a></li>
+<li><a class="reference internal" href="#non-linear-svms">Non-Linear SVMs</a></li>
+<li><a class="reference internal" href="#non-linear-svms-feature-spaces">Non-Linear SVMs: Feature Spaces</a></li>
+<li><a class="reference internal" href="#the-kernel-trick">The &#8220;Kernel Trick&#8221;</a></li>
+<li><a class="reference internal" href="#what-functions-are-kernels">What Functions are Kernels?</a></li>
+<li><a class="reference internal" href="#unique-feature-of-svm-s-and-kernel-methods">Unique Feature of SVM&#8217;s and Kernel Methods</a></li>
 </ul>
 </li>
 </ul>
