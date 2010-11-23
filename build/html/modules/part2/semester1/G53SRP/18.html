@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>18 - Hardware Interfacing &mdash; Lecture Notes v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="Lecture Notes v1.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="G53SRP Systems and Real-Time Programming" href="index.html" />
+    <link rel="next" title="G54ACC Advanced Computer Communications" href="../G54ACC/index.html" />
+    <link rel="prev" title="17 - RTSJ Memory and Memory Areas" href="17.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="17.html" title="17 - RTSJ Memory and Memory Areas"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="hardware-interfacing">
+<span id="g53srp18"></span><h1>18 - Hardware Interfacing<a class="headerlink" href="#hardware-interfacing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="buses">
+<h2>Buses<a class="headerlink" href="#buses" title="Permalink to this headline">¶</a></h2>
+<p>A bus is a <em>common set of electrical connections</em>. It is a standard interface for:</p>
+<ul class="simple">
+<li>Control signals</li>
+<li>Address Signals</li>
+<li>Data signals</li>
+</ul>
+<p>It works using a standard protocol:</p>
+<ul class="simple">
+<li>Read cycle</li>
+<li>Write cycle</li>
+<li>Interrupt cycle (see notes on device programming)</li>
+</ul>
+</div>
+<div class="section" id="device-registers">
+<h2>Device Registers<a class="headerlink" href="#device-registers" title="Permalink to this headline">¶</a></h2>
+<p>Registers are integrated into the architecture of a device by making them look like normal memory:</p>
+<ul class="simple">
+<li>Status registers (read)</li>
+<li>Control registers (write)</li>
+<li>Data buffer registers (read/write)</li>
+</ul>
+</div>
+<div class="section" id="i-o-instructions">
+<h2>I/O Instructions<a class="headerlink" href="#i-o-instructions" title="Permalink to this headline">¶</a></h2>
+<p>Memory mapped:</p>
+<ul class="simple">
+<li>The bus is the same physically &amp; logically</li>
+<li>Normal read-write instructions</li>
+</ul>
+<p>Separate I/O space</p>
+<ul class="simple">
+<li>Separate physical or logical bus</li>
+<li>Dedicated I/O instructions</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">18 - Hardware Interfacing</a><ul>
+<li><a class="reference internal" href="#buses">Buses</a></li>
+<li><a class="reference internal" href="#device-registers">Device Registers</a></li>
+<li><a class="reference internal" href="#i-o-instructions">I/O Instructions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="17.html"
+                        title="previous chapter">17 - RTSJ Memory and Memory Areas</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../G54ACC/index.html"
+                        title="next chapter">G54ACC Advanced Computer Communications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../sources/modules/part2/semester1/G53SRP/18.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../G54ACC/index.html" title="G54ACC Advanced Computer Communications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="17.html" title="17 - RTSJ Memory and Memory Areas"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">Lecture Notes v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >G53SRP Systems and Real-Time Programming</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Marcus Whybrow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
