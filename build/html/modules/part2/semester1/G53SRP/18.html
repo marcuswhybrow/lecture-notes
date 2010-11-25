@@ -89,6 +89,213 @@
 <li>Dedicated I/O instructions</li>
 </ul>
 </div>
+<div class="section" id="high-level-language-register-access">
+<h2>High Level Language Register Access<a class="headerlink" href="#high-level-language-register-access" title="Permalink to this headline">¶</a></h2>
+<p>Requires either HLL functions which wrap these low-level operations (For example linux kernel helper routines, or the <tt class="docutils literal"><span class="pre">RawMemoryAccess</span></tt> class RTJava)</p>
+<p>Or it requires an ability to mix High Level Language and assembly language (For example C/C++).</p>
+</div>
+<div class="section" id="register-value-manipulation">
+<h2>Register Value Manipulation<a class="headerlink" href="#register-value-manipulation" title="Permalink to this headline">¶</a></h2>
+<p>The same location may have different functions:</p>
+<ul class="simple">
+<li>Setting other bits/registers may determine what register/function it actually has when accessed.</li>
+<li>Reading and writing may have different functions, for example reading a status register vs writing to a completely different control register from/to the same location. This implies you may need to maintain &#8220;shadow&#8221; control register values in your code since you can only read the status of the device and not the status of the register itself.</li>
+<li>Registers often contain packed binary data, often used to minimise the number of addresses required, or minimise the rounds of communication necessary.</li>
+<li>Requires extensive use of bit-manipulation operations in the driver.</li>
+</ul>
+</div>
+<div class="section" id="java-integer-types">
+<h2>Java Integer Types<a class="headerlink" href="#java-integer-types" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Type</th>
+<th class="head">Bits</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>byte</td>
+<td>8</td>
+</tr>
+<tr><td>char</td>
+<td>16</td>
+</tr>
+<tr><td>short</td>
+<td>16</td>
+</tr>
+<tr><td>int</td>
+<td>32</td>
+</tr>
+<tr><td>long</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="c-default-integer-types">
+<h2>C (default) INteger Types<a class="headerlink" href="#c-default-integer-types" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="56%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Type</th>
+<th class="head">Bits</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>unsigned char</td>
+<td>8</td>
+</tr>
+<tr><td>wchar</td>
+<td>16</td>
+</tr>
+<tr><td>unsigned short</td>
+<td>16</td>
+</tr>
+<tr><td>unsigned int</td>
+<td>32 (may be 16)</td>
+</tr>
+<tr><td>unsigned long</td>
+<td>32</td>
+</tr>
+<tr><td>unsigned long long</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="operators">
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+<p>Languages have unary bit-wise operators, such as <tt class="docutils literal"><span class="pre">~</span> <span class="pre">|</span> <span class="pre">&amp;</span> <span class="pre">^</span></tt>.</p>
+<p>And also bit-shift operators <tt class="docutils literal"><span class="pre">&lt;&lt;</span> <span class="pre">&gt;&gt;</span></tt> which allow the shifting of bits left or right.</p>
+</div>
+<div class="section" id="interrupts">
+<h2>Interrupts<a class="headerlink" href="#interrupts" title="Permalink to this headline">¶</a></h2>
+<p>Interrupts are device-initiated (i.e. asynchronous, external events) and are controlled by device control registers (e.g. individually enabled &amp; disabled) and are managed by the CPU (i.e. can be temporarily ignored under program control).</p>
+</div>
+<div class="section" id="approaches-to-device-control">
+<h2>Approaches to Device Control<a class="headerlink" href="#approaches-to-device-control" title="Permalink to this headline">¶</a></h2>
+<p><strong>Status Driven</strong></p>
+<p>Uses CPU polls</p>
+<p><strong>Interrupt Driven</strong></p>
+<p>i.e. An interrupt from device initiates...</p>
+<ul class="simple">
+<li>CPU controlled - All data transfer is performed by the main CPU</li>
+<li>CPU initiated (Direct Memory Access) - Data transfer delegated to a specialised helper unit</li>
+<li>Channel controlled - Data transfer (perhaps also interrupt handling) is delegated to specialised I/O processor called a channel. This is used in mainframes.</li>
+</ul>
+</div>
+<div class="section" id="note">
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
+<p>Interrupts and DMS/channel I/O can result in CPU cycles being &#8220;lost&#8221; or &#8220;stolen&#8221; from the main process(es).</p>
+<ul class="simple">
+<li>Increases the worst-case execution time(s).</li>
+<li>May make process sets unschedulable</li>
+<li>Thus interrupts are often disabled in safety critical systems, relying instead on guaranteed scheduled polling rates.</li>
+</ul>
+</div>
+<div class="section" id="high-level-language-support-for-interrupts">
+<h2>High Level Language Support for Interrupts<a class="headerlink" href="#high-level-language-support-for-interrupts" title="Permalink to this headline">¶</a></h2>
+<p>An interrupt handler can call suitable procedures directly. For example a C subroutine address registered as a handler for low-level interrupts. Or there may be some other way to bind a High Level Language process to an interrupt (for example an RTSJ <tt class="docutils literal"><span class="pre">AsyncEventHandler</span></tt> for an <tt class="docutils literal"><span class="pre">AsynEvent</span></tt> with an interrupt bound to a hardware interrupt.)</p>
+<p>The higher level language must have access to interrupt management operations.</p>
+<ul class="simple">
+<li>Inclusion of relevant machine code instructions (e.g. to set/clear interrupt enable bits)</li>
+<li>Or wrapper functions in higher level languages giving access to these (e.g. Linux C helper functions setting or clearing interrupt enable bits)</li>
+<li>Or other language-specific mechanisms (e.g. RTSJ priority-based scheduling of handlers, plus use of Java Synchronisation.)</li>
+</ul>
+</div>
+<div class="section" id="high-level-language-facilities">
+<h2>High-Level Language Facilities<a class="headerlink" href="#high-level-language-facilities" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Assembly language (low level!!)</p>
+</li>
+<li><dl class="first docutils">
+<dt>Java (non-RTSJ)</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>cons:</dt>
+<dd><ul class="first last simple">
+<li>No direct access to memory</li>
+<li>No bit field types</li>
+<li>No machine-specific I/O instructions</li>
+<li>No Link to hardware interrupts</li>
+<li>No access to interrupt management</li>
+<li>Difficult machine code integration</li>
+<li>Fixed method prologues/epilogues</li>
+<li>Unpredictable Garbage Collection</li>
+<li>Relatively heavy-weight classes/methods</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>RTSJ Java</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Cons:</dt>
+<dd><ul class="first last simple">
+<li>No bit filed types</li>
+<li>Difficult machine code integration (but it shouldn&#8217;t need it!)</li>
+<li>Fixed method prologues/epilogues (but it shouldn&#8217;t matter!)</li>
+<li>Relatively heavy-weight classes/methods</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Pros:</dt>
+<dd><ul class="first last simple">
+<li>Direct access to memory via an API</li>
+<li>Machine-specific I/O via an API</li>
+<li>Link to hardware interrupts via asynchronous events</li>
+<li>Access to interrupt management via scheduling</li>
+<li>Alternative memory management options to control GC.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>C</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Con:</dt>
+<dd><ul class="first last simple">
+<li>Lack of classes, Garbage Collection etc.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Pros:</dt>
+<dd><ul class="first last simple">
+<li>Supports native pointers</li>
+<li>Includes bit fields</li>
+<li>(Relatively) easy inclusion of assembly language</li>
+<li>C procedure = machine code subroutine</li>
+<li>Customisable prologue/epilogue</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
 </div>
 
 
@@ -103,6 +310,16 @@
 <li><a class="reference internal" href="#buses">Buses</a></li>
 <li><a class="reference internal" href="#device-registers">Device Registers</a></li>
 <li><a class="reference internal" href="#i-o-instructions">I/O Instructions</a></li>
+<li><a class="reference internal" href="#high-level-language-register-access">High Level Language Register Access</a></li>
+<li><a class="reference internal" href="#register-value-manipulation">Register Value Manipulation</a></li>
+<li><a class="reference internal" href="#java-integer-types">Java Integer Types</a></li>
+<li><a class="reference internal" href="#c-default-integer-types">C (default) INteger Types</a></li>
+<li><a class="reference internal" href="#operators">Operators</a></li>
+<li><a class="reference internal" href="#interrupts">Interrupts</a></li>
+<li><a class="reference internal" href="#approaches-to-device-control">Approaches to Device Control</a></li>
+<li><a class="reference internal" href="#note">Note</a></li>
+<li><a class="reference internal" href="#high-level-language-support-for-interrupts">High Level Language Support for Interrupts</a></li>
+<li><a class="reference internal" href="#high-level-language-facilities">High-Level Language Facilities</a></li>
 </ul>
 </li>
 </ul>
