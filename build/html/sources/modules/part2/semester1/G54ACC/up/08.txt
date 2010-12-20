@@ -1,0 +1,203 @@
+.. _G54ACC08:
+
+================
+08 - Programming
+================
+
+Sockets
+=======
+
+By using the Berkeley Sockets API (4.2 BSD, 1983), *internet sockets* (represented as file descriptors) can be utilised by the programmer and extended to cover many other protocols (not just TCP/IP).
+
+A socket consists of a **domain**, a **type** and a **protocol**. The domain means "communication domain" and these are values such as:
+
+* ``PF_INET``
+* ``PF_INET6``
+* ``PF_LOCAL``
+* ``PF_RAW``
+
+The communication semantics (known as type) can contain the following values:
+
+* SOCK_STREAM
+* SOCK_DGRAM
+* SOCK_RAW
+
+The protocol is often a 1:1 relationship with the type, and can contain values such as the following:
+
+* IPPROTO_ICMP
+* IPPROTO_TCP
+* IPPROTO_UDP
+
+TCP vs UDP
+**********
+
+A file-like interface to the socket is used when *streaming* data, which uses TCP.
+
+A packet-like interface is used when data is packetised, and UDP is used.
+
+Endianness
+**********
+
+You may be talking to a machine which is not the machine you are running the code on it. Every machine's memory has an order in which bytes are stored in memory. These orderings can differ from machine to machine.
+
+Big Endian
+    Most significant byte first
+
+Little Endian
+    Least significant byte first
+
+The machines could negotiate this every time, but instead a standard was defined forcing Big endian when transferring bytes over the network.
+
+Multiplexing
+************
+
+With sockets you have to decide what to do if multiple clients try to connect creating more than one socket.
+
+If there is nothing to read from a socket the operating system could block the process. Another idea is to poll a (non-blocking) sockets to see if there is any data before trying to read it. However both these methods are naive.
+
+In reality a ``select()`` method is used which allows a process to wait on multiple sockets for data, but also specifies a timeout if nothing happens for a specified period.
+
+Web Remote Procedure Call Systems
+=================================
+
+We shall cover two type of RPC: XML-RPC vs SOAP. SOAP evolved from XML-RPC and both provide the following features:
+
+* Data is encoded as XML
+* Remote Procedure Call interfaces
+* calls are made to web services
+
+XML-RPC
+*******
+
+XML-RPC is older and simpler than SOAP, and is community based, and looks like this::
+
+    POST /RPC2 HTTP/1.0
+    User-Agent: Frontier/5.1.2 (WinNT)
+    Host: betty.userland.com
+    Content-Type: text/xml
+    Content-length: 181
+    
+    <?xml version="1.0"?>
+    <methodCall>
+        <methodName>examples.getBounds</methodName>
+        <params>
+            <param><value><i4>41</i4></value></param>
+        </params>
+    </methodCall>
+
+SOAP
+****
+
+SOAP is newer and has more features and is therefor more flexible. It doesn't require that you use HTTP as the transport protocol (it for example allows SNMP). In addition SOAP defines a standard for discovery of services called WSDL.
+
+SOAP is not particularly simple, but is a W3C standard, and look like this::
+
+    POST /InStock HTTP/1.1
+    Host: www.example.org
+    Content-Type: application/soap+xml; charset=utf-8
+    Content-Length: nnn
+    
+    <?xml version="1.0"?>
+    
+    <soap:Envelope xmlns:soap="http://www.w3.org/2001/12/s oap-envelope" soap:encodingStyle="http://www.w3.org/2 001/12/soap-encoding">
+        <soap:Body xmlns:m="http://www.example.org/stock">
+            <m:GetStockPrice>
+                <m:StockName>IBM</m:StockName>
+            </m:GetStockPrice>
+        </soap:Body>
+    </soap:Envelope>
+
+RESTful web services
+====================
+
+Roy Fielding developed REST during HTTP/1.1 development (1994-2002). Its goals were to minimise latency and communication, and maximise implementation scalability and component independence.
+
+Roy defined some constraints which a RESTful service would conform to in order to be considered a true RESTful service.
+
+REST itself stands for Representation State Transfer.
+
+REST makes use of HTTP features and in principle can use other transport protocols. So this means that client request generate server responses.
+
+REST Constraints
+****************
+
+There are six architectural constraints:
+
+* Client-server
+* Cacheable
+* Layered
+* Code on demand (optional) - means that the server can push (for example JavaScript to the client as part of the response)
+* Stateless
+* Uniform interface
+
+Stateless
+*********
+
+Th does **not** mean that the server must be stateless! It simply means that no client context is stored on the server between requests. In practice this means that each client request contains enough to service it and if the server does store state, it is addressable as a resource via a URL in the usual way.
+
+Uniform Interface
+*****************
+
+The client uses representation to modify the server state, which can then be addresses via a URL.
+
+RESTful services map CRUD to HTTP methods:
+
+* CREATE - POST
+* READ/RETRIEVE - GET
+* UPDATE - PUT
+* DELETE - idempotent
+
+The community is in debate about whether CREATE and UPDATE should be a POST HTTP method or a PUT. There is a different in the treatment of the Request-URI and request entity:
+
+POST: treats an entity as a "new subordinate"
+PUT: treats an entity as "stored under supplied Request-URI"
+
+Creating a RESTful Service
+**************************
+
+When creating a RESTful service there are several points to consider:
+
+* What will the URIs be? Find the nouns and define the *collections*
+* Whats the data format? XML, JSON etc.
+* What methods are supported at each URI? mapping to the CRUD functions
+* What status codes could be returned?
+
+Notable Points
+**************
+
+Collections:
+
+* GET - list
+* POST - append
+* PUT - replace
+* DELETE - deletes
+
+For a specific collection item:
+
+* GET - retrieves item
+* PUT - updates the item
+* DELETE - deleted the item
+
+Cloud Computing
+===============
+
+Cloud computing is the concept that you buy or rent a service when you need it, such that it can also scale on demand.
+
+There are some negative to cloud computing:
+
+* There is little control over where data is placed
+* There are unknown trust implications
+* The cloud provider is the single-point-of-failure
+* Building scalable services is still hard!
+
+Flavours of Service
+*******************
+
+Software
+    No longer need to manage software upgrades, a good example being Salesforce.
+
+Platform
+    Platforms like Python and Java. Google App Engine is a good example which hosts web apps using a backend which is a shared store.
+
+Infrastructure
+    Amazon EC2 provides XEN hosts Virtual Machines (Linux, Windows or custom). Also Amazon S3 provides persistent storage.

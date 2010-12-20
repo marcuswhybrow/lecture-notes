@@ -1,0 +1,159 @@
+.. _G53SRP12:
+
+===============================
+12 - Designing Realtime Systems
+===============================
+
+This course is mainly about programming aspects of real-time embedded systems but...
+
+Developing a consistent design that satisfies an authoritative specification of requirements is critical and happens first!
+
+Refer also to general texts on software engineering.
+
+Levels of Notation
+==================
+
+Information
+    Natural language. Broadly understood, but ambiguous.
+
+Structured
+    Constrained graphical representations. Well defined, but not open to analysis or manipulation.
+
+Formal
+    Methods with a mathematical basis. Precise, open to analysis including verification. Requires specialise notations.
+
+For realtime systems formal definitions of requirements are preferred since they are very important.
+
+Requirements Specification Process
+==================================
+
+The process by which a specification is created is as follows:
+
+#. Initial informal description
+#. Extensive Analysis of Requirements
+    * Functionality defined
+    * Temporal behaviour defined
+    * Reliability requirements defined
+    * Responses to component failure defined
+    * Requires modelling of environment (maximum event rates, failure modes)
+#. Authoritative Specification
+
+Requirements Specification Notations and Techniques
+===================================================
+
+Natural Language
+    Especially common for final specification and semantics
+
+Structured Notations
+    PSL, CORE, Object-oriented methods (e.g. UML)
+
+Formal Methods
+    FOREST, ICARUS/ALBERT, VDM, Z
+
+Design Activities & Methods
+===========================
+
+We have several techniques by which the design process can be made simpler:
+
+Decomposition
+    Systematically breaking down complex systems into simpler and smaller parts (with appropriate descriptions at each level).
+
+Abstraction
+    Deferring consideration of detail (especially during implementation)
+
+Encapsulation and Decomposition
+===============================
+
+Encapsulation
+    Internal details of a sub-unit do not affect its use (and are typically invisible in use). A combination of sub-units can be verified based on the separate verification of its subunits (known as compositional)
+
+Decomposition Heuristics: Cohesion and Coupling
+===============================================
+
+Aim for strong cohesion within a unit. The following list is numbered and a higher number represents a stronger level of cohesion:
+
+#. Coincidental - written in the same month
+#. Logical - output device drivers
+#. Temporal - start-up routines
+#. Procedural - all user interface components
+#. Communicational - work on the same data
+#. Functional - parts of the same system function
+
+Aim for low coupling between units. In the following list a low number represents a high coupling:
+
+#. Passing control information
+#. ...
+#. Pass only data
+#. No communication interaction
+
+Design Methods
+==============
+
+Formal methods have not yet been "tried and tested". There are many realtime structured design methods (MASCOT< JSD, Youdon, MOON, HRT-HOOD...) not yet being ideal.
+
+Note that non-realtime methods may be a problem. For example iterative refinement may not reveal actual performance problems until near the end of the process.
+
+Proposed Ideal Realtime Design Method Objectives
+================================================
+
+* Structuring a system in concurrent tasks.
+* Supporting the development of reusable components through information hiding.
+* Defining behaviour aspects using finite-state machines (or some other formalism).
+* Analysing the performance of a design to determine its realtime properties.
+
+Implementation
+==============
+
+Programming language alternatives used in realtime systems are as follows:
+
+Assembly
+    Machine oriented, machine dependent, tends to obscurity
+
+Sequential systems implementation languages
+    For example C, weak in realtime control & reliability
+
+High-Level concurrent programming languages
+    For example Ada, realtime-Java, CHILL, Erlang. With support fro concurrency and embedded system development.
+
+Language Ideals
+===============
+
+* Security - type-safety & checking
+* Readability
+* Flexibility (or expressive power)
+* Simplicity (or usability)
+* Portability
+* Efficiency
+
+Testing
+=======
+
+Testing is complementary to formal design methods. It is required at all stages (such as modules and assemblies) and has a range of methods (for example use of simulators).
+
+Prototyping
+===========
+
+A cheap "mock-up" of the system early in the design process can clarify and refine the requirements and detect design problems early. Prototyping is contrary to the "waterfall" software development model due to its strict sequential development process.
+
+Human-Computer Interaction
+==========================
+
+
+Human involvement is critical in many realtime systems (for example google the Three Mile Island nuclear incident).
+
+Careful design is a requirement and deals with such concepts as:
+
+* Division of responsibility/control
+* "Objects" passed between the system and humans.
+* Presentation/form of these objects and dialog.
+
+User errors need to be considered in designing for reliability/fault tolerance.
+
+Managing Design
+===============
+
+Assuring good quality requires:
+
+* Good staff - suitable training, support etc.
+* Good tools, languages etc.
+* Good processes - adequate verification and validation, good coordination.

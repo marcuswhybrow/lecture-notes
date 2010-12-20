@@ -1,0 +1,157 @@
+.. _G54ACC09:
+
+=============
+09 - Security
+=============
+
+Common Requirements
+===================
+
+Regardless of the implementation, security requires the same things:
+
+Identification
+    Naming a principal
+
+Authentication
+    Proving your identity. Multi-factor authentication requires multiple forms of authentications such as a chip and PIN, retina/fingerprint scan etc.
+
+Authorisation
+    Proving you're allowed
+
+Confidentiality
+    Hiding what you're doing
+
+Defence in Depth
+    Mitigation at all levels, perfect security is generally too expensive.
+
+Techniques
+**********
+
+Encryption
+    One time pages, public and private keys can be used to encrypt and decrypt data.
+    
+Hashing
+    The result of a one-way function, a hash is unique based upon the input and irreversible.
+
+Traffic Analysis
+    Communication patterns may give malicious use away. For example hacked hosts often start using the network oddly.
+
+SSL/TLS/HTTPS
+=============
+
+TLS (Transport Layer Security) grew out of SSL (Secure Sockets Layer) under Netscape. It is incredibly complex, hard to get right and widely used.
+
+HTTPS uses TLS/SSL in order to provide a secure channel over an insecure network. It verifies the identity of the server you are connecting to and can verify the identity of the client if necessary.
+
+Using HTTPS
+***********
+
+*...*
+
+Application Security - OpenID vs OAuth
+======================================
+
+OpenID allows people to prove that you own or are identified with a URL. It allows you to use one identity with many sites. This is not the same as the *single sign-on* principal.
+
+OAuth authenticates third-party access to your data using cryptographically generated tokens.
+
+OpenID
+======
+
+OpenID is about verifying identity but nothing about authorisation or trust, enabling a site to use a third-party to verify the identity of a user.
+
+OpenID has two modes **dumb** (stateless) and **smart** (stateful). Dumb mode allows for simpler code on the consumer side, whereas smart mode is more computationally intensive.
+
+Dumb Mode
+*********
+
+In order to explain this we shall asuume three actors **Alice** (you), **Bob** (website) and **Carol** (OpenID service provider).
+
+Phase 1:
+
+* Alice types in her identity URL with Carol to Bob's site.
+* Bob GETs Carol's server URL from that page
+* Bob redirects Alice to Carol's URL adding parameters such as ``identity``, ``return_to`` or ``nonce``.
+
+Phase 2:
+
+* Carol verifies Alice *is* Alice somehow.
+* Carol sends ALice back adding more parameters such as ``assoc_handle`` and ``sig``.
+
+Phase 3:
+
+* Bob contacts Carol POSTing all the parameters so far.
+* Carol computers ``sig'`` using the secret pointed oto by ``assoc_handle``.
+* If ``sig' == sig`` then tell Bob that Alice *is* the Alice Carol thinks she is. Else fail.
+
+Smart Mode
+**********
+
+Smart mode is the same as *dumb mode* except:
+
+* Upon the first invocation, Bob and Carol setup a *shared secret*.
+* In phase 2, Carol uses the shared secret as before
+* In phase 3, Bob can do the check himself
+
+Smart mode reduces network latencies and the work done by Carol. However shared secretes usually have a limited lifetime.
+
+OAuth
+=====
+
+On the surface it may appear to be similar to OpenID. In fact it (largely) grew out of that community, but it serves a quite different purpose.
+
+OAuth is in fact concerned with *delegating access to resources*. FOr example allowing a third-party app to use your Flickr or Twitter account, without giving them access to your account credentials.
+
+OAuth 1.0a
+**********
+
+Actors
+    Client (third-party service), Server (twitter), resource owner (you)
+
+Credentials
+    Temporary credentials (request token). Token credentials (access token)
+
+Basic Technique (HMAC-SHA1)
+    Hashing incorporating a shared secret, prevents the need to throw the password around.
+
+Additional Protection via a nonce (number-used-once) (but becomes expensive to track) and a timestamp (which enables old request to be dropped).
+
+OAuth 2.0
+*********
+
+OAuth 2.0 is still undergoing ratification. It attempts to fix problems such as:
+
+* Performance at scale
+* Absence of cryptography-free options
+* Lifetime of tokens vs authorisation
+* Limited number of *flows*
+
+Additionally it adds influence from **Facebook Connect** to the original Flickr API Aith and Google AuthSub.
+
+Network Security
+================
+
+Identification
+    Remote party states who they are
+
+Authentication
+    Prove remote parties identity
+
+Authorisation
+    Control (authenticated) access to a service
+
+Integrity
+    Prove a message has not been tampered with
+
+Confidentiality
+    Prevent a third-party observation of sensitive data
+
+Security of the Network
+=======================
+
+Controlling the use of your network and authorising anonymous users are conflicting points.
+
+Intrusion detection is the process of detecting if a host has been hacked
+
+DDOS (Distributed Denial Of Service) and BotNets handle many hacked hosts which are used to overload a service. There is a need to distinguish attacks such as these from transient popularity.
+

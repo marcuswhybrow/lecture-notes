@@ -1,0 +1,17 @@
+.. _G53SRP11:
+
+=============================
+11 - Real Time Threads in RTS
+=============================
+
+``javax.realtime.RealtimeThread`` extends ``java.lang.Thread`` and is the super class for ``javax.realtime.NoHeapRealtimeThread``. It implements the ``javax.realtimeSchedulable`` interface and has a ``javax.realtime.Sheduler``.
+
+RealtimeThread Properties
+=========================
+
+* ``SchedulingParameters``
+* ``ReleaseParameters``
+* ``MemoryParameters``
+* ``ProcessingGroupParameters``
+
+Which are the same as the properties of ``AsyncEventHandler`` since they both implement ``Schedulable``.

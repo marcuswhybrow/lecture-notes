@@ -1,0 +1,80 @@
+.. _G53SRP17:
+
+=================================
+17 - RTSJ Memory and Memory Areas
+=================================
+
+In regular Java all objects are allocated on the heap which is a single expandable area of memory. Local variables and parameters are stored on the running thread's stack (in Java these can be primitive types and references).
+
+A garbage collection algorithm runs in the background which releases/recycles objects which are no longer reachable.
+
+Realtime Issues
+===============
+
+Memory may be limited and may need special management. Garbage collection may interfere with this processes, introducing additional delays and causing missed deadlines.
+
+RTSJ Responses
+==============
+
+This allows objects to be allocated in non-heap "memory areas" which are exempt from garbage collection allowing more explicit management.
+
+There are 4 memory area classes: ``HeapMemory`` (extends ``MemoryArea``), ``ImmortalMemory`` (which also extends ``MemoryArea``) ``LTMemory`` (extends ``ScopedMemory``), ``VTMemory`` (which also extends ``ScopedMemory``).
+
+``ScopedMemory`` extends from ``MemoryArea``.
+
+Memory Area Types
+=================
+
+* ``HeapMemory`` - The regular Java heap
+* ``ImmortalMemory`` - Single area of non-GC memory
+* ``ScopedMemory`` - A block or blocks of memory which are reference counted and allocated/freed as a whole.
+    * ``LTMemory`` - ``ScopedMemory`` with allocation time linearly proportional to the size.
+    * ``VTMemory`` - ``ScopedMemory`` with variable allocation time.
+
+Memory Area Stack
+=================
+
+``RealtimeThread`` and ``AsyncEventHandler`` have a ``MemoryArea`` parameter which specifies the initial memory area in which to execute and is available via ``getMemoryArea()``.
+
+Memory areas are also visible as a memory area stack.
+
+Memory Parameters
+=================
+
+A parameter to ``RealtimeThread`` and ``AsyncEventHandler`` controls the memory usage of a task. It specifies:
+
+* ``maxMemoryArea`` - the maximum amount of memory allocation allowed in the task's initial memory area.
+* ``maxImmortal`` - the maximum amount of memory allocation allowed in immortal memory.
+* ``allocationRate`` - the maximum rate at which heap memory can be allocated (optionally enforced).
+
+No Heap Threads and Handlers
+============================
+
+To completely avoid interference from the garbage collection process, a ``Schedulable`` must not use heap memory at all. Indicating this to the Java Virtual Machine by using ``NoHeapEventHandler`` with ``noheap = true``. It will throw an exception at run-time if heap memory is used.
+
+
+Additionally a ``Schedulable`` must have a higher priority than any heap based thread. Since garbage collection may occur on behalf of any heap using thread at its priority.
+
+Physical Memory Access
+======================
+
+An embedded device may have several different kinds of memory with different characteristics.
+
+* Fast volatile DRAM/SRAM
+* Fast readonly ROM/EPROM
+* Slower non-volatile EEPROM/FLASH
+* Removable memory (e.g. SD/MMC)
+
+The program may need to use the right kind for the right things.
+
+Raw Memory Access
+=================
+
+Can access raw bytes, for example interacting with an IO device or accessing memory shared with another (especially non-Java) application, via ``RawMemoryAccess``.
+
+Physical Memory Areas
+=====================
+
+Can also create an use MemoryAreas that are "locked" to particular parts of physical memory to ensure correct physical memory is used (for example EEPROM/FLASH vs RAM vs DMA).
+
+Extends basic characteristics and API, but needs extra information about physical "backing".

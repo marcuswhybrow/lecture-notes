@@ -1,0 +1,136 @@
+.. _G52GUI04:
+
+===================
+04 - Event Handling
+===================
+
+Processing Input Events
+=======================
+
+#. Dispatch events from the user to the correct application/window
+#. Event/code Binding
+    * Bind the event to the code that will process it
+    * Windowing system/GUI code
+#. Redraw the presentation
+    * Notify the view of model changes, the view then tells the windowing system it needs to be redrawn.
+    
+Event/Code binding
+==================
+
+There are a number of different approaches used to map from the event to the code to be run in response to the event.
+
+The selected method should work well with the interface design tools and make the most of the programming language used.
+
+The emphasis has shifted from efficiency to the ability to handle the complexity of large applications.
+
+*We need a method that can handle many events without swamping the programmer in unnecessary detail.*
+
+Historically development has often been geared towards integrating methods into the programming language/tools used.
+
+* Event Queue and type selection
+* Window event tables
+* Callback event handling
+* WinProc event handling
+* Inheritance event handling
+
+Event Queue and Type Selection
+==============================
+
+With the early Macintosh computers the programmer would have to manage everything though a giant switch statement. Despite being hard it is computationally efficient and thus some mobile devices still use this implementation.
+
+Window Event Tables
+===================
+
+Sun didn't like the previous implementation and developed window event tables for the GIGO windowing system. Since it was 1983 it relied upon pointers to functions in C.
+
+Each window would associate to a table of procedures which were indexed by the event type.
+
+It was all centred around the mouse as every event would carry the mouse position in its payload.
+
+GIGO used top-down/front-to-back window tree searching.
+
+If the top down seatch fails to find and entry in the window event table for the leaf window of the tree, then the event is redirected back up towards the windows parent. This was accomplished by (on setup) putting a special procedure in each table which would redirect events up the window hierarchy.
+
+This technique removes the responsibility of the event loop stuff from the programmer, but makes in hard to design and debug.
+
+Callback Event Handling
+=======================
+
+Used in X Windows (1986), the programmer associates a name with each event handling procedure address and window properties include those names.
+
+On initialisation the system retrieves the address and uses them just as in the event tables method.
+
+Design tools can use those names and clear errors can be generated when a callback is missing.
+
+WinProc Event Handling
+======================
+
+WinProc was central to Microsoft's Windows. Each window is associated with the address of a single window procedure that handles all events.
+
+Typically WinProc contained a switch statement which were specific to a window type and not generic.
+
+This technique is more modular than the more primitive switch statements and was as easy to implement as event tables.
+
+The implementation was opaque to design tools.
+
+Inheritance Event Handling
+==========================
+
+SmallTalk-80 introduced OOP which is the basis of most current toolkits. The windowing system mist be able to deal with any widget at any time, thus all (object-oriented) widgets present a common interface.
+
+The root *Widget* class would contain a method of each type of event which would overridden by child classes.
+
+Inheritance Event Handling
+==========================
+
+Screen components all inherit from the base *Widget* class, and will override some of the inherited event handling methods (and also overriding ``redraw()``).
+
+*Window and Widget trees may be separate or combined.*
+
+Writing code to handle an event involves writing the methods to handle the core set of widget events.
+
+Inheritance Event Handling
+==========================
+
+An object-oriented event loop
+
+* Associate a subclass of widget with every window in the tree
+* When it receives and event the windowing systems invokes the appropriate method on the root widget of a window.
+* That method either deals with it or passes it on to a child window.
+* The event loop is so simple it can be hidden from the programmer (e.g. in C++ and Java).
+
+Listeners
+=========
+
+Raw user input events are only on part of the story, many events are generated from other sources as a consequence of more primitive user actions such as opening, closing or moving a window (windowing system) or plugging in a device (operating system).
+
+It follows that the windowing system needs to be able to select from thousands of types of event.
+
+The listener model evolved from inheritance-based approaches in order to handle issues of scale.
+
+Java Interfaces
+===============
+
+Just a set of methods that an interface **must** implement. Also there is no requirement that the class implementing the interface must be part of any class hierarchy.
+
+A listener just defines and implements such an interface.
+
+Listener Class Structure
+========================
+
+In Java there are a set of interfaces for example Swing defines ``ActionListener``.
+
+There are a set of objects which can produce events called *generators* for example ``JButton`` generates ``ActionEvents`` whenever the button is pressed.
+
+Then there are a set of objects what want to be notified of events called *listeners*, for example anything which implements ``ActionListener``.
+
+
+Problem
+=======
+
+.. image:: /media/G52GUI/04/images/window.png
+
+Each scroll bar generates the same type of event. An ``AdjustmentEvent``.
+
+THe text widget needs to scroll appropriately. In could implement one ``ActionListener`` and add it as a listener to each scrollbar, but then it needs to disambiguate scrollbars making code more complex. A better way is to have a separate method for scrolling in the X direction and Y direction.
+

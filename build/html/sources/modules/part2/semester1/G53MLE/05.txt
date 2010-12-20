@@ -1,0 +1,268 @@
+.. _G53MLE05:
+
+======================
+05 - Bayesian Learning
+======================
+
+Discrete Random Variables
+=========================
+
+If :math:`A` is a boolean valued random variable denoting an event, and there is some degree of uncertainty as to whether :math:`A` occurs.
+
+For example :math:`A` could be:
+
+* The US president in 2023 will be Male
+* You wake up tomorrow with a headache
+* You have Ebola
+
+Probabilities
+=============
+
+We write :math:`P(A)` as "the fraction of possible worlds in which :math:`A` is true".
+
+Axioms of Probability Theory
+============================
+
+#. All probabilities lie between 0 and 1
+
+    .. math:: 0 <= P(A) <= 1
+
+#. A true proposition has probability 1, and a false proposition has probability 0
+
+    .. math::
+        P(true) = 1
+        
+        P(false) = 0
+
+# THe probability of disjunction is:
+
+    .. math:: P(A \vee B) = P(A) + P(B) - P(A \wedge B)
+
+Theorems from the Axioms
+========================
+
+.. math::
+
+    P( \lnot A) = P( \sim A) = 1 - P(A)
+    
+    P(A) = P(A \wedge B) + P(A \wedge \sim B)
+
+Multivalued Random Variables
+============================
+
+Suppose :math:`A` can take on exactly one value of the set :math:`{v_1, v_2, ..., v_k}`:
+
+.. math::
+
+    P(A = v_i \wedge A = v_j) = 0 if i \neq j
+    
+    P(A = v_1 \vee A = V-2 \vee ... \vee A = v_k) = 1 = \sum_{j=1}^i P(A = v_j)
+
+Conditional Probability
+=======================
+
+The probability :math:`P(A|B)` is the fraction of worlds in which :math:`B` is true that also have A as true.
+
+For example:
+* :math:`H` is "Having a headache"
+* :math:`F` is "Coming down with Flu"
+
+If:
+
+.. math::
+    P(H) = \frac{1}{10}
+    P(F) = \frac{1}{40}
+    P(H|F) = \frac{1}{2}
+
+Remember that :math:`P(H|F)` means "what is the probability of :math:`H` if :math:`F` is true".
+
+Definition of Conditional Probability
+=====================================
+
+.. math:: P(H|F) = \frac{P(H \wedge F)}{P(F)}
+
+And also *The Chain Rule*
+
+.. math:: P(A \wedge B) = P(A|B) P(B)
+
+Probabilistic Inference
+=======================
+
+It is **not** good reasoning to say that "I have woken up with a headache, thus there is a 50% chance I have of coming down with the flu since 50% of flus lead to a headache".
+
+.. math:: P(F \wedge H) = P(H|F) P(F) = \frac{1}{80}
+
+However:
+
+.. math:: P(F|H) = \frac{P(F \wedge H)}{P(H)} = \frac{\frac{1}{80}}{\frac{1}{10}} = \frac{1}{8}
+
+Bayes Rule
+==========
+
+**Bayes, Thomas (1763)** AN essay towards solving a problem in the doctrine of chances. Philosophical Transactions of the Royal Society of London.
+
+So Bayes Rule is:
+
+.. math:: P(A|B) = \frac{P(A \wedge B)}{P(B)} = \frac{P(V|A)P(A)}{P(B)}
+
+Bayesian Learning
+=================
+
+So we can use this rule in a machine learning context by first renaming the variable more appropriately:
+
+.. math:: P(h|x) = \frac{P(x|h)P(h)}{P(x)}
+
+where :math:`x` is the data and :math:`h` is the hypothesis.
+
+* :math:`P(h)` is the probability of hypothesis :math:`h` before seeing any data.
+* :math:`P(x|h)` is the probability of the data if the hypothesis :math:`h` is true.
+* :math:`P(h|x)` is the probability of hypothesis :math:`h` after having see the data :math:`x`.
+
+*...*
+
+An Illustrating Example
+=======================
+
+A patient takes a lab test and the result comes back positive. It is known that the test returns a correct positive result in only 98% of cases and a correct negative result in only 97% of cases. Furthermore, only 0.008% of the entire population has this disease.
+
+#. What is the probability that this patient has cancer?
+#. What is the probability that he does not have cancer?
+#. What is the diagnosis?
+
+The available data has two possible outcomes, either positive represented by a :math:`+` symbol and negative represented by a :math:`-` symbol.
+
+The various probabilities are:
+
+.. math::
+    P(cancer) = 0.008
+    
+    P(\sim cancer) = 0.992
+    
+    P(+ | cancer) = 0.98
+    
+    P(- | cancer) = 0.02
+    
+    P(+ | \sim cancer) = 0.03
+    
+    P(- | \sim cancer) = 0.97
+
+Now we have a new patient, whose test result is positive. Should we diagnose the patient as having cancer or not?
+
+Choosing Hypotheses
+===================
+
+Generally, we want the most probable hypothesis given the observed data. There are some terms people use in order to describe this process:
+
+MAP Hypothesis - Maximum A Posteriori Hypothesis
+
+ML Hypothesis - Maximum Likelihood Hypothesis
+
+Maximum a Posteriori (MAP)
+==========================
+
+First remember we can use the Bayesian equation:
+
+.. math:: P(h|x) = \frac{P(x|h) P(h)}{P(x)}
+
+So we know this much:
+
+.. math:: h_{MAP} = arg \max_{h \epsilon H} P(h|x)
+
+Then we can replace the right hand side using the Bayesian equation:
+
+.. math:: h_{MAP} = arg \max_{h \epsilon H} \frac{P(x|h) P(h)}{P(x)}
+
+Then we can drop the denominator since :math:`P(x)` is independent of :math:`h`, giving:
+
+.. math:: h_{MAP} = arg \max_{h \epsilon H} P(x|h) P(h)
+
+Maximum Likelihood (ML)
+=======================
+
+Assuming that each hypothesis in H (the hypothesis space) is equally probable (i.e. :math:`P(h_i) = P(h_j)`), then for all :math:`i` and :math:`j`, we can drop :math:`P(h)` in MAP. :math:`P(d|h)` is often called the likelihood of data :math:`d` given :math:`h`. Any hypothesis that maximises :math:`P(d|h)` is called the maximum likelihood hypothesis:
+
+.. math:: h_{ML} = arg \max_{h \epsilon H} P(x|h)
+
+Does the Patient Have Cancer or Not?
+====================================
+
+So now, how do we diagnose the patient:
+
+.. math::
+    P(+|cancer) P(cancer) = 0.98 * 0.008 = 0.078
+    
+    P(+| \sim cancer) P (\sim cancer) = 0.03 * 0.992 = 0.298
+
+So the probability of not having cancer is the higher, so the diagnosis is **not cancer**.
+
+Bayesian Classifier
+===================
+
+For the following, we will be using this table of data:
+
+.. image:: /media/G53MLE/05/images/table.png
+
+The Bayesian approach to classifying new instances of :math:`X` is to assign the class with the most probable target value :math:`Y` (using a MAP classifier).
+
+.. math:: Y = arg \max_{d_i \epsilon d} P(d_i | X)
+
+This means use the maximum probability of each of the classes given we know the input vector :math:`X`. So as before we use the Bayesian formula to substitute different values:
+
+.. math:: Y = arg \max_{d_i \epsilon d} \frac{P(X|d_i) P(d_i)}{P(X)}
+
+And then we can drop the denominator as before:
+
+.. math:: Y = \max_{d_i \epsilon d} P(X|d_i) P(d_i)
+
+Luckily :math:`P(d_i)` is easy to calculate by simply counting how many times each target value :math:`d_i` occurs in the training set.
+
+Therefor we get the following probabilities for values of :math:`d`:
+
+.. math::
+    P(d = yes) = \frac{9}{14}
+    
+    P(d = no) = \frac{5}{14}
+
+The harder part is calculating :math:`P(X|d_i)`. From the data we can see there are 5 columns (excluding the day column) the first and second with 3 values and the result with 2 values. Thus there are :math:`3 \times 3 \times 2 \times 2 \times 2 = 72` possible combinations.
+
+To obtain a reliable estimate of the probability here, we would need to see each combination many times. However we don't even see each combination 1 time as we have less than 72 observed instances.
+
+Hence we need a very, very large training set, which in most cases is impossible to obtain.
+
+Naïve Bayes Classifier
+======================
+
+The Naïve Bayes classifier is based upon the simplifying assumptions that the attribute values are conditionally independent given the target value. The means we get the following:
+
+.. math:: P(X|d_i) = P(x_1, x_2, ..., x_n |d_i) = \prod_{k} P(x_k|d_i)
+
+So the Naïve Bayes Classifier is:
+
+.. math:: Y = arg \max_{d_i \epsilon d} P(d_i) \prod_{k=1}^4 P(x_k|d_i)
+
+Back to the Example
+===================
+
+So we can now classify new instances for the table using the Naïve Bayes Classifier.
+
+Estimating Probabilities
+========================
+
+So far, we can estimate the probabilities using the fraction of times the event is observed to occur over the entire observed opportunities.
+
+In the above example, we estimated:
+
+.. math::
+    P(wind = strong | tennis = no) = \frac{N_c}{N}
+
+where :math:`N = 5` is the total number of training samples for which :math:`tennis = no`, and :math:`Nc` is the number of these for which :math:`wind = strong`.
+
+When :math:`N_c` is small, such approaches provide poor estimation. To avoid this difficulty, we can adopt the **m-estimate** of probability:
+
+.. math:: \frac{N_c + mP}{N + m}
+
+where :math:`P` is the prior estimate of the probability we wish to estimate and :math:`m` is a constant (which you choose) called the equivalent sample size.
+
+A typical method for choosing :math:`P` in the absence of other information is to assume uniform priors: If an attribute has :math:`k` possible values we set :math:`P = \frac{1}{k}`.
+
+For example, :math:`P( wind = string | tennis = no)`, we note wind has two possible values, so the uniform priors means :math:`P = \frac{1}{2}`.
